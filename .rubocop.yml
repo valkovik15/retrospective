@@ -1,0 +1,32 @@
+# ./.rubocop.yml
+AllCops:
+  TargetRubyVersion: 2.6
+  Exclude:
+    - bin/*
+    - db/schema.rb
+    - node_modules/**/*
+    - vendor/bundle/**/*
+
+Metrics/LineLength:
+  Max: 100
+  Exclude:
+    - ./db/seeds.rb
+    - ./config/initializers/*.rb
+
+Metrics/BlockLength:
+  Exclude:
+    - ./spec/**/*_spec.rb
+
+Metrics/MethodLength:
+  Exclude:
+    - ./db/migrate/*.rb
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - ./spec/**/*_spec.rb
+
+Style/Documentation:
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
