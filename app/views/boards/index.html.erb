@@ -1,0 +1,24 @@
+<h1>Boards</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>TITLE</th>
+      <th>DATE</th>      
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @boards.each do |board| %>
+      <tr>
+        <th><%= link_to board.title, board %></th>
+        <th><%= board.created_at %></th>  
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Board', new_board_path %>
