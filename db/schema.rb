@@ -10,10 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_05_142210) do
+ActiveRecord::Schema.define(version: 2019_08_05_145659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "action_items", force: :cascade do |t|
+    t.text "body", null: false
+    t.bigint "board_id"
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["board_id"], name: "index_action_items_on_board_id"
+  end
+
+  create_table "boards", force: :cascade do |t|
+    t.string "title", null: false
+    t.bigint "creator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_boards_on_creator_id"
+  end
+
+  create_table "cards", force: :cascade do |t|
+    t.string "kind", null: false
+    t.text "body", null: false
+    t.bigint "author_id"
+    t.bigint "board_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_cards_on_author_id"
+    t.index ["board_id"], name: "index_cards_on_board_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +55,8 @@ ActiveRecord::Schema.define(version: 2019_08_05_142210) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "action_items", "boards"
+  add_foreign_key "boards", "users", column: "creator_id"
+  add_foreign_key "cards", "boards"
+  add_foreign_key "cards", "users", column: "author_id"
 end
