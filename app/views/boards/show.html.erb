@@ -1,0 +1,22 @@
+<h1><%= @board.title %></h1>
+
+<div class="columns">
+  <% @cards_by_type.each do |kind, cards| %>
+    <div class='column'>
+      <h2><%= kind.upcase %></h2>
+      <% cards.each do |card| %>
+        <div><%= card.body %></div>
+      <% end %>
+     </div>
+  <% end %>
+
+  <div class="column">
+    <h2>ACTION ITEMS</h2>
+    <% @action_items.each do |action_item| %>
+      <div>
+        <%= action_item.body %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

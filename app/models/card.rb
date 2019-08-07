@@ -6,4 +6,8 @@ class Card < ApplicationRecord
 
   validates_presence_of :kind, :body
   validates :kind, inclusion: { in: %w[mad sad glad] }
+
+  scope :mad, -> { where(kind: :mad) }
+  scope :sad, -> { where(kind: :sad) }
+  scope :glad, -> { where(kind: :glad) }
 end

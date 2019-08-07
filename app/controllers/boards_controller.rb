@@ -7,6 +7,16 @@ class BoardsController < ApplicationController
     @boards = Board.all
   end
 
+  def show
+    @board = Board.find(params[:id])
+    @cards_by_type = {
+      mad: @board.cards.mad,
+      sad: @board.cards.sad,
+      glad: @board.cards.glad
+    }
+    @action_items = @board.action_items
+  end
+
   def new
     @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
   end
