@@ -8,10 +8,13 @@ class User < ApplicationRecord
   has_many :cards, foreign_key: :author_id
   has_many :boards, foreign_key: :creator_id
 
+  mount_uploader :avatar, AvatarUploader
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0, 20]
+      user.remote_avatar_url = auth.info.image
     end
   end
 end
