@@ -11,7 +11,8 @@
           </div>
         </div>
       <% end %>
-     </div>
+    <%= render 'cards/form', card: @board.cards.build(kind: kind) %>
+    </div>
   <% end %>
 
   <div class="column">
@@ -23,6 +24,6 @@
           </div>
         </div>
     <% end %>
+  <%= render 'action_items/form', action_item: @board.action_items.build %>
   </div>
 </div>
-

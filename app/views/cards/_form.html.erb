@@ -1,0 +1,10 @@
+<%= form_with(model: card, url: board_cards_path(card.board_id), local: true) do |form| %>
+  <hr>
+  <h2>Add new '<%= card.kind %>' card</h2>
+  <%= form.hidden_field(:kind) %>
+  <%= form.text_field :body %>
+    
+  <div class="actions">
+    <%= form.submit 'Add' %>
+  </div>
+<% end %>
