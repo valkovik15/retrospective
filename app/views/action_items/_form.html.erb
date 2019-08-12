@@ -1,9 +1,5 @@
 <%= form_with(model: action_item, url: board_action_items_path(action_item.board_id), local: true) do |form| %>
   <hr>
   <h2>Add new action item</h2>
-  <%= form.text_field :body %>
-    
-  <div class="actions">
-    <%= form.submit 'Add' %>
-  </div>
+  <%= form.text_field :body, class: 'input' %>
 <% end %>  

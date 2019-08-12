@@ -10,9 +10,9 @@ class BoardsController < ApplicationController
   def show
     @board = Board.find(params[:id])
     @cards_by_type = {
-      mad: @board.cards.mad,
-      sad: @board.cards.sad,
-      glad: @board.cards.glad
+      mad: @board.cards.mad.includes(:author),
+      sad: @board.cards.sad.includes(:author),
+      glad: @board.cards.glad.includes(:author)
     }
     @action_items = @board.action_items
   end

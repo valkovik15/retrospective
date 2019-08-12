@@ -1,29 +1,42 @@
-<h1><%= @board.title %></h1>
+<div class='box has-text-centered'>
+  <h1 class='title'>
+    <%= @board.title %>
+  </h1>
+</div>
 
-<div class="columns">
+<div class='columns'>
   <% @cards_by_type.each do |kind, cards| %>
     <div class='column'>
-      <h2><%= kind.upcase %></h2>
+      <h2 class='subtitle'>
+        <%= kind.upcase %>
+      </h2>
+      <div class='box'>
+        <%= render 'cards/form', card: @board.cards.build(kind: kind) %>  
+      </div>
       <% cards.each do |card| %>
-        <div class="message">
-          <div class="message-body">
-            <%= card.body %>
-          </div>
+        <div class='box'>
+          <p> <%= card.body %> </p>
+          <% if card.author.avatar.url %>
+          <figure class='image is-32x32'>
+            <%= image_tag(card.author.avatar.url(:thumb), class: 'is-rounded') %>
+          </figure>
+          <% end  %>
         </div>
       <% end %>
-    <%= render 'cards/form', card: @board.cards.build(kind: kind) %>
     </div>
   <% end %>
 
-  <div class="column">
-    <h2>ACTION ITEMS</h2>
+  <div class='column'>
+    <h2 class='subtitle'>
+      ACTION ITEMS
+    </h2>
+    <div class='box'>
+      <%= render 'action_items/form', action_item: @board.action_items.build %>
+    </div>
     <% @action_items.each do |action_item| %>
-        <div class="message is-dark">
-          <div class="message-body">
-            <%= action_item.body %>
-          </div>
-        </div>
+      <div class='box'>
+        <%= action_item.body %>
+      </div>
     <% end %>
-  <%= render 'action_items/form', action_item: @board.action_items.build %>
   </div>
 </div>
