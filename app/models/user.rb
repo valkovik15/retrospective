@@ -7,6 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: %i[github]
   has_many :cards, foreign_key: :author_id
   has_many :boards, foreign_key: :creator_id
+  has_and_belongs_to_many :teams
 
   mount_uploader :avatar, AvatarUploader
 

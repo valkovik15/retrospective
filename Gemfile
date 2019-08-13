@@ -68,6 +68,7 @@ group :test do
   gem 'factory_bot_rails'
   gem 'vcr'
   gem 'webmock'
+  gem 'test-prof'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

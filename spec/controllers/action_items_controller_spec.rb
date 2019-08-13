@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ActionItemsController do
-  let(:board) { create(:board) }
+  let_it_be(:board) { create(:board) }
 
   context 'POST #create' do
     it 'redirects' do
