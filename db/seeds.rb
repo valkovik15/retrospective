@@ -23,11 +23,11 @@ Team.create([
             ])
 
 Board.create([
-               { title: 'TestUser1_RetroBoard', creator_id: 1, team_id: 1 },
-               { title: 'TestUser2_RetroBoard', creator_id: 2, team_id: 1 },
-               { title: 'TestUser3_RetroBoard', creator_id: 3, team_id: 1 },
-               { title: 'TestUser4_RetroBoard', creator_id: 4, team_id: 1 },
-               { title: 'TestUser5_RetroBoard', creator_id: 5, team_id: 1 }
+               { title: 'TestUser1_RetroBoard', creator_id: 1 },
+               { title: 'TestUser2_RetroBoard', creator_id: 2 },
+               { title: 'TestUser3_RetroBoard', creator_id: 3 },
+               { title: 'TestUser4_RetroBoard', creator_id: 4 },
+               { title: 'TestUser5_RetroBoard', creator_id: 5 }
              ])
 
 Card.create([

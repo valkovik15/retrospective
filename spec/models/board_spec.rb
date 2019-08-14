@@ -27,9 +27,5 @@ RSpec.describe Board, type: :model do
     it 'belongs to creator' do
       expect(board).to respond_to(:creator)
     end
-
-    it 'belongs to team' do
-      expect(board).to respond_to(:team)
-    end
   end
 end

@@ -19,9 +19,5 @@ RSpec.describe Team, type: :model do
     it 'has_many_users' do
       expect(team).to respond_to(:users)
     end
-
-    it 'has_many_boards' do
-      expect(team).to respond_to(:boards)
-    end
   end
 end
