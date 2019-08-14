@@ -24,8 +24,12 @@ RSpec.describe Board, type: :model do
       expect(board).to respond_to(:action_items)
     end
 
-    it 'belongs to creator' do
-      expect(board).to respond_to(:creator)
+    it 'has many memberships' do
+      expect(board).to respond_to(:memberships)
+    end
+
+    it 'has many users' do
+      expect(board).to respond_to(:users)
     end
   end
 end

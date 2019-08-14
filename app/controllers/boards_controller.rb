@@ -23,7 +23,8 @@ class BoardsController < ApplicationController
 
   def create
     @board = Board.new(board_params)
-    @board.creator_id = current_user.id
+    @board.memberships.build(user_id: current_user.id, role: 'creator')
+
     if @board.save
       redirect_to @board, notice: 'Board was successfully created.'
     else

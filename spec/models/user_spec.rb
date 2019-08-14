@@ -16,6 +16,10 @@ RSpec.describe User, type: :model do
   end
 
   context 'associations' do
+    it 'has many memberships' do
+      expect(user).to respond_to(:memberships)
+    end
+
     it 'has many boards' do
       expect(user).to respond_to(:boards)
     end
