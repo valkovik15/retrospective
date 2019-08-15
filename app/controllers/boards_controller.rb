@@ -7,6 +7,7 @@ class BoardsController < ApplicationController
     @boards = Board.all
   end
 
+  # rubocop:disable Metrics/AbcSize
   def show
     @board = Board.find(params[:id])
     @cards_by_type = {
@@ -15,7 +16,9 @@ class BoardsController < ApplicationController
       glad: @board.cards.glad.includes(:author)
     }
     @action_items = @board.action_items
+    @action_item = ActionItem.new(board_id: @board.id)
   end
+  # rubocop:enable Metrics/AbcSize
 
   def new
     @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
