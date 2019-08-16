@@ -10,6 +10,8 @@ require File.expand_path('../config/environment', __dir__)
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 
+require 'test_prof/recipes/rspec/let_it_be'
+
 require 'devise'
 
 Dir['./spec/support/**/*.rb'].each { |f| require f }

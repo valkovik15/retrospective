@@ -20,7 +20,7 @@
           <figure class='image is-32x32'>
             <%= image_tag(card.author.avatar.url(:thumb), class: 'is-rounded') %>
           </figure>
-          <% end  %>
+          <% end %>
         </div>
       <% end %>
     </div>
@@ -31,7 +31,7 @@
       ACTION ITEMS
     </h2>
     <div class='box'>
-      <%= render 'action_items/form', action_item: @board.action_items.build %>
+      <%= render 'action_items/form', action_item: @action_item %>
     </div>
     <% @action_items.each do |action_item| %>
       <div class='box'>
@@ -39,4 +39,5 @@
       </div>
     <% end %>
   </div>
+
 </div>

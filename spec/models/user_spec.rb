@@ -3,23 +3,33 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  let_it_be(:user) { build_stubbed(:user) }
+
   context 'validations' do
     it 'is valid with valid attributes' do
-      expect(build(:user)).to be_valid
+      expect(user).to be_valid
     end
 
     it 'is not valid without an email' do
-      expect(build(:user, email: nil)).to_not be_valid
+      expect(build_stubbed(:user, email: nil)).to_not be_valid
     end
   end
 
   context 'associations' do
+    it 'has many memberships' do
+      expect(user).to respond_to(:memberships)
+    end
+
     it 'has many boards' do
-      expect(build(:user)).to respond_to(:boards)
+      expect(user).to respond_to(:boards)
     end
 
     it 'has many cards' do
-      expect(build(:user)).to respond_to(:cards)
+      expect(user).to respond_to(:cards)
+    end
+
+    it 'has many teams' do
+      expect(user).to respond_to(:teams)
     end
   end
 

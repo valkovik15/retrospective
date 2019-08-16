@@ -4,6 +4,9 @@ require 'rails_helper'
 
 RSpec.describe BoardsController do
   login_user
+
+  let_it_be(:board) { create(:board) }
+
   context 'GET #index' do
     it 'returns http success' do
       get :index
@@ -20,7 +23,6 @@ RSpec.describe BoardsController do
 
   context 'GET #show' do
     it 'returns http success' do
-      board = create(:board)
       get :show, params: { id: board.id }
       expect(response).to have_http_status(:success)
     end

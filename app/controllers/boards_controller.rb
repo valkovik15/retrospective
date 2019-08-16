@@ -7,6 +7,7 @@ class BoardsController < ApplicationController
     @boards = Board.all
   end
 
+  # rubocop:disable Metrics/AbcSize
   def show
     @board = Board.find(params[:id])
     @cards_by_type = {
@@ -15,7 +16,9 @@ class BoardsController < ApplicationController
       glad: @board.cards.glad.includes(:author)
     }
     @action_items = @board.action_items
+    @action_item = ActionItem.new(board_id: @board.id)
   end
+  # rubocop:enable Metrics/AbcSize
 
   def new
     @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
@@ -23,7 +26,8 @@ class BoardsController < ApplicationController
 
   def create
     @board = Board.new(board_params)
-    @board.creator_id = current_user.id
+    @board.memberships.build(user_id: current_user.id, role: 'creator')
+
     if @board.save
       redirect_to @board, notice: 'Board was successfully created.'
     else
@@ -34,6 +38,6 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.require(:board).permit(:title)
+    params.require(:board).permit(:title, :team_id)
   end
 end
