@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :boards do
     resources :cards
     resources :action_items
+    resources :memberships
   end
 
   resources :teams

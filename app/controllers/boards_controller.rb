@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class BoardsController < ApplicationController
-  before_action :authenticate_user!
+  # allow access boards#show without authentication for now
+  before_action :authenticate_user!, except: :show
 
   def index
     @boards = Board.all

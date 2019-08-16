@@ -30,6 +30,12 @@ Board.create([
                { title: 'TestUser5_RetroBoard' }
              ])
 
+Membership.create([
+                    { user_id: 1, board_id: 1, role: 'creator', ready: false },
+                    { user_id: 2, board_id: 1, role: 'member', ready: false },
+                    { user_id: 2, board_id: 2, role: 'creator', ready: false }
+                  ])
+
 Card.create([
               { kind: 'mad', body: 'user1 is very mad', author_id: 1, board_id: 1 },
               { kind: 'sad', body: 'user1 is very sad', author_id: 1, board_id: 1 },

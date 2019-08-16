@@ -1,7 +1,23 @@
 <div class='box has-text-centered'>
-  <h1 class='title'>
-    <%= @board.title %>
-  </h1>
+  <div class='level'>
+
+    <div class='level-item has-text-centered'>
+      <h1 class='title'>
+        <%= @board.title %>
+      </h1>
+    </div>
+
+    <div class='level-right'>
+      <% if !current_user %>
+        <%= link_to 'Sign up to Join', new_user_session_path, class: 'button is-large' %>
+      <% elsif @board.memberships.exists?(user_id: current_user.id) %>
+        <%= link_to 'READY', url_for, class: 'button is-large' %>
+      <% else %>
+        <%= link_to 'Join', board_memberships_path(board_id: @board.id), method: :post, class: 'button is-large' %>
+      <% end %>
+    </div>
+
+  </div>
 </div>
 
 <div class='columns'>
