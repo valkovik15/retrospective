@@ -15,10 +15,6 @@ class MembershipsController < ApplicationController
 
   private
 
-  def membership_params
-    params.require(:membership).permit(:email)
-  end
-
   def set_board
     @board = Board.find(params[:board_id])
   end

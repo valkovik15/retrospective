@@ -1,3 +1,7 @@
+<% content_for :scripts do %>
+  <%= javascript_pack_tag 'ready_button_component' %>
+<% end %>
+
 <div class='box has-text-centered'>
   <div class='level'>
 
@@ -11,7 +15,7 @@
       <% if !current_user %>
         <%= link_to 'Sign up to Join', new_user_session_path, class: 'button is-large' %>
       <% elsif @board.memberships.exists?(user_id: current_user.id) %>
-        <%= link_to 'READY', url_for, class: 'button is-large' %>
+        <div id='ready-button'></div>
       <% else %>
         <%= link_to 'Join', board_memberships_path(board_id: @board.id), method: :post, class: 'button is-large' %>
       <% end %>
