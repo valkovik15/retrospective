@@ -7,13 +7,14 @@
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
-    
+    <%= yield :scripts %>
   </head>
 
   <body>
     <div class="column has-background-light">
       <p id="notice"><%= notice %></p>
       <p id="alert"><%= alert %></p>
+          
       <%= yield %>
     </div>
   </body>

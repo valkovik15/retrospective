@@ -3,14 +3,13 @@
 class BoardsController < ApplicationController
   # allow access boards#show without authentication for now
   before_action :authenticate_user!, except: :show
+  before_action :set_board, only: :show
 
   def index
     @boards = Board.all
   end
 
-  # rubocop:disable Metrics/AbcSize
   def show
-    @board = Board.find(params[:id])
     @cards_by_type = {
       mad: @board.cards.mad.includes(:author),
       sad: @board.cards.sad.includes(:author),
@@ -19,7 +18,6 @@ class BoardsController < ApplicationController
     @action_items = @board.action_items
     @action_item = ActionItem.new(board_id: @board.id)
   end
-  # rubocop:enable Metrics/AbcSize
 
   def new
     @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
@@ -39,6 +37,10 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.require(:board).permit(:title, :team_id)
+    params.require(:board).permit(:title, :team_id, :email)
+  end
+
+  def set_board
+    @board = Board.find(params[:id])
   end
 end

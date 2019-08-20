@@ -19,6 +19,15 @@
 
   </div>
 </div>
+<!-- <% @board.memberships.each do |member| %>
+<p> <%= member.user.email %>, <%= member.role %></p>
+<% end  %> -->
+<div class="box" id='autocomplete'>
+<!--   <%# render 'memberships/form', membership: @membership %> -->
+  <% content_for :scripts do %>
+  <%= javascript_pack_tag 'autocomplete' %>
+  <% end %>
+</div>
 
 <div class='columns'>
   <% @cards_by_type.each do |kind, cards| %>

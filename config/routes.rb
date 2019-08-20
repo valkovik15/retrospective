@@ -11,4 +11,14 @@ Rails.application.routes.draw do
   end
 
   resources :teams
+
+  namespace :api do
+    get 'users/suggestions'
+    resources :boards do
+      member do
+        post 'invite'
+      end
+      resources :memberships, only: :index
+    end
+  end
 end
