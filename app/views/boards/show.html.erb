@@ -17,7 +17,7 @@
       <% elsif @board.memberships.exists?(user_id: current_user.id) %>
         <div id='ready-button'></div>
       <% else %>
-        <%= link_to 'Join', board_memberships_path(board_id: @board.id), method: :post, class: 'button is-large' %>
+        <%= link_to 'Join', board_memberships_path(board_slug: @board.slug), method: :post, class: 'button is-large' %>
       <% end %>
     </div>
 

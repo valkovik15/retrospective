@@ -9,7 +9,7 @@ RSpec.describe MembershipsController do
 
   context 'POST #create' do
     it 'redirects' do
-      post :create, params: { board_id: board.id }
+      post :create, params: { board_slug: board.slug }
       expect(response).to have_http_status(:redirect)
     end
   end

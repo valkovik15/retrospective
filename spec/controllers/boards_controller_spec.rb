@@ -23,7 +23,7 @@ RSpec.describe BoardsController do
 
   context 'GET #show' do
     it 'returns http success' do
-      get :show, params: { id: board.id }
+      get :show, params: { slug: board.slug }
       expect(response).to have_http_status(:success)
     end
   end

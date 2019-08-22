@@ -1,26 +1,20 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
   root to: 'home#index'
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
-  resources :boards do
+  resources :boards, param: :slug do
     resources :cards
     resources :action_items
-    resources :memberships do
-      collection do
-        get 'ready_status'
-        get 'ready_toggle'
-      end
-    end
+    resources :memberships
   end
 
   resources :teams
 
   namespace :api do
     get 'users/suggestions'
-    resources :boards do
+    resources :boards, param: :slug do
       member do
         post 'invite'
       end
@@ -33,4 +27,3 @@ Rails.application.routes.draw do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength

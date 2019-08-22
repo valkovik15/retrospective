@@ -15,6 +15,6 @@ class CardsController < ApplicationController
   end
 
   def set_board
-    @board = Board.find(params[:board_id])
+    @board = Board.find_by!(slug: params[:board_slug])
   end
 end
