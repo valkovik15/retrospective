@@ -28,7 +28,9 @@ ActiveRecord::Schema.define(version: 2019_08_21_131203) do
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "previous_board_id"
     t.string "slug", null: false
+    t.index ["previous_board_id"], name: "index_boards_on_previous_board_id"
     t.index ["slug"], name: "index_boards_on_slug", unique: true
   end
 
@@ -84,6 +86,7 @@ ActiveRecord::Schema.define(version: 2019_08_21_131203) do
   end
 
   add_foreign_key "action_items", "boards"
+  add_foreign_key "boards", "boards", column: "previous_board_id"
   add_foreign_key "cards", "boards"
   add_foreign_key "cards", "users", column: "author_id"
   add_foreign_key "memberships", "boards"

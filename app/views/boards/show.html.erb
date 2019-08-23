@@ -34,13 +34,25 @@
 </div>
 
 <div class='columns'>
+  <% if @previous_action_items %>
+    <div class='column'>
+      <h2 class='subtitle'>
+       PREVIOUS BOARD
+      </h2>
+      <% @previous_action_items.each do |action_item| %>
+        <div class='box'>
+          <%= action_item.body %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
   <% @cards_by_type.each do |kind, cards| %>
     <div class='column'>
       <h2 class='subtitle'>
         <%= kind.upcase %>
       </h2>
       <div class='box'>
-        <%= render 'cards/form', card: @board.cards.build(kind: kind) %>  
+        <%= render 'cards/form', card: @board.cards.build(kind: kind) %>
       </div>
       <% cards.each do |card| %>
         <div class='box'>
