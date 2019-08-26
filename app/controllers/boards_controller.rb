@@ -38,7 +38,7 @@ class BoardsController < ApplicationController
   end
 
   def continue
-    result = Boards::Continue.new(@board).call
+    result = Boards::Continue.new(@board, current_user).call
     if result.success?
       redirect_to result.value, notice: 'Board was successfully created.'
     else
