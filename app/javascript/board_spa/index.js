@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-//import Chat from './components/Chat'
+import Board from './components/Board'
 
 document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
-      <h1>THIS IS REACT BOARDSPA</h1>,
+      <Board />,
       document.getElementById('board-spa'),
     )
   })
