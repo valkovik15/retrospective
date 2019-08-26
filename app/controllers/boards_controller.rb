@@ -19,6 +19,8 @@ class BoardsController < ApplicationController
     @action_items = @board.action_items
     @action_item = ActionItem.new(board_id: @board.id)
     @previous_action_items = @board.previous_board.action_items unless @board.previous_board.nil?
+
+    render 'showspa'
   end
   # rubocop: enable Metrics/AbcSize
 
