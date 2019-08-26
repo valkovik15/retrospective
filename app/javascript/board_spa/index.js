@@ -5,7 +5,7 @@ import jsonResponse from './fake_json'
 
 document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
-      <Board json={jsonResponse}/>,
+      <Board data={jsonResponse}/>,
       document.getElementById('board-spa'),
     )
   })
