@@ -1,6 +1,7 @@
 import React from 'react'
 
 class Board extends React.Component {
+
   render() {
     return (
       <div>
@@ -11,7 +12,7 @@ class Board extends React.Component {
   
             <div className='level-item has-text-centered'>
               <h1 className='title'>
-              BOARD-TITLE
+              {this.props.json.board.title}
               </h1>
             </div>
           </div>
