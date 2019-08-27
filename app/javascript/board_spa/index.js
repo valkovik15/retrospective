@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Board from './components/Board'
-import jsonResponse from './fake_json'
+import { current_user, board } from './fake_json'
 
 document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
-      <Board board={jsonResponse.board}/>,
+      <Board { ...board }/>,
       document.getElementById('board-spa'),
     )
   })

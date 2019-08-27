@@ -1,14 +1,14 @@
 import React from 'react'
 
-import Top from './Top'
+import Header from './Header'
 
 class Board extends React.Component {
 
   render() {
-    const { title, members } = this.props.board;
+    const { title, members } = this.props;
 
     return (
-      <Top title={title} members={members}/>
+      <Header title={title} members={members}/>
     )
   }   
 }

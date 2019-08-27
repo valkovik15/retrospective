@@ -1,8 +1,9 @@
 import React from 'react'
 
 import Title from './Title'
+import MemberList from './MemberList'
 
-class Top extends React.Component {
+class Header extends React.Component {
   render() {
     const { title, members } = this.props;
 
@@ -15,7 +16,7 @@ class Top extends React.Component {
           </div>
 
           <div className='level-right'>
-            <p>yoyo</p>
+            <MemberList members={members}/>
           </div>
         </div>
 
@@ -28,4 +29,4 @@ class Top extends React.Component {
   }   
 }
 
-export default Top
+export default Header

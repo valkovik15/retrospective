@@ -46,4 +46,5 @@ const jsonResponse = {
   }
 };
 
-export default jsonResponse;
+//export default jsonResponse;
+export const { board, current_user } = jsonResponse;
