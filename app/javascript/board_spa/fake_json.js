@@ -15,7 +15,7 @@ const jsonResponse = {
         "email": "member0@mail.com",
         "name": "member0",
         "role": "creator",
-        "avatar_url": "",
+        "avatar_url": "https://i.pravatar.cc/100?img=55",
         "ready": true
       },
       {
@@ -23,7 +23,7 @@ const jsonResponse = {
         "email": "member1@mail.com",
         "name": "member1",
         "role": "member",
-        "avatar_url": "",
+        "avatar_url": "https://i.pravatar.cc/100?img=10",
         "ready": true
       },
       {
@@ -31,17 +31,25 @@ const jsonResponse = {
         "email": "member2@mail.com",
         "name": "member2",
         "role": "member",
-        "avatar_url": "",
-        "ready": true
+        "avatar_url": "https://i.pravatar.cc/100?img=20",
+        "ready": false
       },
       {
         "uid": "",
         "email": "member3@mail.com",
         "name": "member3",
         "role": "member",
-        "avatar_url": "",
-        "ready": false
-      }
+        "avatar_url": "https://i.pravatar.cc/100?img=30",
+        "ready": true
+      },
+      {
+          "uid": "",
+          "email": "member4@mail.com",
+          "name": "member4",
+          "role": "member",
+          "avatar_url": "https://i.pravatar.cc/100?img=40",
+          "ready": false
+        }
     ]
   }
 };
