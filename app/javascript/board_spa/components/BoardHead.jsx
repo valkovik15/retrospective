@@ -1,6 +1,6 @@
 import React from 'react'
 
-class TitleBox extends React.Component {
+class BoardHead extends React.Component {
 
   render() {
     return (
@@ -18,4 +18,4 @@ class TitleBox extends React.Component {
   }   
 }
 
-export default TitleBox
+export default BoardHead

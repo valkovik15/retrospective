@@ -1,12 +1,12 @@
 import React from 'react'
 
-import TitleBox from './TitleBox'
+import BoardHead from './BoardHead'
 
 class Board extends React.Component {
 
   render() {
     return (
-      <TitleBox title={this.props.data.board.title}/>
+      <BoardHead title={this.props.data.board.title}/>
     )
   }   
 }
