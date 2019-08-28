@@ -8,7 +8,10 @@ class Board extends React.Component {
     const { title, members } = this.props;
 
     return (
-      <Header title={title} members={members}/>
+      <React.Fragment>
+        <div className='text lable'>BOARD</div>
+        <Header title={title} members={members}/>
+      </React.Fragment>
     )
   }   
 }

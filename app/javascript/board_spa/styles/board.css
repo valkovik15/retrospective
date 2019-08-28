@@ -3,10 +3,33 @@ html {
        background-repeat: repeat;
      }
 
+.title .lable { font-family: Helvetica, sans-serif; }
 
+.component {
+             position: relative;
+           }
 
-/*
-h1 {color: red;}
-html {background-color: green;}
-body {color: green;}
-*/
+.component.lvl1 {
+                  background: rgba(75, 75, 75, 0.5);
+                  padding: 10px;
+                  margin: 30px;
+                }
+
+.component.lvl2 {
+                  background: rgba(75, 75, 75, 0.9);
+                  padding: 15px;
+                  margin: 20px;
+                }
+
+.text {
+        color: lightgray;
+      }
+
+.lable {
+         position: absolute;
+         top: 0;
+         right: 0;
+         line-height: 11px; 
+         font-size: 12px;
+         font-weight: bold;
+       }

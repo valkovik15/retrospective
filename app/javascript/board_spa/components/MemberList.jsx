@@ -9,15 +9,18 @@ class MemberList extends React.Component {
 
       }
       return( 
-        <div className='image'>
+        <div className='image is-48x48'>
           <img className='is-rounded' src={member.avatar_url}/> 
         </div>
       );
     });
 
     return (
-      <div className='level-item'>
-        {members}
+      <div className='level-left component lvl2'>
+        <div className='text lable'>MEMBER-LIST</div>
+        <div className='level-item'>
+          {members}
+        </div>
       </div>
 
     )

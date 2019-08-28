@@ -8,16 +8,11 @@ class Header extends React.Component {
     const { title, members } = this.props;
 
     return (
-      <div className='box level'>
+      <div className='component lvl1'>
+        <div className='text lable'>HEADER</div>
 
-        <div className='level-left'>
-          <Title title={title}/>
-        </div>
-
-        <div className='level-right'>
-          <MemberList members={members}/>
-        </div>
-       
+        <Title title={title}/>
+        <MemberList members={members}/>    
       </div>
     )
   }   
