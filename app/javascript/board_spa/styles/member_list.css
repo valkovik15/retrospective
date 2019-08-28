@@ -1,0 +1,15 @@
+.avatar {
+          height: 64px;
+          width: 64px;
+          padding: 1px;
+
+          border-radius: 50%;
+          border-width: 2px;
+          border-style: solid;
+          border-color: lightgrey;
+        }
+
+.avatar.user-ready {
+                     border-color: hsl(141, 71%, 48%);
+                   }
+

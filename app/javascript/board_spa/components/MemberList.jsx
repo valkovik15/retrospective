@@ -5,11 +5,13 @@ class MemberList extends React.Component {
 
     const members = this.props.members.map(function(member) {
 
+      let divClass = 'avatar image is-64x64';
       if (member.ready == true) {
-
+        divClass += ' user-ready'
       }
+      
       return( 
-        <div className='image is-48x48'>
+        <div className={divClass}>
           <img className='is-rounded' src={member.avatar_url}/> 
         </div>
       );
