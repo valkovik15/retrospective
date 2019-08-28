@@ -1,7 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Board from './components/Board'
+
 import { current_user, board } from './fake_json'
+import './styles/board'
 
 document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
