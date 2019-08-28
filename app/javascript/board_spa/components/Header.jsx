@@ -2,6 +2,7 @@ import React from 'react'
 
 import Title from './Title'
 import MemberList from './MemberList'
+import ButtonSet from './ButtonSet'
 
 class Header extends React.Component {
   render() {
@@ -12,7 +13,8 @@ class Header extends React.Component {
         <div className='text lable'>HEADER</div>
 
         <Title title={title}/>
-        <MemberList members={members}/>    
+        <MemberList members={members}/>
+        <ButtonSet />    
       </div>
     )
   }   

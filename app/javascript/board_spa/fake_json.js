@@ -43,16 +43,15 @@ const jsonResponse = {
         "ready": true
       },
       {
-          "uid": "",
-          "email": "member4@mail.com",
-          "name": "member4",
-          "role": "member",
-          "avatar_url": "https://i.pravatar.cc/100?img=40",
-          "ready": false
-        }
+        "uid": "",
+        "email": "member4@mail.com",
+        "name": "member4",
+        "role": "member",
+        "avatar_url": "https://i.pravatar.cc/100?img=40",
+        "ready": false
+      }
     ]
   }
 };
 
-//export default jsonResponse;
 export const { board, current_user } = jsonResponse;

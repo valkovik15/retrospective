@@ -2,9 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Board from './components/Board'
 
-import { current_user, board } from './fake_json'
+import { board } from './fake_json'
+//import { current_user } from './fake_json'
+
 import './styles/board'
 import './styles/member_list'
+import './styles/button_set'
+
+//export const CurrentUserContext = React.createContext(current_user)
 
 document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
