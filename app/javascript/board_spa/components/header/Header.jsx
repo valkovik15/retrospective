@@ -3,6 +3,7 @@ import React from 'react'
 import Title from './Title'
 import MemberList from './MemberList'
 import ButtonSet from './ButtonSet'
+import InviteUser from './InviteUser'
 
 class Header extends React.Component {
   render() {
@@ -14,7 +15,8 @@ class Header extends React.Component {
 
         <Title title={title}/>
         <MemberList members={members}/>
-        <ButtonSet />    
+        <InviteUser />
+        <ButtonSet />
       </div>
     )
   }   

@@ -3,7 +3,14 @@ html {
        background-repeat: repeat;
      }
 
-.title .lable { font-family: Helvetica, sans-serif; }
+input[type='text'] { 
+                     width: 200px; 
+                     margin-right: 5px;
+                   }
+
+.title .lable .button { font-family: Helvetica, sans-serif; }
+
+.button { margin-right: 5px; }
 
 .component {
              position: relative;
