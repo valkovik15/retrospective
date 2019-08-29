@@ -2,20 +2,17 @@ import React from 'react'
 
 class Card extends React.Component {
   render() {
-    const { body, color, author, likes } = this.props;
-
+    const { body, color, author, likes, abilities } = this.props;
 
     return (
       <div className='card' style={{background: color}}>
 
         <div className='level-right edit-bar'>
           <div className='level-item'>
-            <i className='fas fa-pen-square'></i>
-            <i className='fas fa-minus-square'></i>
+            {abilities.includes('edit') && <i className='fas fa-pen-square'></i>}
+            {abilities.includes('delete') && <i className='fas fa-minus-square'></i>}
           </div>
         </div>
-
-
 
         <div className='card-body text'>{body}</div>
 
