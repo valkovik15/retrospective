@@ -1,0 +1,13 @@
+.button { 
+          margin-right: 5px;
+          font-family: Helvetica, sans-serif;
+        }
+
+   
+.button.is-danger {
+         background-color: hsl(347, 45%, 43%);
+       }
+
+.button.is-success {
+         background-color: hsl(134, 35%, 41%);
+       }       

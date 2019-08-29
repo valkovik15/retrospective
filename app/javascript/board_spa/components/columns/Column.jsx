@@ -8,9 +8,9 @@ class Column extends React.Component {
 
     function matchColor(title) {
       switch(title) {
-        case 'MAD': return('hsla(348, 100%, 61%, 0.5)');
-        case 'SAD': return('hsla(217, 71%, 53%, 0.5)');
-        case 'GLAD': return('hsla(141, 71%, 48%, 0.5)');
+        case 'MAD': return('hsl(347, 45%, 43%)');
+        case 'SAD': return('hsl(225, 36%, 42%)');
+        case 'GLAD': return('hsl(134, 35%, 41%)');
       }
       //if (title == 'MAD') { return('hsl(348, 100%, 61%)'); }
       //if (title == 'SAD') { return('hsl(217, 71%, 53%)'); }

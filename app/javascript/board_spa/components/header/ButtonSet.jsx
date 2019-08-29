@@ -17,9 +17,9 @@ class ButtonSet extends React.Component {
         <div className='text lable'>BUTTON-SET</div>
 
         <div className='level-item'>
-          <button className='button' id='join' disabled={isMember}>JOIN</button>
-          <button className='button is-danger' id='leave' disabled={!isMember}>LEAVE</button>
-          <button className={readyButtonClass} id='ready' disabled={!isMember}>READY</button>
+          <button className='button' disabled={isMember}>JOIN</button>
+          <button className='button is-danger' disabled={!isMember}>LEAVE</button>
+          <button className={readyButtonClass} disabled={!isMember}>READY</button>
         </div>
       </div>
     )

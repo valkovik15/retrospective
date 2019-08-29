@@ -8,11 +8,7 @@ input[type='text'] {
                      margin-right: 5px;
                    }
 
-.title .lable .button { font-family: Helvetica, sans-serif; }
-
-.button { 
-          margin-right: 5px;
-        }
+.title .lable { font-family: Helvetica, sans-serif; }
 
 .component {
              position: relative;

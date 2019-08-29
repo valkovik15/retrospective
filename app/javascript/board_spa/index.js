@@ -8,6 +8,7 @@ import { board } from './fake_json'
 import './styles/board'
 import './styles/member_list'
 import './styles/card'
+import './styles/button'
 
 //export const CurrentUserContext = React.createContext(current_user)
 
