@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Header from './header/Header'
+import Columns from './columns/Columns'
 
 class Board extends React.Component {
 
@@ -11,6 +12,7 @@ class Board extends React.Component {
       <React.Fragment>
         <div className='text lable'>BOARD</div>
         <Header title={title} members={members}/>
+        <Columns />
       </React.Fragment>
     )
   }   
