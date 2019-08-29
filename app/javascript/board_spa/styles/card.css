@@ -1,0 +1,10 @@
+.card {
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 3px;
+      }
+
+.card-body {
+             margin-top: 5px;
+             margin-bottom: 5px;
+           }      

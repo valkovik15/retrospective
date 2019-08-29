@@ -2,11 +2,12 @@ import React from 'react'
 
 class Card extends React.Component {
   render() {
-    //const { title, cards } = this.props;
+    const { body, color } = this.props;
+
 
     return (
-      <div className='card'>
-        <div className='text lable'>CARD</div>
+      <div className='card' style={{background: color}}>
+        <div className='card-body'>{body}</div>
       </div>
     )
   }
