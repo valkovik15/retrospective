@@ -8,6 +8,11 @@ input[type='text'] {
                      margin-right: 5px;
                    }
 
+i {
+    color: lightgray;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  }                   
+
 .title .lable { font-family: Helvetica, sans-serif; }
 
 .component {

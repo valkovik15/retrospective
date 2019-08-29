@@ -1,4 +1,5 @@
 .card {
+        position: relative;
         padding: 15px;
         margin-top: 10px;
         border-radius: 3px;
@@ -7,4 +8,17 @@
 .card-body {
              margin-top: 5px;
              margin-bottom: 5px;
-           }      
+           }
+
+.like-bar {
+            margin-top: 15px;
+          }           
+
+#like-num {
+            color: lightgray;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            line-height: 11px; 
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: -2px;
+          }
