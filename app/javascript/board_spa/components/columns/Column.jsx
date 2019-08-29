@@ -23,7 +23,7 @@ class Column extends React.Component {
     });
 
     return (
-      <div className='column component lvl2'>
+      <div className='column is-one-fifth component lvl2'>
         <div className='text lable'>{title.toUpperCase()}</div>
         {cards}
       </div>

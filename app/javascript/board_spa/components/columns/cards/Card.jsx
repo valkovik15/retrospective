@@ -7,6 +7,16 @@ class Card extends React.Component {
 
     return (
       <div className='card' style={{background: color}}>
+
+        <div className='level-right edit-bar'>
+          <div className='level-item'>
+            <i className='fas fa-pen-square'></i>
+            <i className='fas fa-minus-square'></i>
+          </div>
+        </div>
+
+
+
         <div className='card-body text'>{body}</div>
 
         <div className='level like-bar'>

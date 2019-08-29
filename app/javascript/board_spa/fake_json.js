@@ -58,7 +58,7 @@ const jsonResponse = {
         "cards": [
           {
             "body": "This is a mad card from member1",
-            "likes": 5,
+            "likes": 4,
             "abilities": ["edit","like","delete"],
             "author": {
                         "uid": "",
@@ -68,7 +68,7 @@ const jsonResponse = {
           },
           {
             "body": "This is a mad card from member2",
-            "likes": 5,
+            "likes": 3,
             "abilities": ["edit","like","delete"],
             "author": {
                         "uid": "",
@@ -83,7 +83,7 @@ const jsonResponse = {
         "cards": [
           {
             "body": "This is a sad card from member2",
-            "likes": 5,
+            "likes": 1,
             "abilities": ["edit","like","delete"],
             "author": {
                         "uid": "",
@@ -93,7 +93,7 @@ const jsonResponse = {
           },
           {
             "body": "This is a sad card from member3",
-            "likes": 5,
+            "likes": 2,
             "abilities": ["edit","like","delete"],
             "author": {
                         "uid": "",
@@ -108,7 +108,7 @@ const jsonResponse = {
         "cards": [
           {
             "body": "This is a glad card from member3",
-            "likes": 5,
+            "likes": 0,
             "abilities": ["edit","like","delete"],
             "author": {
                         "uid": "",
@@ -118,7 +118,7 @@ const jsonResponse = {
           },
           {
             "body": "This is a glad card from member4",
-            "likes": 5,
+            "likes": 7,
             "abilities": ["edit","like","delete"],
             "author": {
                         "uid": "",
