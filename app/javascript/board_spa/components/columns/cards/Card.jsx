@@ -14,10 +14,12 @@ class Card extends React.Component {
             <img className='is-rounded' src={author.avatar_url}/> 
           </div>        
         
+        {/*
           <span className="level-right icon">
             <i className="fas fa-heart"></i>
             <span style={{fontFamily: 'Helvetica'}}>5</span>
           </span>
+        */}
         </div>
       </div>
     )
