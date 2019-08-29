@@ -6,13 +6,13 @@ import Columns from './columns/Columns'
 class Board extends React.Component {
 
   render() {
-    const { title, members } = this.props;
+    const { title, members, columns, action_items, prev_action_items } = this.props;
 
     return (
       <React.Fragment>
         <div className='text lable'>BOARD</div>
         <Header title={title} members={members}/>
-        <Columns />
+        <Columns columns={columns} action_items={action_items} prev_action_items={prev_action_items}/>
       </React.Fragment>
     )
   }   
