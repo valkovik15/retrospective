@@ -10,7 +10,9 @@ input[type='text'] {
 
 .title .lable .button { font-family: Helvetica, sans-serif; }
 
-.button { margin-right: 5px; }
+.button { 
+          margin-right: 5px;
+        }
 
 .component {
              position: relative;
@@ -41,6 +43,7 @@ input[type='text'] {
 
 .text {
         color: lightgray;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
       }
 
 .lable {
