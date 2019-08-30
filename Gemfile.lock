@@ -10,6 +10,7 @@ GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
   specs:
+    action_policy (0.3.2)
     actioncable (5.2.3)
       actionpack (= 5.2.3)
       nio4r (~> 2.0)
@@ -321,6 +322,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  action_policy (~> 0.3.0)
   bootsnap (>= 1.1.0)
   byebug
   capybara (>= 2.15)

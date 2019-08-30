@@ -51,7 +51,7 @@ export class Autocomplete extends Component {
 
   onChange = e => {
     const userInput = e.currentTarget.value;
-    fetch(`/api/users/suggestions?autocomplete=${userInput}`)
+    fetch(`/api/${window.location.pathname}/suggestions?autocomplete=${userInput}`)
       .then(res => res.json())
       .then(
         (result) => {

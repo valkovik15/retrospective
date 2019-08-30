@@ -3,8 +3,14 @@
 class ActionItemsController < ApplicationController
   before_action :set_board
 
+  rescue_from ActionPolicy::Unauthorized do |ex|
+    redirect_to @board, alert: ex.result.message
+  end
+
   def create
-    @board.action_items.create(action_item_params)
+    action_item = @board.action_items.build(action_item_params)
+    authorize! action_item
+    action_item.save!
     redirect_to @board
   end
 

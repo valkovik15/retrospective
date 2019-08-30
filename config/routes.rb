@@ -16,10 +16,10 @@ Rails.application.routes.draw do
   resources :teams
 
   namespace :api do
-    get 'users/suggestions'
     resources :boards, param: :slug do
       member do
         post 'invite'
+        get 'suggestions'
       end
       resources :memberships, only: [:index] do
         collection do

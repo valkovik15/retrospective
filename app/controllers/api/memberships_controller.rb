@@ -3,6 +3,14 @@
 module API
   class MembershipsController < ApplicationController
     before_action :authenticate_user!, :set_board, :set_membership
+    before_action except: :index do
+      authorize! @membership
+    end
+    skip_verify_authorized only: :index
+
+    rescue_from ActionPolicy::Unauthorized do |ex|
+      redirect_to @board, alert: ex.result.message
+    end
 
     def index
       users = @board.users.pluck(:email)
