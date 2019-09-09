@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
+
 Rails.application.routes.draw do
   root to: 'home#index'
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
@@ -27,6 +29,9 @@ Rails.application.routes.draw do
           get 'ready_toggle'
         end
       end
+      resources :cards
     end
   end
 end
+
+# rubocop:enable Metrics/BlockLength

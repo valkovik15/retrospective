@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CardsController do
-  login_user
+  # login_user
 
   let_it_be(:board) { create(:board) }
 

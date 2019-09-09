@@ -1,4 +1,5 @@
 <% content_for :scripts do %>
+  <%= javascript_pack_tag 'application' %>
   <%= javascript_pack_tag 'ready_button_component' %>
   <% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
     <%= javascript_pack_tag 'autocomplete' %>
@@ -55,15 +56,16 @@
       <div class='box'>
         <%= render 'cards/form', card: @board.cards.build(kind: kind) %>
       </div>
+
       <% cards.each do |card| %>
-        <div class='box'>
-          <p> <%= card.body %> </p>
-          <% if card.author.avatar.url %>
-          <figure class='image is-32x32'>
-            <%= image_tag(card.author.avatar.url(:thumb), class: 'is-rounded') %>
-          </figure>
-          <% end %>
-        </div>
+        <%= react_component('card/index', { 
+                                            id: card.id,
+                                            author: card.author.email.split('@').first,
+                                            avatar: card.author.avatar.url(:thumb),
+                                            body: card.body,
+                                            # editable: true,
+                                            deletable: allowed_to?(:destroy?, card, with: API::CardPolicy) 
+                                          }) %>
       <% end %>
     </div>
   <% end %>
