@@ -11,9 +11,8 @@ module Boards
 
     def call
       User.left_joins(:teams)
-          .where('teams.name IN (?) or users.email IN (?) and users.id NOT IN (?)', query_string,
-                 query_string,
-                 board.user_ids)
+          .where('teams.name IN (?) or users.email IN (?)', query_string, query_string)
+          .where.not(id: board.user_ids)
           .distinct
     end
   end
