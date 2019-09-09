@@ -1,24 +1,6 @@
-// Run this example by adding <%= javascript_pack_tag 'hello_react' %> to the head of your layout file,
-// like app/views/layouts/application.html.erb. All it does is render <div>Hello React</div> at the bottom
-// of the page.
-
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-
-export class Suggestion extends Component {
-  constructor(props) {
-    super(props);
-    this.onClick = this.props.onClick.bind(this);
-    this.suggestion = this.props.suggestion
-  };
-  render () {
-    return (
-      <li className='tag is-light' key={this.suggestion} onClick={this.onClick}>
-        {this.suggestion}
-      </li>
-    );
-  }
-};
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import Select from 'react-select';
 
 export class User extends Component {
   constructor(props) {
@@ -40,75 +22,11 @@ export class Autocomplete extends Component {
     super(props);
     this.state = {
       suggestions: [],
-      showSuggestions: false,
-      userInput: '',
-      emails: []
+      emails: [],
+      selectedOption: null,
+      options: [],
     };
-    this.onChange = this.onChange.bind(this);
-    this.onClick = this.onClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  };
-
-  onChange = e => {
-    const userInput = e.currentTarget.value;
-    fetch(`/api/${window.location.pathname}/suggestions?autocomplete=${userInput}`)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            ...this.state,
-            suggestions: result,
-            showSuggestions: true,
-            userInput: userInput
-          });
-        },
-      )
-  };
-
-  onClick = (e) => {
-    this.setState({
-      ...this.state,
-      showSuggestions: false,
-      userInput: e.currentTarget.innerText
-    });
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.setState({
-      ...this.state,
-      showSuggestions: false,
-    });
-
-    fetch(`/api/${window.location.pathname}/invite`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute("content")
-      },
-      body: JSON.stringify({
-        board: {
-          email: this.state.userInput
-        }
-      }),
-    }).then((res) => {
-      if (res.status == 200) {
-        return res.json();
-      }
-      else { throw res }
-    }).then (
-      (result) => {
-        this.setState({
-          ...this.state,
-          emails: this.state.emails.concat(result.email)
-        });
-      }
-    ).catch((error) => {
-       error.text().then( errorMessage => {
-        console.log(errorMessage)
-      })
-    });
   };
 
   componentDidMount = (e) => {
@@ -124,26 +42,89 @@ export class Autocomplete extends Component {
     )
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    fetch(`/api/${window.location.pathname}/invite`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute("content")
+      },
+      body: JSON.stringify({
+        board: {
+          email: this.state.selectedOption.map(a => a.value).toString()
+        }
+      }),
+    }).then((res) => {
+      if (res.status == 200) {
+        return res.json();
+      }
+      else { throw res }
+    }).then (
+      (result) => {
+        this.setState({
+          ...this.state,
+          emails: [...new Set (this.state.emails.concat(result.value.email))],
+          selectedOption: null
+        });
+      }
+    ).catch((error) => {
+      console.log(error)
+       error.text().then( errorMessage => {
+        console.log(errorMessage)
+      })
+    });
+  };
+
+  handleChange = selectedOption => {
+    this.setState({ selectedOption });
+  };
+
+  onInputChange = e => {
+    if (!e) {
+      this.setState({
+        ...this.state,
+        options: []
+      })
+    }
+
+    else {
+    fetch(`/api/${window.location.pathname}/suggestions?autocomplete=${e}`)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            ...this.state,
+            suggestions: [...new Set (result.users.concat(result.teams))],
+          });
+          const optionsArray = this.state.suggestions.map(function (a) {
+            return {
+              value: a,
+              label: a
+            };
+          });
+          this.setState({
+              ...this.state,
+              options: optionsArray
+            })
+        },
+      )}
+  };
+
   render() {
     const {
       suggestions,
-      showSuggestions,
-      userInput,
       emails
     } = this.state;
-    let suggestionsListComponent;
-    if (showSuggestions && userInput) {
-      suggestionsListComponent =
-        suggestions.map((suggestion, index) => {
-          return <Suggestion suggestion = {suggestion} onClick = {this.onClick}/>
-        })
-    };
     let usersListComponent;
     usersListComponent =
       emails.map((email, index) => {
         return <User email = {email}/>
       })
-
+    const components = {
+      DropdownIndicator: null,
+    };
     return (
       <React.Fragment>
         <p>users on this board:</p>
@@ -151,16 +132,18 @@ export class Autocomplete extends Component {
           {usersListComponent}
         </div>
         <form  onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          onChange={this.onChange}
-          value={userInput}
-        />
+
+       <Select
+        value={this.state.selectedOption}
+        onChange={this.handleChange}
+        options={this.state.options}
+        onInputChange={this.onInputChange}
+        isMulti
+        placeholder="Enter e-mail or team name..."
+        components={components}
+      />
         <input type='submit' value='Invite' />
         </form>
-        <ul>
-          {suggestionsListComponent}
-        </ul>
       </React.Fragment>
       );
   };

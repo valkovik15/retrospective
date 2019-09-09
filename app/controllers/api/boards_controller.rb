@@ -12,26 +12,19 @@ module API
       redirect_to @board, alert: ex.result.message
     end
 
-    # rubocop: disable Metrics/MethodLength
     def invite
-      user = User.find_by(email: board_params[:email])
-      if user
-        membership = @board.memberships.build(role: 'member', user_id: user.id)
-        if membership.save
-          render json: { email: user.email }
-        else
-          render json: { error: membership.errors.full_messages.join(',') }, status: 400
-        end
+      users = Boards::FindUsersToInvite.new(board_params[:email], @board).call
+      if users
+        result = Boards::InviteUsers.new(@board, users).call
+        render json: result
       else
         render json: { error: 'User was not found' }, status: 400
       end
     end
-    # rubocop: enable Metrics/MethodLength
 
     def suggestions
-      users = User.where('email LIKE ?', "#{params[:autocomplete]}%")
-                  .or(User.where('uid LIKE ?', "#{params[:autocomplete]}%")).pluck(:email)
-      render json: users
+      result = Boards::Suggestions.new(params[:autocomplete]).call
+      render json: result
     end
 
     private
