@@ -13,8 +13,8 @@ module API
     end
 
     def index
-      users = @board.users.pluck(:email)
-      render json: users
+      members = @board.memberships
+      render json: members, each_serializer: MembershipSerializer
     end
 
     def ready_status
