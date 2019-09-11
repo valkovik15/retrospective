@@ -64,7 +64,7 @@ export class Autocomplete extends Component {
       else { throw res }
     }).then (
       (result) => {
-        const new_memberships = result.value.map(function (a) {
+        const new_memberships = result.map(function (a) {
           return {
             user: {email: a}
           }
@@ -77,6 +77,10 @@ export class Autocomplete extends Component {
       }
     ).catch((error) => {
       console.log(error)
+      this.setState({
+          ...this.state,
+         selectedOption: null
+        });
        error.text().then( errorMessage => {
         console.log(errorMessage)
       })

@@ -2,7 +2,7 @@
 
 module Boards
   class InviteUsers
-    include Resultable
+    include Dry::Monads[:result]
     attr_reader :board, :users
 
     def initialize(board, users)

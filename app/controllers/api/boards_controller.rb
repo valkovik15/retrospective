@@ -14,9 +14,9 @@ module API
 
     def invite
       users = Boards::FindUsersToInvite.new(board_params[:email], @board).call
-      if users
+      if users.any?
         result = Boards::InviteUsers.new(@board, users).call
-        render json: result
+        render json: result.value!
       else
         render json: { error: 'User was not found' }, status: 400
       end

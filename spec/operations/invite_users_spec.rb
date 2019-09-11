@@ -13,6 +13,6 @@ RSpec.describe Boards::InviteUsers do
 
   it 'returns users emails' do
     result = described_class.new(board, [user]).call
-    expect(result.value).to eq [user.email]
+    expect(result.value!).to eq [user.email]
   end
 end

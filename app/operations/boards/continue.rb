@@ -2,7 +2,7 @@
 
 module Boards
   class Continue
-    include Resultable
+    include Dry::Monads[:result]
     attr_reader :prev_board, :current_user
 
     def initialize(prev_board, current_user)
