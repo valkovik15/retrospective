@@ -11,7 +11,11 @@ Rails.application.routes.draw do
       post 'continue'
     end
     resources :cards
-    resources :action_items
+    resources :action_items do
+      member do
+        post 'move'
+      end
+    end
     resources :memberships
   end
 

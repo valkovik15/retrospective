@@ -43,7 +43,10 @@
       </h2>
       <% @previous_action_items.each do |action_item| %>
         <div class='box'>
-          <%= action_item.body %>
+          <p> <%= action_item.body %> </p>
+          <% if allowed_to?(:move?, action_item, with: ActionItemPolicy) %>
+            <p> <%= link_to "move",   move_board_action_item_path(@board, action_item.id), method: :post, class: 'button is-small is-light' %></p>
+          <% end %>
         </div>
       <% end %>
     </div>
