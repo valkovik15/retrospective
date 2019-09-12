@@ -61,14 +61,15 @@
       </div>
 
       <% cards.each do |card| %>
-        <%= react_component('card/index', { 
-                                            id: card.id,
-                                            author: card.author.email.split('@').first,
-                                            avatar: card.author.avatar.url(:thumb),
-                                            body: card.body,
-                                            # editable: true,
-                                            deletable: allowed_to?(:destroy?, card, with: API::CardPolicy) 
-                                          }) %>
+        <%= react_component('Card/Card', { 
+              id: card.id,
+              author: card.author.email.split('@').first,
+              avatar: card.author.avatar.url(:thumb),
+              body: card.body,
+              editable: allowed_to?(:update?, card, with: API::CardPolicy),
+              deletable: allowed_to?(:destroy?, card, with: API::CardPolicy) 
+            }) 
+        %>
       <% end %>
     </div>
   <% end %>

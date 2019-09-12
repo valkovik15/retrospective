@@ -1,13 +1,13 @@
 import React from "react"
 
-import Delete from "./Delete"
+import CardBody from "./CardBody/CardBody"
+import CardFooter from "./CardFooter/CardFooter"
+import "./Card.css"
 
 class Card extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      cardStyle: {marginBottom: '1.5rem'}
-    }
+    this.state = {}
 
     this.hideCard = this.hideCard.bind(this);
   }
@@ -21,12 +21,13 @@ class Card extends React.Component {
 
     return (
       <div className='box' style={this.state.cardStyle}>
-        {body}
-        {/*editable && <Edit />*/}
-
-        <hr style={{margin: '0.5rem'}} />
-        <span>by {author}</span>
-        {deletable && <Delete id={id} hideCard={this.hideCard}/>}
+        <CardBody id={id} 
+                  editable={editable}
+                  body={body}/>
+        <CardFooter id={id} 
+                    author={author} 
+                    deletable={deletable} 
+                    hideCard={this.hideCard}/>
       </div>
     );
   }

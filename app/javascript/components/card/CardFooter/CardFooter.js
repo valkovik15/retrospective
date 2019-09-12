@@ -1,15 +1,11 @@
 import React from "react"
 
-class Delete extends React.Component {
+class CardFooter extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick(e) {
-    e.preventDefault()
-    
+  handleClick = (e) => {    
     fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
       method: 'DELETE',
       headers: {
@@ -27,13 +23,20 @@ class Delete extends React.Component {
         console.log(errorHash.error)
       })
     });
+    e.preventDefault()
   }
 
   render () {
+    const { author, deletable } = this.props;
+
     return (
-      <div><a href='' onClick={this.handleClick}>delete</a></div>
+      <div>
+        <hr style={{margin: '0.5rem'}}/>
+        <span>by {author}</span>
+        <div><a href='' onClick={this.handleClick} hidden={!deletable}>delete</a></div>
+      </div>
     );
   }
 }
 
-export default Delete
+export default CardFooter

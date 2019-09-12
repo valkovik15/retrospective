@@ -21,4 +21,14 @@ RSpec.describe API::CardPolicy do
       expect(failed_policy.apply(:destroy?)).to eq false
     end
   end
+
+  context '#update?' do
+    it 'returns true if user is the card author' do
+      expect(successful_policy.apply(:update?)).to eq true
+    end
+
+    it 'returns false if user is not the card author' do
+      expect(failed_policy.apply(:update?)).to eq false
+    end
+  end
 end
