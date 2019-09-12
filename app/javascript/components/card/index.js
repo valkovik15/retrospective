@@ -1,7 +1,7 @@
 import React from "react"
 
-import CardBody from "./CardBody/CardBody"
-import CardFooter from "./CardFooter/CardFooter"
+import CardBody from "./CardBody"
+import CardFooter from "./CardFooter"
 import "./Card.css"
 
 class Card extends React.Component {

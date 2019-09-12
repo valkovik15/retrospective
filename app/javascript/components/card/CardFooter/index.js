@@ -23,7 +23,6 @@ class CardFooter extends React.Component {
         console.log(errorHash.error)
       })
     });
-    e.preventDefault()
   }
 
   render () {
@@ -33,7 +32,7 @@ class CardFooter extends React.Component {
       <div>
         <hr style={{margin: '0.5rem'}}/>
         <span>by {author}</span>
-        <div><a href='' onClick={this.handleClick} hidden={!deletable}>delete</a></div>
+        <div><a onClick={this.handleClick} hidden={!deletable}>delete</a></div>
       </div>
     );
   }
