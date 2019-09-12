@@ -61,7 +61,7 @@
       </div>
 
       <% cards.each do |card| %>
-        <%= react_component('Card', { 
+        <%= react_component('Card/index', { 
               id: card.id,
               author: card.author.email.split('@').first,
               avatar: card.author.avatar.url(:thumb),
