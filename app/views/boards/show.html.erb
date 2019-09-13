@@ -1,5 +1,7 @@
 <% content_for :scripts do %>
   <%= javascript_pack_tag 'application' %>
+  <%= stylesheet_pack_tag 'application' %>
+
   <%= javascript_pack_tag 'ready_button_component' %>
   <% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
     <%= javascript_pack_tag 'autocomplete' %>
@@ -61,7 +63,7 @@
       </div>
 
       <% cards.each do |card| %>
-        <%= react_component('card/index', { 
+        <%= react_component('Card/index', { 
               id: card.id,
               author: card.author.email.split('@').first,
               avatar: card.author.avatar.url(:thumb),
