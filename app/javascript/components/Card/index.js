@@ -8,11 +8,9 @@ class Card extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
-
-    this.hideCard = this.hideCard.bind(this);
   }
 
-  hideCard() {
+  hideCard = () => {
     this.setState({cardStyle: {display: 'none'}});
   }
   
