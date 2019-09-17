@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe UserSerializer do
-  let_it_be(:user) { create(:user, email: 'user@example.com') }
+  let_it_be(:user) { create(:user) }
 
   subject { described_class.new(user).to_json }
 

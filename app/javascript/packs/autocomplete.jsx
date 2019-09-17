@@ -2,7 +2,20 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Select from 'react-select';
 
-import User from "./user"
+export class User extends Component {
+  constructor(props) {
+    super(props);
+    this.ready = this.props.membership.ready
+    this.email = this.props.membership.user.email
+  };
+  render () {
+    return (
+      <span className={this.ready ? 'tag is-success' : 'tag is-info'} key={this.email}>
+        {this.email}
+      </span>
+    );
+  }
+};
 
 export class Autocomplete extends Component {
 
@@ -14,6 +27,7 @@ export class Autocomplete extends Component {
       selectedOption: null,
       options: [],
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   };
 
   componentDidMount = (e) => {
@@ -50,9 +64,14 @@ export class Autocomplete extends Component {
       else { throw res }
     }).then (
       (result) => {
+        const new_memberships = result.map(function (a) {
+          return {
+            user: {email: a}
+          }
+        });
         this.setState({
           ...this.state,
-          memberships: [...new Set (this.state.memberships.concat(result))],
+          memberships: [...new Set (this.state.memberships.concat(new_memberships))],
           selectedOption: null
         });
       }

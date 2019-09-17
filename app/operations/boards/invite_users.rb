@@ -12,9 +12,10 @@ module Boards
 
     def call
       users_array = users.map { |user| { role: 'member', user_id: user.id } }
-      memberships = board.memberships.build(users_array)
+      board.memberships.build(users_array)
       board.save
-      Success(memberships)
+      emails = users.pluck(:email)
+      Success(emails)
     end
   end
 end

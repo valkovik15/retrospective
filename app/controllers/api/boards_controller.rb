@@ -1,17 +1,22 @@
 # frozen_string_literal: true
 
 module API
-  class BoardsController < API::ApplicationController
+  class BoardsController < ApplicationController
+    before_action :authenticate_user!
     before_action :set_board
     before_action do
       authorize! @board
+    end
+
+    rescue_from ActionPolicy::Unauthorized do |ex|
+      redirect_to @board, alert: ex.result.message
     end
 
     def invite
       users = Boards::FindUsersToInvite.new(board_params[:email], @board).call
       if users.any?
         result = Boards::InviteUsers.new(@board, users).call
-        render json: result.value!, each_serializer: MembershipSerializer
+        render json: result.value!
       else
         render json: { error: 'User was not found' }, status: 400
       end
