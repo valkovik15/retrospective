@@ -3,16 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe Boards::InviteUsers do
+  subject { described_class.new(board, [user]).call }
   let(:user) { create(:user) }
   let(:board) { create(:board) }
 
   it 'creates membership' do
-    described_class.new(board, [user]).call
-    expect(board.users.find(user.id)).to eq user
+    expect { subject }.to change(Membership, :count).by(1)
   end
 
-  it 'returns users emails' do
-    result = described_class.new(board, [user]).call
-    expect(result.value!).to eq [user.email]
+  it 'returns memberships' do
+    expect(subject.value!).to eq [Membership.find_by(user_id: user.id, board_id: board.id)]
   end
 end

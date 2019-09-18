@@ -27,7 +27,7 @@ Rails.application.routes.draw do
         post 'invite'
         get 'suggestions'
       end
-      resources :memberships, only: [:index] do
+      resources :memberships, only: %i[index destroy] do
         collection do
           get 'ready_status'
           get 'ready_toggle'

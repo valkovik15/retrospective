@@ -1,13 +1,8 @@
 # frozen_string_literal: true
 
 module API
-  class CardsController < ApplicationController
-    before_action :set_board
-    before_action :set_card
-
-    rescue_from ActionPolicy::Unauthorized do |ex|
-      render json: { error: ex.result.message }, status: :unauthorized
-    end
+  class CardsController < API::ApplicationController
+    before_action :set_board, :set_card
 
     def update
       authorize! @card
