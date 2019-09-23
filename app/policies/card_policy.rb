@@ -2,6 +2,10 @@
 
 class CardPolicy < ApplicationPolicy
   def create?
-    record.board.users.include?(user)
+    check?(:user_is_member?)
+  end
+
+  def user_is_member?
+    record.board.member?(user)
   end
 end

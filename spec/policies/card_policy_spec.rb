@@ -8,17 +8,33 @@ RSpec.describe CardPolicy do
   let_it_be(:board) { create(:board) }
   let_it_be(:membership) { create(:membership, user_id: member.id, board_id: board.id) }
   let_it_be(:card) { build_stubbed(:card, board: board, author: member) }
+  let(:policy) { described_class.new(card, user: test_user) }
 
-  let_it_be(:successful_policy) { described_class.new(card, user: member) }
-  let_it_be(:failed_policy) { described_class.new(card, user: not_a_member) }
+  describe '#create?' do
+    subject { policy.apply(:create?) }
 
-  context '#create?' do
-    it 'returns true if user is a member of board' do
-      expect(successful_policy.apply(:create?)).to eq true
+    context 'when user is a member' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
     end
 
-    it 'returns false if user is not a member of board' do
-      expect(failed_policy.apply(:create?)).to eq false
+    context 'when user is not a member' do
+      let(:test_user) { not_a_member }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#user_is_member?' do
+    subject { policy.apply(:user_is_member?) }
+
+    context 'when user is a member' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a member' do
+      let(:test_user) { not_a_member }
+      it { is_expected.to eq false }
     end
   end
 end

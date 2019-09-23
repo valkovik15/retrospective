@@ -11,53 +11,86 @@ RSpec.describe API::MembershipPolicy do
   let_it_be(:creatorship) do
     create(:membership, user_id: creator.id, board_id: board.id, role: 'creator')
   end
-  let_it_be(:member_policy) { described_class.new(membership, user: member) }
-  let_it_be(:failed_policy) { described_class.new(membership, user: not_a_member) }
-  let_it_be(:creator_policy) { described_class.new(creatorship, user: creator) }
+
+  let(:policy) { described_class.new(membership, user: test_user) }
 
   describe '#ready_status?' do
+    subject { policy.apply(:ready_status?) }
+
     context 'when user is a member' do
-      it {  expect(member_policy.apply(:ready_status?)).to eq true }
+      let(:test_user) { member }
+      it { is_expected.to eq true }
     end
+
     context 'when user is not a member' do
-      it {  expect(failed_policy.apply(:ready_status?)).to eq false }
+      let(:test_user) { not_a_member }
+      it { is_expected.to eq false }
     end
   end
 
   describe '#ready_toggle?' do
+    subject { policy.apply(:ready_toggle?) }
+
     context 'when user is a member' do
-      it {  expect(member_policy.apply(:ready_toggle?)).to eq true }
+      let(:test_user) { member }
+      it { is_expected.to eq true }
     end
+
     context 'when user is not a member' do
-      it {  expect(failed_policy.apply(:ready_toggle?)).to eq false }
+      let(:test_user) { not_a_member }
+      it { is_expected.to eq false }
     end
   end
 
   describe '#destroy?' do
+    subject { policy.apply(:destroy?) }
+
     context 'when user is a creator' do
-      it {  expect(creator_policy.apply(:destroy?)).to eq true }
+      let(:test_user) { creator }
+      it { is_expected.to eq true }
     end
+
     context 'when user is not a creator' do
-      it {  expect(failed_policy.apply(:destroy?)).to eq false }
+      let(:test_user) { member }
+      it { is_expected.to eq false }
+    end
+
+    context 'when user is not a member' do
+      let(:test_user) { not_a_member }
+      it { is_expected.to eq false }
     end
   end
 
   describe '#user_is_member?' do
+    subject { policy.apply(:user_is_member?) }
+
     context 'when user is a member' do
-      it {  expect(member_policy.apply(:user_is_member?)).to eq true }
+      let(:test_user) { member }
+      it { is_expected.to eq true }
     end
+
     context 'when user is not a member' do
-      it {  expect(failed_policy.apply(:user_is_member?)).to eq false }
+      let(:test_user) { not_a_member }
+      it { is_expected.to eq false }
     end
   end
 
   describe '#user_is_creator?' do
+    subject { policy.apply(:user_is_creator?) }
+
     context 'when user is a creator' do
-      it {  expect(creator_policy.apply(:user_is_creator?)).to eq true }
+      let(:test_user) { creator }
+      it { is_expected.to eq true }
     end
 
     context 'when user is not a creator' do
-      it {  expect(member_policy.apply(:user_is_creator?)).to eq false }
+      let(:test_user) { member }
+      it { is_expected.to eq false }
+    end
+
+    context 'when user is not a member' do
+      let(:test_user) { not_a_member }
+      it { is_expected.to eq false }
     end
   end
 end

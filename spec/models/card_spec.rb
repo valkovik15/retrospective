@@ -3,7 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Card, type: :model do
-  let_it_be(:card) { build_stubbed(:card) }
+  let_it_be(:author) { create(:user) }
+  let_it_be(:not_an_author) { build_stubbed(:user) }
+  let_it_be(:board) { create(:board) }
+  let_it_be(:card) { build_stubbed(:card, board: board, author: author) }
 
   context 'validations' do
     it 'is valid with valid attributes' do
@@ -26,6 +29,20 @@ RSpec.describe Card, type: :model do
 
     it 'belongs to board' do
       expect(card).to respond_to(:board)
+    end
+  end
+
+  describe '#author?' do
+    subject { card.author?(test_user) }
+
+    context 'when user is the card author' do
+      let(:test_user) { author }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not the card author' do
+      let(:test_user) { not_an_author }
+      it { is_expected.to eq false }
     end
   end
 end

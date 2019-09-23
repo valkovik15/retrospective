@@ -3,6 +3,7 @@
 class ActionItemsController < ApplicationController
   before_action :set_board
   before_action :set_action_item, only: %i[move]
+  authorize :board, through: :current_board
 
   rescue_from ActionPolicy::Unauthorized do |ex|
     redirect_to @board, alert: ex.result.message
@@ -26,6 +27,10 @@ class ActionItemsController < ApplicationController
   end
 
   private
+
+  def current_board
+    @board
+  end
 
   def action_item_params
     params.require(:action_item).permit(:status, :body)

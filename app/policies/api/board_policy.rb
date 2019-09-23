@@ -11,7 +11,7 @@ module API
     end
 
     def user_is_member?
-      record.users.include?(user)
+      record.member?(user)
     end
   end
 end

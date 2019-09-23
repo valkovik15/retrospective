@@ -10,4 +10,8 @@ class Card < ApplicationRecord
   scope :mad, -> { where(kind: :mad) }
   scope :sad, -> { where(kind: :sad) }
   scope :glad, -> { where(kind: :glad) }
+
+  def author?(user)
+    author == user
+  end
 end

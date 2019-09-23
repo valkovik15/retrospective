@@ -19,7 +19,7 @@ module API
     end
 
     def user_is_creator?
-      user.memberships.exists?(board_id: record.board.id, role: 'creator')
+      record.board.creator?(user)
     end
   end
 end

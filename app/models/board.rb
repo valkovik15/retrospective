@@ -14,6 +14,14 @@ class Board < ApplicationRecord
     slug
   end
 
+  def member?(user, role = %w[member creator])
+    Membership.exists?(board_id: id, user_id: user.id, role: role)
+  end
+
+  def creator?(user)
+    member?(user, 'creator')
+  end
+
   private
 
   def set_slug

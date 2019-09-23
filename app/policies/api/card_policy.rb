@@ -3,11 +3,15 @@
 module API
   class CardPolicy < ApplicationPolicy
     def update?
-      record.author == user
+      check?(:user_is_author?)
     end
 
     def destroy?
-      record.author == user
+      check?(:user_is_author?)
+    end
+
+    def user_is_author?
+      record.author?(user)
     end
   end
 end
