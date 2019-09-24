@@ -1,0 +1,7 @@
+{ 
+  "title": "memberships#index response json",
+  "description": "contains an array of serialized memberships",
+  "type": "array",
+  "uniqueItems": true,
+  "items": { "$ref": "file:/serializers/membership.json#" }
+}

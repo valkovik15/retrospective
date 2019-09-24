@@ -1,0 +1,13 @@
+{ 
+  "title": "cards#update response json",
+  "description": "contains updated card text",
+  "type": "object",
+  "properties": {
+    "updated_body": {
+      "description": "updated card text",
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": ["updated_body"]
+}

@@ -16,7 +16,7 @@ module API
     def destroy
       authorize! @card
       if @card.destroy
-        head :ok
+        head :no_content
       else
         render json: { error: @card.errors.full_messages.join(',') }, status: :bad_request
       end

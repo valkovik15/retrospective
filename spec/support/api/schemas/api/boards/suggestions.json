@@ -1,0 +1,18 @@
+{
+  "title": "boards#suggestions response json",
+  "description": "contains users and teams data in form of the arrays of strings as corresponding hash values",
+  "type": "object",
+  "properties": {
+    "users": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "format": "email" }
+    },
+    "teams": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["users","teams"]
+}

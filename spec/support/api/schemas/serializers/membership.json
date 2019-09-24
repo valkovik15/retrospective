@@ -1,0 +1,10 @@
+{
+  "id": "file:/serializers/membership.json#",
+  "type": "object",
+  "properties": {
+    "id": { "type": "number" },
+    "ready": { "type": "boolean" },
+    "user": { "$ref": "file:/serializers/user.json#" }
+  },
+  "required": ["id","ready","user"]
+}
