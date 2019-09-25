@@ -11,13 +11,13 @@ RSpec.describe API::BoardsController do
     let_it_be(:params) { { slug: board.slug } }
 
     context 'when user is not logged in' do
-      it_behaves_like 'an unauthenticated action'
+      it_behaves_like :controllers_api_unauthenticated_action
     end
 
     context 'when user is logged_in' do
       context 'when user is not a board member' do
         before { login_as not_member }
-        it_behaves_like 'an unauthorized action'
+        it_behaves_like :controllers_api_unauthorized_action
       end
 
       context 'when user is a board member' do
@@ -34,7 +34,7 @@ RSpec.describe API::BoardsController do
             }
           end
 
-          it_behaves_like 'a failed action'
+          it_behaves_like :controllers_api_failed_action
         end
 
         context 'when params are valid' do
@@ -44,7 +44,7 @@ RSpec.describe API::BoardsController do
             }
           end
 
-          it_behaves_like 'a successful action'
+          it_behaves_like :controllers_api_successful_action
           it { is_expected.to match_json_schema('api/boards/invite') }
           it 'invites only nonmembers' do
             expect(json_body.map { |h| h.dig('user', 'email') })
@@ -60,13 +60,13 @@ RSpec.describe API::BoardsController do
     let_it_be(:params) { { slug: board.slug } }
 
     context 'when user is not logged in' do
-      it_behaves_like 'an unauthenticated action'
+      it_behaves_like :controllers_api_unauthenticated_action
     end
 
     context 'when user is logged_in' do
       context 'when user is not a board member' do
         before { login_as not_member }
-        it_behaves_like 'an unauthorized action'
+        it_behaves_like :controllers_api_unauthorized_action
       end
 
       context 'when user is a board member' do
@@ -79,7 +79,7 @@ RSpec.describe API::BoardsController do
         context 'when autocomplete param value is an empty string' do
           let_it_be(:params) { params.merge autocomplete: '' }
 
-          it_behaves_like 'a successful action'
+          it_behaves_like :controllers_api_successful_action
           it { is_expected.to match_json_schema('api/boards/suggestions') }
           it 'responds with a list of all users and teams from db' do
             expect(json_body['users']).not_to be_empty
@@ -90,7 +90,7 @@ RSpec.describe API::BoardsController do
         context 'when autocomplete param has value' do
           let_it_be(:params) { params.merge autocomplete: 'suggestion' }
 
-          it_behaves_like 'a successful action'
+          it_behaves_like :controllers_api_successful_action
           it { is_expected.to match_json_schema('api/boards/suggestions') }
           it 'responds with a list of users and teams from db that fit query case insensitively' do
             expect(json_body['users'])

@@ -17,13 +17,13 @@ RSpec.describe API::MembershipsController do
     let_it_be(:params) { { board_slug: board.slug } }
 
     context 'when user is not logged in' do
-      it_behaves_like 'an unauthenticated action'
+      it_behaves_like :controllers_api_unauthenticated_action
     end
 
     context 'when user is logged_in' do
       before { login_as not_member }
 
-      it_behaves_like 'a successful action'
+      it_behaves_like :controllers_api_successful_action
       it { is_expected.to match_json_schema('api/memberships/index') }
       it 'responds with a list of all board members' do
         expect(json_body.map { |h| h.dig('user', 'email') })
@@ -37,18 +37,18 @@ RSpec.describe API::MembershipsController do
     let_it_be(:params) { { board_slug: board.slug, id: membership.id } }
 
     context 'when user is not logged in' do
-      it_behaves_like 'an unauthenticated action'
+      it_behaves_like :controllers_api_unauthenticated_action
     end
 
     context 'when user is logged_in' do
       context 'when user is not a board creator' do
         before { login_as member }
-        it_behaves_like 'an unauthorized action'
+        it_behaves_like :controllers_api_unauthorized_action
       end
 
       context 'when user is the board creator' do
         before { login_as creator }
-        it_behaves_like 'a successful action', :no_content
+        it_behaves_like :controllers_api_successful_action, :no_content
       end
     end
   end
@@ -58,7 +58,7 @@ RSpec.describe API::MembershipsController do
     let_it_be(:params) { { board_slug: board.slug, id: membership.id } }
 
     context 'when user is not logged in' do
-      it_behaves_like 'an unauthenticated action'
+      it_behaves_like :controllers_api_unauthenticated_action
     end
 
     context 'when user is logged_in' do
@@ -69,7 +69,7 @@ RSpec.describe API::MembershipsController do
 
       context 'when user is the board member' do
         before { login_as member }
-        it_behaves_like 'a successful action'
+        it_behaves_like :controllers_api_successful_action
         it 'responds with default boolean false ready status for newly created membership' do
           expect(json_body).to eq false
         end
@@ -82,7 +82,7 @@ RSpec.describe API::MembershipsController do
     let_it_be(:params) { { board_slug: board.slug, id: membership.id } }
 
     context 'when user is not logged in' do
-      it_behaves_like 'an unauthenticated action'
+      it_behaves_like :controllers_api_unauthenticated_action
     end
 
     context 'when user is logged_in' do
@@ -93,7 +93,7 @@ RSpec.describe API::MembershipsController do
 
       context 'when user is the board member' do
         before { login_as member }
-        it_behaves_like 'a successful action'
+        it_behaves_like :controllers_api_successful_action
         it 'switches boolean ready status value for existing memberships' do
           expect(json_body).to eq true
         end
