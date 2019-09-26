@@ -1,0 +1,15 @@
+<div class='box <%= background(action_item.status)  %>'>
+  <p> <%= action_item.body %> </p>
+    <% if allowed_to?(:move?, action_item, context: { board: @board }) %>
+      <%= link_to "move", move_board_action_item_path(@board, action_item.id), method: :post, class: 'button is-small is-light' %>
+    <% end %>
+    <% if allowed_to?(:close?, action_item, context: { board: @board }) %>            
+      <%= link_to "close", close_board_action_item_path(@board, action_item.id), method: :put, class: 'button is-small is-danger' %>
+    <% end %>
+    <% if allowed_to?(:complete?, action_item, context: { board: @board }) %>         
+      <%= link_to "done", complete_board_action_item_path(@board, action_item.id), method: :put, class: 'button is-small is-success' %>
+      <% end %>
+    <% if allowed_to?(:reopen?, action_item, context: { board: @board }) %>         
+      <%= link_to "reopen", reopen_board_action_item_path(@board, action_item.id), method: :put, class: 'button is-small is-light' %>
+    <% end %>
+</div>

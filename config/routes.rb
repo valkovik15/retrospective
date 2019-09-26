@@ -14,6 +14,9 @@ Rails.application.routes.draw do
     resources :action_items do
       member do
         post 'move'
+        put 'close'
+        put 'complete'
+        put 'reopen'
       end
     end
     resources :memberships

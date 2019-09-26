@@ -10,6 +10,8 @@ GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
   specs:
+    aasm (5.0.6)
+      concurrent-ruby (~> 1.0)
     action_policy (0.3.2)
     actioncable (5.2.3)
       actionpack (= 5.2.3)
@@ -359,6 +361,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm
   action_policy (~> 0.3.0)
   active_model_serializers (~> 0.10.0)
   bootsnap (>= 1.1.0)

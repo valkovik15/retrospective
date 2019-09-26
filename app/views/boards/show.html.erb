@@ -44,12 +44,7 @@
        PREVIOUS BOARD
       </h2>
       <% @previous_action_items.each do |action_item| %>
-        <div class='box'>
-          <p> <%= action_item.body %> </p>
-          <% if allowed_to?(:move?, action_item, context: { board: @board }) %>
-            <p> <%= link_to "move",   move_board_action_item_path(@board, action_item.id), method: :post, class: 'button is-small is-light' %></p>
-          <% end %>
-        </div>
+        <%= render 'previous_action_item', action_item: action_item %>
       <% end %>
     </div>
   <% end %>
