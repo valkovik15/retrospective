@@ -24,6 +24,6 @@ class ActionItemPolicy < ApplicationPolicy
   end
 
   def user_is_creator?
-    board.creator?(user)
+    board ? board.creator?(user) : record.board.creator?(user)
   end
 end

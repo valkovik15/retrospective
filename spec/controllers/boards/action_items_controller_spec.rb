@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ActionItemsController do
+RSpec.describe Boards::ActionItemsController do
   let_it_be(:board) { create(:board) }
   let_it_be(:action_item) { create(:action_item, board: board) }
   let_it_be(:closed_action_item) { create(:action_item, status: 'closed', board: board) }
@@ -18,17 +18,85 @@ RSpec.describe ActionItemsController do
 
   before { bypass_rescue }
 
-  describe 'GET #index' do
-    subject(:response) { get :index }
+  describe 'PUT #create' do
+    subject(:response) { post :create, params: params }
+    let_it_be(:params) do
+      { board_slug: board.slug,
+        action_item: FactoryBot.attributes_for(:action_item) }
+    end
 
     context 'when user is not logged in' do
       it { is_expected.to have_http_status(:redirect) }
+    end
+
+    context 'when user is logged_in' do
+      context 'user is not a board member' do
+        before { login_as not_member }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { post :create, params: params }.to raise_error(ActionPolicy::Unauthorized)
+        end
+      end
+
+      context 'user is a board member' do
+        before { login_as member }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { post :create, params: params }.to raise_error(ActionPolicy::Unauthorized)
+        end
+      end
+
+      context 'user is the board creator' do
+        before { login_as creator }
+        context 'with valid params' do
+          it { is_expected.to have_http_status(:redirect) }
+        end
+
+        context 'with invalid params' do
+          let_it_be(:params) { params.merge action_item: { body: nil } }
+          it { is_expected.to have_http_status(:redirect) }
+        end
+      end
+    end
+  end
+
+  describe 'PUT #move' do
+    subject(:response) { put :move, params: params }
+    let_it_be(:params) do
+      { board_slug: board.slug,
+        id: action_item.id }
+    end
+
+    context 'when user is not logged in' do
+      it { is_expected.to have_http_status(:redirect) }
+    end
+
+    context 'when user is logged_in' do
+      context 'user is not a board member' do
+        before { login_as not_member }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
+      end
+
+      context 'user is a board member' do
+        before { login_as member }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
+      end
+
+      context 'user is the board creator' do
+        before { login_as creator }
+        it { is_expected.to have_http_status(:redirect) }
+      end
     end
   end
 
   describe 'PUT #close' do
     subject(:response) { put :close, params: params }
-    let_it_be(:params) { { id: action_item.id } }
+    let_it_be(:params) do
+      { board_slug: board.slug,
+        id: action_item.id }
+    end
 
     context 'when user is not logged in' do
       it { is_expected.to have_http_status(:redirect) }
@@ -58,7 +126,10 @@ RSpec.describe ActionItemsController do
 
   describe 'PUT #complete' do
     subject(:response) { put :complete, params: params }
-    let_it_be(:params) { { id: action_item.id } }
+    let_it_be(:params) do
+      { board_slug: board.slug,
+        id: action_item.id }
+    end
 
     context 'when user is not logged in' do
       it { is_expected.to have_http_status(:redirect) }
@@ -88,7 +159,10 @@ RSpec.describe ActionItemsController do
 
   describe 'PUT #reopen' do
     subject(:response) { put :reopen, params: params }
-    let_it_be(:params) { { id: closed_action_item.id } }
+    let_it_be(:params) do
+      { board_slug: board.slug,
+        id: closed_action_item.id }
+    end
 
     context 'when user is not logged in' do
       it { is_expected.to have_http_status(:redirect) }

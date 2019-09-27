@@ -20,7 +20,6 @@ require 'fog/aws'
 
 CarrierWave.configure do |config|
   if Rails.env.staging? || Rails.env.production?
-    require 'dotenv/load'
     config.fog_credentials = {
       provider: 'AWS',
       aws_access_key_id: ENV['S3_KEY'],

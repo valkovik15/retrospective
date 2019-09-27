@@ -10,16 +10,27 @@ Rails.application.routes.draw do
     member do
       post 'continue'
     end
-    resources :cards
-    resources :action_items do
-      member do
-        post 'move'
-        put 'close'
-        put 'complete'
-        put 'reopen'
+
+    scope module: 'boards' do
+      resources :cards, only: :create
+      resources :memberships, only: :create
+      resources :action_items, only: :create do
+        member do
+          post 'move'
+          put 'close'
+          put 'complete'
+          put 'reopen'
+        end
       end
     end
-    resources :memberships
+  end
+
+  resources :action_items, only: :index do
+    member do
+      put 'close'
+      put 'complete'
+      put 'reopen'
+    end
   end
 
   resources :teams
