@@ -42,7 +42,7 @@ module API
     end
 
     def set_membership
-      @membership = @board.memberships.find_by(user_id: current_user.id)
+      @membership = Membership.find_by(board_id: @board.id, user_id: current_user.id)
     end
   end
 end

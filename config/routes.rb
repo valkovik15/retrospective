@@ -44,7 +44,7 @@ Rails.application.routes.draw do
       resources :memberships, only: %i[index destroy] do
         collection do
           get 'ready_status'
-          get 'ready_toggle'
+          put 'ready_toggle'
         end
       end
       resources :cards

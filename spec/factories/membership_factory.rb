@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :membership do
+    sequence(:id) { |number| number }
     user
     board
     role { 'member' }
