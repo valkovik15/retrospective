@@ -8,25 +8,37 @@ export class ReadyButton extends React.Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick() {
-    this.setReadyState('ready_toggle')
-  }
+  handleClick() {
+    fetch(`/api/${window.location.pathname}/memberships/ready_toggle`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+      }
+    })
+    .then(result => result.json())
+    .then(
+      (result) => {
+        this.setState({
+          ...this.state,
+          ready : result
+        });
+      },
+    )
+  }
 
-  componentDidMount() {
-    this.setReadyState('ready_status')
-  }
-
-  setReadyState(action) {
-    fetch(`/api/${window.location.pathname}/memberships/${action}`)
-    .then(result => result.json())
-    .then(
-      (result) => {
-        this.setState({
-          ...this.state,
-          ready : result
-        });
-      },
-    )
+  componentDidMount() {
+    fetch(`/api/${window.location.pathname}/memberships/ready_status`, { method: 'GET' })
+    .then(result => result.json())
+    .then(
+      (result) => {
+        this.setState({
+          ...this.state,
+          ready : result
+        });
+      },
+    )
   }
 
   render() {
