@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
 class BoardsController < ApplicationController
-  before_action :set_board, only: %i[show continue]
+  before_action :set_board, only: %i[show continue edit update destroy]
   skip_before_action :authenticate_user!, only: :show
-  skip_verify_authorized
+  skip_verify_authorized only: :show
+
+  rescue_from ActionPolicy::Unauthorized do |ex|
+    redirect_to boards_path, alert: ex.result.message
+  end
 
   def index
-    @boards = Board.order(created_at: :desc)
+    authorize!
+    @boards = current_user.boards.order(created_at: :desc)
   end
 
   # rubocop: disable Metrics/AbcSize
@@ -23,10 +28,16 @@ class BoardsController < ApplicationController
   # rubocop: enable Metrics/AbcSize
 
   def new
+    authorize!
     @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
   end
 
+  def edit
+    authorize! @board
+  end
+
   def create
+    authorize!
     @board = Board.new(board_params)
     @board.memberships.build(user_id: current_user.id, role: 'creator')
 
@@ -37,7 +48,26 @@ class BoardsController < ApplicationController
     end
   end
 
+  def update
+    authorize! @board
+    if @board.update(board_params)
+      redirect_to boards_path, notice: 'Board was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    authorize! @board
+    if @board.destroy
+      redirect_to boards_path, notice: 'Board was successfully deleted.'
+    else
+      redirect_to boards_path, alert: @board.errors.full_messages.join(', ')
+    end
+  end
+
   def continue
+    authorize! @board
     result = Boards::Continue.new(@board, current_user).call
     if result.success?
       redirect_to result.value!, notice: 'Board was successfully created.'

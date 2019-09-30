@@ -254,6 +254,10 @@ GEM
       railties (= 5.2.3)
       sprockets-rails (>= 2.0.0)
     rails-assets-bulma (0.7.4)
+    rails-controller-testing (1.0.4)
+      actionpack (>= 5.0.1.x)
+      actionview (>= 5.0.1.x)
+      activesupport (>= 5.0.1.x)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -405,6 +409,7 @@ DEPENDENCIES
   puma (~> 3.11)
   rails (~> 5.2.3)
   rails-assets-bulma!
+  rails-controller-testing
   rails-erd
   react-rails
   rspec-rails (~> 3.8)

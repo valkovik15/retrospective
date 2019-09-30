@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Board < ApplicationRecord
-  has_many :action_items
-  has_many :cards
-  has_many :memberships
+  has_many :action_items, dependent: :restrict_with_error
+  has_many :cards, dependent: :restrict_with_error
+  has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
   validates_presence_of :title
 
