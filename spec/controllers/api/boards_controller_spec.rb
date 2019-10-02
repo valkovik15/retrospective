@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rails_helper'
+
 RSpec.describe API::BoardsController do
   let(:member) { build_stubbed(:user) }
   let(:not_member) { build_stubbed(:user) }

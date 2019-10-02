@@ -48,6 +48,7 @@ Rails.application.routes.draw do
         end
       end
       resources :cards
+      resources :action_items
     end
   end
 end

@@ -1,8 +1,8 @@
 import React from "react"
 import Textarea from "react-textarea-autosize"
-import "./CardBody.css"
+import "./ActionItemBody.css"
 
-class CardBody extends React.Component {
+class ActionItemBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
@@ -29,7 +29,7 @@ class CardBody extends React.Component {
   }
 
   submitRequest() {
-    fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
+    fetch(`/api/${window.location.pathname}/action_items/${this.props.id}`, {
       method: 'PATCH',
       headers: {
         Accept: 'application/json',
@@ -67,6 +67,7 @@ class CardBody extends React.Component {
         <div onDoubleClick={editable && this.editModeToggle} hidden={editMode}>
           {inputValue}
         </div>
+
         <Textarea value={inputValue} 
                   onChange={this.handleChange} 
                   onKeyPress={this.handleKeyPress} 
@@ -76,4 +77,4 @@ class CardBody extends React.Component {
   }
 }
 
-export default CardBody
+export default ActionItemBody

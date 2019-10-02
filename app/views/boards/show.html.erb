@@ -78,11 +78,15 @@
     <div class='box'>
       <%= render 'action_items/form', action_item: @action_item %>
     </div>
-    <% @action_items.each do |action_item| %>
-      <div class='box'>
-        <%= action_item.body %>
-      </div>
-    <% end %>
+      <%  @action_items.each do |action_item| %>
+        <%= react_component('ActionItem/index', { 
+              id: action_item.id,
+              body: action_item.body,
+              editable: allowed_to?(:update?, action_item, with: API::ActionItemPolicy),
+              deletable: allowed_to?(:destroy?, action_item, with: API::ActionItemPolicy) 
+            }) 
+        %> 
+      <% end %>   
   </div>
 
 </div>
