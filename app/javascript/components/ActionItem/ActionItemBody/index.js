@@ -64,7 +64,7 @@ class ActionItemBody extends React.Component {
 
     return (
       <div> 
-        <div onDoubleClick={editable && this.editModeToggle} hidden={editMode}>
+        <div className='text' onDoubleClick={editable && this.editModeToggle} hidden={editMode}>
           {inputValue}
         </div>
 

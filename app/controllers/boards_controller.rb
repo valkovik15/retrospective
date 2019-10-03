@@ -23,7 +23,10 @@ class BoardsController < ApplicationController
     }
     @action_items = @board.action_items
     @action_item = ActionItem.new(board_id: @board.id)
-    @previous_action_items = @board.previous_board.action_items unless @board.previous_board.nil?
+
+    @previous_action_items = if @board.previous_board&.action_items&.any?
+                               @board.previous_board.action_items
+                             end
   end
   # rubocop: enable Metrics/AbcSize
 

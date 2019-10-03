@@ -37,9 +37,15 @@
 <div class="box" id='autocomplete'>
 </div>
 
+<% if @previous_action_items %>
+  <% column_class_name = 'column is-one-fifth' %>
+<% else %>
+  <% column_class_name = 'column is-one-quarter' %>
+<% end %>
+
 <div class='columns'>
   <% if @previous_action_items %>
-    <div class='column'>
+    <div class='<%= column_class_name %>'>
       <h2 class='subtitle'>
        PREVIOUS BOARD
       </h2>
@@ -49,7 +55,7 @@
     </div>
   <% end %>
   <% @cards_by_type.each do |kind, cards| %>
-    <div class='column'>
+    <div class='<%= column_class_name %>'>
       <h2 class='subtitle'>
         <%= kind.upcase %>
       </h2>
@@ -71,7 +77,7 @@
     </div>
   <% end %>
 
-  <div class='column'>
+  <div class='<%= column_class_name %>'>
     <h2 class='subtitle'>
       ACTION ITEMS
     </h2>
