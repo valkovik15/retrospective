@@ -42,10 +42,10 @@ RSpec.describe API::BoardsController do
 
         allow(Board).to receive(:find_by!).with(slug: board.slug).and_return(board)
 
-        allow_any_instance_of(Boards::FindUsersToInvite)
+        allow_any_instance_of(Domains::Boards::Queries::FindUsersToInvite)
           .to receive(:call)
           .and_return([invitee_1, invitee_2])
-        allow_any_instance_of(Boards::InviteUsers)
+        allow_any_instance_of(Domains::Boards::Operations::InviteUsers)
           .to receive(:call)
           .and_return(Dry::Monads.Success([membership_1, membership_2]))
       end
@@ -94,7 +94,10 @@ RSpec.describe API::BoardsController do
         authorize
 
         allow(Board).to receive(:find_by!).with(slug: board.slug).and_return(board)
-        allow_any_instance_of(Boards::Suggestions).to receive(:call).and_return(result)
+
+        allow_any_instance_of(Domains::Boards::Queries::Suggestions)
+          .to receive(:call)
+          .and_return(result)
       end
 
       it_behaves_like :controllers_api_successful_action

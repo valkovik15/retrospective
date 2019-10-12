@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Boards::Continue do
+RSpec.describe Domains::Boards::Operations::Continue do
   include Dry::Monads[:result]
 
   let!(:prev_creator) { create(:user) }

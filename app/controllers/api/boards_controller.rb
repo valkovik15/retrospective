@@ -8,9 +8,9 @@ module API
     end
 
     def invite
-      users = Boards::FindUsersToInvite.new(board_params[:email], @board).call
+      users = Domains::Boards::Queries::FindUsersToInvite.new(board_params[:email], @board).call
       if users.any?
-        result = Boards::InviteUsers.new(@board, users).call
+        result = Domains::Boards::Operations::InviteUsers.new(@board, users).call
         render json: result.value!, each_serializer: MembershipSerializer
       else
         render json: { error: 'User was not found' }, status: 400
@@ -18,7 +18,7 @@ module API
     end
 
     def suggestions
-      result = Boards::Suggestions.new(params[:autocomplete]).call
+      result = Domains::Boards::Queries::Suggestions.new(params[:autocomplete]).call
       render json: result
     end
 

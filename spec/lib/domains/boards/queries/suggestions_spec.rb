@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Boards::Suggestions do
+RSpec.describe Domains::Boards::Queries::Suggestions do
   let_it_be(:user) { create(:user) }
   let_it_be(:team) { create(:team) }
 

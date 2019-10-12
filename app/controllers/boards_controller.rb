@@ -71,7 +71,7 @@ class BoardsController < ApplicationController
 
   def continue
     authorize! @board
-    result = Boards::Continue.new(@board, current_user).call
+    result = Domains::Boards::Operations::Continue.new(@board, current_user).call
     if result.success?
       redirect_to result.value!, notice: 'Board was successfully created.'
     else

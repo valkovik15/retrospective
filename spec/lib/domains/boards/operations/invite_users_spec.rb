@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Boards::InviteUsers do
+RSpec.describe Domains::Boards::Operations::InviteUsers do
   subject { described_class.new(board, [user]).call }
   let(:user) { create(:user) }
   let(:board) { create(:board) }

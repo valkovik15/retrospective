@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Boards::FindUsersToInvite do
+RSpec.describe Domains::Boards::Queries::FindUsersToInvite do
   let(:user) { create(:user) }
   let(:board_user) { create(:user, email: 'test@mail.com') }
   let(:team) { create(:team, :with_users) }
