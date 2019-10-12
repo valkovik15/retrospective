@@ -38,3 +38,6 @@ yarn-debug.log*
 .yarn-integrity
 coverage
 **/uploads
+
+.env.development
+.env.test
