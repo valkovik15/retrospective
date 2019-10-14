@@ -13,19 +13,20 @@ class Card extends React.Component {
   hideCard = () => {
     this.setState({cardStyle: {display: 'none'}});
   }
-  
+
   render () {
     const { id, body, deletable, editable, author, avatar } = this.props;
 
     return (
       <div className='box' style={this.state.cardStyle}>
-        <CardBody id={id} 
+        <CardBody id={id}
                   editable={editable}
                   body={body}/>
-        <CardFooter id={id} 
-                    author={author} 
-                    deletable={deletable} 
-                    hideCard={this.hideCard}/>
+        <CardFooter id={id}
+                    author={author}
+                    deletable={deletable}
+                    hideCard={this.hideCard}
+                    avatar={avatar}/>
       </div>
     );
   }
