@@ -3,9 +3,11 @@
 module API
   class CardsController < API::ApplicationController
     before_action :set_board, :set_card
+    before_action do
+      authorize! @card
+    end
 
     def update
-      authorize! @card
       if @card.update(body: params.permit(:edited_body)[:edited_body])
         render json: { updated_body: @card.body }, status: :ok
       else
@@ -14,9 +16,16 @@ module API
     end
 
     def destroy
-      authorize! @card
       if @card.destroy
         head :no_content
+      else
+        render json: { error: @card.errors.full_messages.join(',') }, status: :bad_request
+      end
+    end
+
+    def like
+      if @card.like!
+        render json: { likes: @card.likes }, status: :ok
       else
         render json: { error: @card.errors.full_messages.join(',') }, status: :bad_request
       end

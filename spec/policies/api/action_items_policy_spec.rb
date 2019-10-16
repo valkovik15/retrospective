@@ -5,13 +5,13 @@ require 'rails_helper'
 RSpec.describe API::ActionItemPolicy do
   let_it_be(:creator) { create(:user) }
   let_it_be(:member) { create(:user) }
-  let_it_be(:not_member) { build_stubbed(:user) }
+  let(:not_member) { build_stubbed(:user) }
   let_it_be(:board) { create(:board) }
   let_it_be(:creatorship) do
     create(:membership, user_id: creator.id, board_id: board.id, role: 'creator')
   end
   let_it_be(:membership) { create(:membership, user_id: member.id, board_id: board.id) }
-  let_it_be(:action_item) { build_stubbed(:action_item, board: board) }
+  let(:action_item) { build_stubbed(:action_item, board: board) }
 
   let(:policy) { described_class.new(action_item, user: test_user, board: board) }
 

@@ -14,4 +14,8 @@ class Card < ApplicationRecord
   def author?(user)
     author == user
   end
+
+  def like!
+    increment!(:likes)
+  end
 end

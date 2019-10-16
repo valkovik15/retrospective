@@ -1,4 +1,5 @@
 import React from "react"
+import Likes from "../Likes"
 
 class CardFooter extends React.Component {
   constructor(props) {
@@ -32,8 +33,15 @@ class CardFooter extends React.Component {
     return (
       <div>
         <hr style={{margin: '0.5rem'}}/>
-        <img src={avatar} className='avatar'/>
-        <span> by {author}</span>
+        <div className='columns'>
+          <div className='column'>
+            <Likes id={this.props.id} likes={this.props.likes}/>
+          </div>
+          <div className='column'>
+            <img src={avatar} className='avatar'/>
+            <span> by {author}</span>
+          </div>
+        </div>
         <div>
           <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}} hidden={!deletable}>
             delete

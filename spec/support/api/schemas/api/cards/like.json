@@ -1,0 +1,13 @@
+{ 
+  "title": "cards#like response json",
+  "description": "contains number of card likes",
+  "type": "object",
+  "properties": {
+    "likes": {
+      "description": "number of card likes",
+      "type": "integer",
+      "minLength": 1
+    }
+  },
+  "required": ["likes"]
+}

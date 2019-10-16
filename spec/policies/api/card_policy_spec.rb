@@ -37,6 +37,20 @@ RSpec.describe API::CardPolicy do
     end
   end
 
+  describe '#like?' do
+    subject { policy.apply(:like?) }
+
+    context 'when user is the card author' do
+      let(:test_user) { author }
+      it { is_expected.to eq false }
+    end
+
+    context 'when user is not the card author' do
+      let(:test_user) { not_an_author }
+      it { is_expected.to eq true }
+    end
+  end
+
   describe '#user_is_author?' do
     subject { policy.apply(:user_is_author?) }
 

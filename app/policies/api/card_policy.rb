@@ -10,6 +10,10 @@ module API
       check?(:user_is_author?)
     end
 
+    def like?
+      !check?(:user_is_author?)
+    end
+
     def user_is_author?
       record.author?(user)
     end

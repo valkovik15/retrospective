@@ -47,7 +47,11 @@ Rails.application.routes.draw do
           put 'ready_toggle'
         end
       end
-      resources :cards
+      resources :cards do
+        member do
+          put 'like'
+        end
+      end
       resources :action_items
     end
   end
