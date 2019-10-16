@@ -88,10 +88,11 @@
         <%= react_component('ActionItem/index', { 
               id: action_item.id,
               body: action_item.body,
+              times_moved: action_item.times_moved,
               editable: allowed_to?(:update?, action_item, with: API::ActionItemPolicy),
               deletable: allowed_to?(:destroy?, action_item, with: API::ActionItemPolicy) 
             }) 
-        %> 
+        %>
       <% end %>   
   </div>
 

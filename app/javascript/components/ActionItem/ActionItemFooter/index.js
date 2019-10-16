@@ -26,18 +26,24 @@ class ActionItemFooter extends React.Component {
   }
 
   render () {
-    const { deletable } = this.props;
+    const { deletable, times_moved } = this.props;
+    const moved = (times_moved != 0);
+    const footerNotEmpty = deletable || moved;
+
     const confirmMessage = 'Are you sure you want to delete this ActionItem?';
 
     return (
-      <div>
-        <hr style={{margin: '0.5rem'}}/>
-        <div>
-          <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}}>
-            delete
-          </a>
-        </div>
-      </div>
+      <>
+        {footerNotEmpty &&
+          <div>
+            <hr style={{margin: '0.5rem'}}/>
+            <p hidden={!moved}> moved {times_moved} times! </p>
+            <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}} hidden={!deletable}>
+              delete
+            </a>
+          </div>
+        }
+      </>
     );
   }
 }

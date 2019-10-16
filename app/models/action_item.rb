@@ -28,6 +28,7 @@ class ActionItem < ApplicationRecord
 
   def move!(board)
     self.board_id = board.id
+    increment(:times_moved)
     save
   end
 end
