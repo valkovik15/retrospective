@@ -3,7 +3,7 @@
 RSpec.describe BoardPolicy do
   let_it_be(:creator) { create(:user) }
   let_it_be(:member) { create(:user) }
-  let_it_be(:not_member) { build_stubbed(:user) }
+  let(:not_member) { build_stubbed(:user) }
   let_it_be(:board) { create(:board) }
   let_it_be(:membership) { create(:membership, user: member, board: board) }
   let_it_be(:creatorship) { create(:membership, user: creator, board: board, role: 'creator') }
@@ -17,11 +17,6 @@ RSpec.describe BoardPolicy do
       let(:test_user) { not_member }
       it { is_expected.to eq true }
     end
-
-    context 'when user is nil' do
-      let(:test_user) { nil }
-      it { is_expected.to eq true }
-    end
   end
 
   describe '#new?' do
@@ -29,11 +24,6 @@ RSpec.describe BoardPolicy do
 
     context 'when user exists' do
       let(:test_user) { not_member }
-      it { is_expected.to eq true }
-    end
-
-    context 'when user is nil' do
-      let(:test_user) { nil }
       it { is_expected.to eq true }
     end
   end
@@ -55,11 +45,6 @@ RSpec.describe BoardPolicy do
       let(:test_user) { not_member }
       it { is_expected.to eq false }
     end
-
-    context 'when user is nil' do
-      let(:test_user) { nil }
-      it { expect { subject }.to raise_error(NoMethodError) }
-    end
   end
 
   describe '#create?' do
@@ -67,11 +52,6 @@ RSpec.describe BoardPolicy do
 
     context 'when user exists' do
       let(:test_user) { not_member }
-      it { is_expected.to eq true }
-    end
-
-    context 'when user is nil' do
-      let(:test_user) { nil }
       it { is_expected.to eq true }
     end
   end
@@ -93,11 +73,6 @@ RSpec.describe BoardPolicy do
       let(:test_user) { not_member }
       it { is_expected.to eq false }
     end
-
-    context 'when user is nil' do
-      let(:test_user) { nil }
-      it { expect { subject }.to raise_error(NoMethodError) }
-    end
   end
 
   describe '#destroy?' do
@@ -117,11 +92,6 @@ RSpec.describe BoardPolicy do
       let(:test_user) { not_member }
       it { is_expected.to eq false }
     end
-
-    context 'when user is nil' do
-      let(:test_user) { nil }
-      it { expect { subject }.to raise_error(NoMethodError) }
-    end
   end
 
   describe '#continue?' do
@@ -140,11 +110,6 @@ RSpec.describe BoardPolicy do
     context 'when user is not a board member' do
       let(:test_user) { not_member }
       it { is_expected.to eq false }
-    end
-
-    context 'when user is nil' do
-      let(:test_user) { nil }
-      it { expect { subject }.to raise_error(NoMethodError) }
     end
   end
 

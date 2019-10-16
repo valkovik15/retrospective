@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe API::BoardPolicy do
   let_it_be(:member) { create(:user) }
-  let_it_be(:not_a_member) { build_stubbed(:user) }
+  let(:not_a_member) { build_stubbed(:user) }
   let_it_be(:board) { create(:board) }
   let_it_be(:membership) { create(:membership, user_id: member.id, board_id: board.id) }
   let(:policy) { described_class.new(board, user: test_user) }

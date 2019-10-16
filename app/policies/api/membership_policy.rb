@@ -1,25 +1,35 @@
 # frozen_string_literal: true
 
 module API
-  class MembershipPolicy < ApplicationPolicy
+  class MembershipPolicy
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Authorization
+    include ActionPolicy::Policy::Reasons
+
+    authorize :membership, allow_nil: true
+
+    def index?
+      check?(:role_is_member?)
+    end
+
     def ready_status?
-      check?(:user_is_member?)
+      check?(:role_is_member?)
     end
 
     def ready_toggle?
-      check?(:user_is_member?)
+      check?(:role_is_member?)
     end
 
     def destroy?
-      check?(:user_is_creator?)
+      check?(:role_is_creator?) && !record.creator?
     end
 
-    def user_is_member?
-      record.user == user
+    def role_is_member?
+      membership&.member? || role_is_creator?
     end
 
-    def user_is_creator?
-      record.board.creator?(user)
+    def role_is_creator?
+      membership&.creator? || false
     end
   end
 end

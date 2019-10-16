@@ -15,7 +15,7 @@ class Board < ApplicationRecord
   end
 
   def member?(user, role = %w[member creator])
-    Membership.exists?(board_id: id, user_id: user.id, role: role)
+    memberships.exists?(user_id: user.id, role: role)
   end
 
   def creator?(user)

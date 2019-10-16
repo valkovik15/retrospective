@@ -59,6 +59,7 @@ RSpec.describe API::MembershipsController do
         login_as(member)
 
         allow(Board).to receive(:find_by!).with(slug: board.slug).and_return(board)
+        allow(Membership).to receive(:find).with(params[:id].to_s).and_return(membership)
 
         allow(Membership)
           .to receive(:find_by)
@@ -106,7 +107,7 @@ RSpec.describe API::MembershipsController do
         allow(Membership)
           .to receive(:find_by)
           .with(board_id: board.id, user_id: not_member.id)
-          .and_return(membership)
+          .and_return(nil)
       end
 
       it_behaves_like :controllers_api_unauthorized_action
@@ -147,7 +148,7 @@ RSpec.describe API::MembershipsController do
         allow(Membership)
           .to receive(:find_by)
           .with(board_id: board.id, user_id: not_member.id)
-          .and_return(membership)
+          .and_return(nil)
       end
 
       it_behaves_like :controllers_api_unauthorized_action
