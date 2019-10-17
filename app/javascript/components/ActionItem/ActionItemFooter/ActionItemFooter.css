@@ -1,0 +1,8 @@
+.fa-chevron-right { 
+                    margin-right: -2px;
+                    margin-left: -2px;  
+                  }
+
+.fa-chevron-right.green {color: hsl(141, 71%, 48%)}
+.fa-chevron-right.yellow {color: hsl(48, 100%, 67%)}
+.fa-chevron-right.red {color: hsl(348, 100%, 61%)}

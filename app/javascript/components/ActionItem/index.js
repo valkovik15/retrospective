@@ -17,15 +17,17 @@ class ActionItem extends React.Component {
   render () {
     const { id, body, times_moved, deletable, editable } = this.props;
 
+    const footerNotEmpty = deletable || (times_moved != 0);
+
     return (
       <div className='box' style={this.state.ActionItemStyle}>
         <ActionItemBody id={id} 
                         editable={editable}
                         body={body}/>
-        <ActionItemFooter id={id} 
-                          deletable={deletable}
-                          times_moved={times_moved} 
-                          hideActionItem={this.hideActionItem}/>
+        {footerNotEmpty && <ActionItemFooter id={id} 
+                                             deletable={deletable}
+                                             times_moved={times_moved} 
+                                             hideActionItem={this.hideActionItem}/>}
       </div>
     );
   }

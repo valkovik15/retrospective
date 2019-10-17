@@ -1,5 +1,7 @@
 import React from "react"
 
+import "./ActionItemFooter.css"
+
 class ActionItemFooter extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +27,26 @@ class ActionItemFooter extends React.Component {
     });
   }
 
+  pickColor(num) {
+    switch(true) {
+      case [1,2].includes(num):
+        return 'green'; 
+      case [3].includes(num):
+        return 'yellow';
+      default:
+        return 'red';
+    }
+  }
+
+  renderChevrons = () => {
+    const times_moved = this.props.times_moved;
+    const icon = <i className={`fas fa-chevron-right ${this.pickColor(times_moved)}`}></i>; 
+
+    let chevrons = [];
+    for (let i = 0; i < times_moved; i++) chevrons.push(icon);
+    return chevrons
+  };
+
   render () {
     const { deletable, times_moved } = this.props;
     const moved = (times_moved != 0);
@@ -33,17 +55,13 @@ class ActionItemFooter extends React.Component {
     const confirmMessage = 'Are you sure you want to delete this ActionItem?';
 
     return (
-      <>
-        {footerNotEmpty &&
-          <div>
-            <hr style={{margin: '0.5rem'}}/>
-            <p hidden={!moved}> moved {times_moved} times! </p>
-            <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}} hidden={!deletable}>
-              delete
-            </a>
-          </div>
-        }
-      </>
+      <div>
+        <hr style={{margin: '0.5rem'}}/>
+        <div className='chevrons'>{this.renderChevrons()}</div>
+        <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}} hidden={!deletable}>
+          delete
+        </a>
+      </div>
     );
   }
 }
