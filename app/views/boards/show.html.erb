@@ -49,7 +49,22 @@
        PREVIOUS BOARD
       </h2>
       <% @previous_action_items.each do |action_item| %>
-        <%= render 'previous_action_item', action_item: action_item %>
+        <%= react_component('ActionItem/index', { 
+              id: action_item.id,
+              body: action_item.body,
+              times_moved: action_item.times_moved,
+
+              transitionable: {
+                to_close: allowed_to?(:close?, action_item, context: { board: @board }),
+                to_complete: allowed_to?(:complete?, action_item, context: { board: @board }),
+                to_reopen: allowed_to?(:reopen?, action_item, context: { board: @board })
+              },
+              
+              movable: allowed_to?(:move?, action_item, context: { board: @board })
+              #editable: allowed_to?(:update?, action_item, with: API::ActionItemPolicy),
+              #deletable: allowed_to?(:destroy?, action_item, with: API::ActionItemPolicy) 
+            }) 
+        %>
       <% end %>
     </div>
   <% end %>
