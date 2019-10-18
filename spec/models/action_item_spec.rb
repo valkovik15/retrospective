@@ -71,4 +71,24 @@ RSpec.describe ActionItem, type: :model do
       it { is_expected.to transition_from(:done).to(:pending).on_event(:reopen) }
     end
   end
+
+  describe '#move!' do
+    let_it_be(:prev_board) { create(:board) }
+    let_it_be(:new_board) { create(:board) }
+    let_it_be(:action_item) { create(:action_item, board: prev_board) }
+
+    subject { action_item.move!(new_board) }
+
+    it 'changes action_item board_id to the newly provided one' do
+      expect { subject }.to change { action_item.board_id }.from(prev_board.id).to(new_board.id)
+    end
+
+    it 'increments times moved' do
+      expect { subject }.to change { action_item.times_moved }.by(1)
+    end
+
+    it 'does not create new action item record' do
+      expect { subject }.to_not change { ActionItem.count }
+    end
+  end
 end
