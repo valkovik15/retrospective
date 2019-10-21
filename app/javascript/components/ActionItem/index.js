@@ -14,8 +14,15 @@ class ActionItem extends React.Component {
     this.setState({ActionItemStyle: {display: 'none'}});
   }
 
-  paintActionItem = (color) => {
-    console.log(color);
+  pickColor = () => {
+    switch(this.props.status) {
+      case 'done':
+        return 'green'; 
+      case 'closed':
+        return 'red';
+      default:
+        return null;
+    }
   }
   
   render () {
@@ -23,7 +30,7 @@ class ActionItem extends React.Component {
     const footerNotEmpty = deletable || movable || transitionable || (times_moved != 0);
 
     return (
-      <div className='box' style={this.state.ActionItemStyle}>
+      <div className={`box ${this.pickColor()}_bg`} style={this.state.ActionItemStyle}>
         <ActionItemBody id={id} 
                         editable={editable}
                         body={body}/>

@@ -135,7 +135,7 @@ RSpec.describe API::ActionItemPolicy do
 
     context 'when user is the board creator' do
       let(:test_user) { creator }
-      
+
       it 'returns true if aasm state may transition to pending' do
         allow(action_item).to receive(:may_reopen?).and_return(true)
 

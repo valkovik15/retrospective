@@ -29,12 +29,8 @@
 
   </div>
 </div>
-<!-- <p>Current user: <%= current_user.email if current_user%> </p>
-<% @board.memberships.each do |member| %>
-  <p> <%= member.user.email %>, <%= member.role %></p>
-<% end  %> -->
-<div class="box" id='autocomplete'>
-</div>
+
+<div class="box" id='autocomplete'></div>
 
 <% if @previous_action_items %>
   <% column_class_name = 'column is-one-fifth' %>
@@ -52,17 +48,18 @@
         <%= react_component('ActionItem/index', { 
               id: action_item.id,
               body: action_item.body,
+              status: action_item.status,
               times_moved: action_item.times_moved,
 
               transitionable: {
-                to_close: allowed_to?(:close?, action_item, context: { board: @board }),
-                to_complete: allowed_to?(:complete?, action_item, context: { board: @board }),
-                to_reopen: allowed_to?(:reopen?, action_item, context: { board: @board })
+                can_close: allowed_to?(:close?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
+                can_complete: allowed_to?(:complete?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
+                can_reopen: allowed_to?(:reopen?, action_item, with: API::ActionItemPolicy, context: { board: @board })
               },
-              
-              movable: allowed_to?(:move?, action_item, context: { board: @board })
-              #editable: allowed_to?(:update?, action_item, with: API::ActionItemPolicy),
-              #deletable: allowed_to?(:destroy?, action_item, with: API::ActionItemPolicy) 
+        
+              movable: allowed_to?(:move?, action_item, with: API::ActionItemPolicy, context: { board: @board })
+              # editable: allowed_to?(:update?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
+              # deletable: allowed_to?(:destroy?, action_itemwith: API::ActionItemPolicy context: { board: @board })
             }) 
         %>
       <% end %>
@@ -104,8 +101,8 @@
               id: action_item.id,
               body: action_item.body,
               times_moved: action_item.times_moved,
-              editable: allowed_to?(:update?, action_item, with: API::ActionItemPolicy),
-              deletable: allowed_to?(:destroy?, action_item, with: API::ActionItemPolicy) 
+              editable: allowed_to?(:update?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
+              deletable: allowed_to?(:destroy?, action_item, with: API::ActionItemPolicy, context: { board: @board })
             }) 
         %>
       <% end %>   
