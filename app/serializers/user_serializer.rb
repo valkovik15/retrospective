@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
-class UserSerializer < ActiveModel::Serializer
-  attributes :email
+class UserSerializer < Representable::Decorator
+  include Representable::JSON
+
+  property :email
 end

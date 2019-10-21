@@ -2,7 +2,10 @@
 
 module API
   class BoardsController < API::ApplicationController
+    include Serialize
+
     before_action :set_board
+
     before_action do
       authorize! @board
     end
@@ -11,15 +14,24 @@ module API
       users = Domains::Boards::Queries::FindUsersToInvite.new(board_params[:email], @board).call
       if users.any?
         result = Domains::Boards::Operations::InviteUsers.new(@board, users).call
-        render json: result.value!, each_serializer: MembershipSerializer
+
+        render serialize_success(
+                 value: OffsetPagination.new.call(result.value!),
+                 with: MembershipSerializer,
+                 serializer: CollectionSerializer
+               )
       else
-        render json: { error: 'User was not found' }, status: 400
+        { error: 'User was not found' }, status: 400
       end
     end
 
     def suggestions
       result = Domains::Boards::Queries::Suggestions.new(params[:autocomplete]).call
-      render json: result
+      render serialize_success(
+               value: OffsetPagination.new.call(result.value!),
+               with: MembershipSerializer,
+               serializer: CollectionSerializer
+             )
     end
 
     private

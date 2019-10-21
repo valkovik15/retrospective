@@ -16,6 +16,7 @@ module Domains
           users_array = users.map { |user| { role: 'member', user_id: user.id } }
           memberships = board.memberships.build(users_array)
           board.save
+
           Success(memberships)
         end
       end

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-class MembershipSerializer < ActiveModel::Serializer
-  attributes :id, :ready
-  belongs_to :user
+class MembershipSerializer < Representable::Decorator
+  include Representable::JSON
+
+  property :id
+  property :ready
+  property :user, decorator: UserSerializer
 end
