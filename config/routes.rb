@@ -52,13 +52,13 @@ Rails.application.routes.draw do
           put 'like'
         end
       end
-    end
-    resources :action_items, only: %i[update destroy] do
-      member do
-        post 'move'
-        put 'close'
-        put 'complete'
-        put 'reopen'
+      resources :action_items, only: %i[update destroy] do
+        member do
+          post 'move'
+          put 'close'
+          put 'complete'
+          put 'reopen'
+        end
       end
     end
   end

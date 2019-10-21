@@ -48,10 +48,7 @@ class ActionItemFooter extends React.Component {
   };
 
   render () {
-    const { deletable, times_moved } = this.props;
-    const moved = (times_moved != 0);
-    const footerNotEmpty = deletable || moved;
-
+    const { deletable, times_moved, paintActionItem } = this.props;
     const confirmMessage = 'Are you sure you want to delete this ActionItem?';
 
     return (
@@ -60,6 +57,10 @@ class ActionItemFooter extends React.Component {
         <div className='chevrons'>{this.renderChevrons()}</div>
         <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}} hidden={!deletable}>
           delete
+        </a>
+
+        <a onClick={() => paintActionItem('yellow')}>
+          clickme
         </a>
       </div>
     );

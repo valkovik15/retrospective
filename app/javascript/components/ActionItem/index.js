@@ -13,11 +13,14 @@ class ActionItem extends React.Component {
   hideActionItem = () => {
     this.setState({ActionItemStyle: {display: 'none'}});
   }
+
+  paintActionItem = (color) => {
+    console.log(color);
+  }
   
   render () {
-    const { id, body, times_moved, deletable, editable } = this.props;
-
-    const footerNotEmpty = deletable || (times_moved != 0);
+    const { id, body, times_moved, deletable, editable, movable, transitionable } = this.props;
+    const footerNotEmpty = deletable || movable || transitionable || (times_moved != 0);
 
     return (
       <div className='box' style={this.state.ActionItemStyle}>
@@ -27,7 +30,10 @@ class ActionItem extends React.Component {
         {footerNotEmpty && <ActionItemFooter id={id} 
                                              deletable={deletable}
                                              times_moved={times_moved} 
-                                             hideActionItem={this.hideActionItem}/>}
+                                             movable={movable}
+                                             transitionable={transitionable}
+                                             hideActionItem={this.hideActionItem}
+                                             paintActionItem={this.paintActionItem}/>}
       </div>
     );
   }
