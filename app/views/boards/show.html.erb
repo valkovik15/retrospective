@@ -50,16 +50,12 @@
               body: action_item.body,
               status: action_item.status,
               times_moved: action_item.times_moved,
-
+              movable: allowed_to?(:move?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
               transitionable: {
                 can_close: allowed_to?(:close?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
                 can_complete: allowed_to?(:complete?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
                 can_reopen: allowed_to?(:reopen?, action_item, with: API::ActionItemPolicy, context: { board: @board })
-              },
-        
-              movable: allowed_to?(:move?, action_item, with: API::ActionItemPolicy, context: { board: @board })
-              # editable: allowed_to?(:update?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
-              # deletable: allowed_to?(:destroy?, action_itemwith: API::ActionItemPolicy context: { board: @board })
+              }
             }) 
         %>
       <% end %>
