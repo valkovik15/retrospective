@@ -37,7 +37,7 @@ class ActionItemFooter extends React.Component {
         'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
       }
     }).then((result) => {
-      if (result.status == 204) {
+      if (result.status == 200) {
         window.location.reload();
       }
       else { throw result }

@@ -25,7 +25,7 @@ module API
 
     def move
       if @action_item.move!(@board)
-        head :no_content
+        head :ok
       else
         render json: { error: @action_item.errors.full_messages.join(',') }, status: :bad_request
       end
@@ -33,7 +33,7 @@ module API
 
     def close
       if @action_item.close!
-        head :no_content
+        head :ok
       else
         render json: { error: @action_item.errors.full_messages.join(',') }, status: :bad_request
       end
@@ -41,7 +41,7 @@ module API
 
     def complete
       if @action_item.complete!
-        head :no_content
+        head :ok
       else
         render json: { error: @action_item.errors.full_messages.join(',') }, status: :bad_request
       end
@@ -49,7 +49,7 @@ module API
 
     def reopen
       if @action_item.reopen!
-        head :no_content
+        head :ok
       else
         render json: { error: @action_item.errors.full_messages.join(',') }, status: :bad_request
       end

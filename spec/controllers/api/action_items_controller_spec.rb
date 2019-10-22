@@ -111,7 +111,7 @@ RSpec.describe API::ActionItemsController do
         allow(action_item).to receive(:move!).with(board).and_return(true)
       end
 
-      it_behaves_like :controllers_api_successful_action, :no_content
+      it_behaves_like :controllers_api_successful_action
     end
   end
 
@@ -144,7 +144,7 @@ RSpec.describe API::ActionItemsController do
         allow(action_item).to receive(:close!).and_return(true)
       end
 
-      it_behaves_like :controllers_api_successful_action, :no_content
+      it_behaves_like :controllers_api_successful_action
     end
   end
 
@@ -177,7 +177,7 @@ RSpec.describe API::ActionItemsController do
         allow(action_item).to receive(:complete!).and_return(true)
       end
 
-      it_behaves_like :controllers_api_successful_action, :no_content
+      it_behaves_like :controllers_api_successful_action
     end
   end
 
@@ -210,7 +210,7 @@ RSpec.describe API::ActionItemsController do
         allow(action_item).to receive(:reopen!).and_return(true)
       end
 
-      it_behaves_like :controllers_api_successful_action, :no_content
+      it_behaves_like :controllers_api_successful_action
     end
   end
 end

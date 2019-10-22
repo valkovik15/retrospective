@@ -1,7 +1,5 @@
 import React from "react"
 
-import "./TransitionButton.css"
-
 class TransitionButton extends React.Component {
   constructor(props) {
     super(props)
@@ -17,8 +15,7 @@ class TransitionButton extends React.Component {
         'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
       }
     }).then((result) => {
-      if (result.status == 204) {
-        console.log(`doing ${this.props.action}!!!`)
+      if (result.status == 200) {
         window.location.reload();
       }
       else { throw result }

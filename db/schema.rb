@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2019_10_17_083034) do
     t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "times_moved", default: 0
+    t.integer "times_moved", default: 0, null: false
     t.index ["board_id"], name: "index_action_items_on_board_id"
   end
 
