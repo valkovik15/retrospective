@@ -13,6 +13,7 @@ require 'rspec/rails'
 require 'test_prof/recipes/rspec/let_it_be'
 
 require 'devise'
+require 'aasm/rspec'
 
 Dir['./spec/support/**/*.rb'].each { |f| require f }
 # Add additional requires below this line. Rails is not loaded until this point!

@@ -13,16 +13,34 @@ class ActionItem extends React.Component {
   hideActionItem = () => {
     this.setState({ActionItemStyle: {display: 'none'}});
   }
+
+  pickColor = () => {
+    switch(this.props.status) {
+      case 'done':
+        return 'green'; 
+      case 'closed':
+        return 'red';
+      default:
+        return null;
+    }
+  }
   
   render () {
-    const { id, body, deletable, editable } = this.props;
+    const { id, body, times_moved, deletable, editable, movable, transitionable } = this.props;
+    const footerNotEmpty = deletable || movable || transitionable || (times_moved != 0);
 
     return (
-      <div className='box' style={this.state.ActionItemStyle}>
+      <div className={`box ${this.pickColor()}_bg`} style={this.state.ActionItemStyle}>
         <ActionItemBody id={id} 
-                  editable={editable}
-                  body={body}/>
-        {deletable && <ActionItemFooter id={id} hideActionItem={this.hideActionItem}/>}
+                        editable={editable}
+                        body={body}/>
+        {footerNotEmpty && <ActionItemFooter id={id} 
+                                             deletable={deletable}
+                                             times_moved={times_moved} 
+                                             movable={movable}
+                                             transitionable={transitionable}
+                                             hideActionItem={this.hideActionItem}
+                                             paintActionItem={this.paintActionItem}/>}
       </div>
     );
   }
