@@ -1,51 +1,12 @@
 import React from "react"
 
 import TransitionButton from "../TransitionButton"
+import { destroy, move } from "../requests.js"
 import "./ActionItemFooter.css"
 
 class ActionItemFooter extends React.Component {
   constructor(props) {
     super(props);
-  }
-
-  handleDeleteClick = () => {    
-    fetch(`/api/${window.location.pathname}/action_items/${this.props.id}`, {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-      }
-    }).then((result) => {
-      if (result.status == 204) {
-        this.props.hideActionItem()
-      }
-      else { throw result }
-    }).catch((error) => {
-      error.json().then( errorHash => {
-        console.log(errorHash.error)
-      })
-    });
-  }
-
-  handleMoveClick = () => {    
-    fetch(`/api/${window.location.pathname}/action_items/${this.props.id}/move`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-      }
-    }).then((result) => {
-      if (result.status == 200) {
-        window.location.reload();
-      }
-      else { throw result }
-    }).catch((error) => {
-      error.json().then( errorHash => {
-        console.log(errorHash.error)
-      })
-    });
   }
 
   pickColor(num) {
@@ -67,7 +28,7 @@ class ActionItemFooter extends React.Component {
   };
 
   render () {
-    const { id, deletable, movable, transitionable } = this.props;
+    const { id, deletable, movable, transitionable, hideActionItem } = this.props;
     const confirmDeleteMessage = 'Are you sure you want to delete this ActionItem?';
     const confirmMoveMessage = 'Are you sure you want to move this ActionItem?';
 
@@ -79,12 +40,12 @@ class ActionItemFooter extends React.Component {
         {transitionable && transitionable.can_close && <TransitionButton id={id} action='close'/>}
         {transitionable && transitionable.can_complete && <TransitionButton id={id} action='complete'/>}
         {transitionable && transitionable.can_reopen && <TransitionButton id={id} action='reopen'/>}
-        {movable && <button onClick={() => {window.confirm(confirmMoveMessage) && this.handleMoveClick()}}>
+        {movable && <button onClick={() => {window.confirm(confirmMoveMessage) && move(id, window.location.reload())}}>
           move
         </button>}
 
         <div>
-          {deletable && <a onClick={() => {window.confirm(confirmDeleteMessage) && this.handleDeleteClick()}}>
+          {deletable && <a onClick={() => {window.confirm(confirmDeleteMessage) && destroy(id, hideActionItem)}}>
             delete
           </a>}
         </div>

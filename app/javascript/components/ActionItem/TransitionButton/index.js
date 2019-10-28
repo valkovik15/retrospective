@@ -1,35 +1,19 @@
 import React from "react"
 
+import { transition } from "../requests.js"
+
 class TransitionButton extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
   }
-
-  handleClick = () => {    
-    fetch(`/api/${window.location.pathname}/action_items/${this.props.id}/${this.props.action}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-      }
-    }).then((result) => {
-      if (result.status == 200) {
-        window.location.reload();
-      }
-      else { throw result }
-    }).catch((error) => {
-      error.json().then( errorHash => {
-        console.log(errorHash.error)
-      })
-    });
-  }
   
   render () {
+    const { id, action } = this.props;
+
     return (
-      <button onClick={() => {this.handleClick()}}>
-        {this.props.action}
+      <button onClick={() => {transition(id, action, window.location.reload())}}>
+        {action}
       </button>
     );
   }
