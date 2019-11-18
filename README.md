@@ -19,6 +19,10 @@ Things you may want to cover:
 
 * Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
-
 * ...
+
+## Development instructions
+
+1. Install docker with docker-compose
+2. docker-compose up -d rails
+3. docker-compose run runner # For some commands from console
