@@ -3,33 +3,9 @@
 # rubocop:disable Metrics/BlockLength
 
 Rails.application.routes.draw do
-  root to: 'home#index'
-  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  root 'pages#index'
 
-  resources :boards, param: :slug do
-    member do
-      post 'continue'
-    end
-
-    scope module: 'boards' do
-      resources :cards, only: :create
-      resources :memberships, only: :create
-      resources :action_items, only: :create do
-      end
-    end
-  end
-
-  resources :action_items, only: :index do
-    member do
-      put 'close'
-      put 'complete'
-      put 'reopen'
-    end
-  end
-
-  resources :teams
-
-  namespace :api do
+  namespace :api, defaults: { format: 'json' } do
     resources :boards, param: :slug do
       member do
         post 'invite'
@@ -56,6 +32,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  match '*path', to: 'pages#index', via: :all
 end
 
 # rubocop:enable Metrics/BlockLength

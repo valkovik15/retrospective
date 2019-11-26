@@ -1,6 +1,9 @@
 {
   "name": "retrospective",
   "private": true,
+  "engines": {
+    "yarn": "^1.17.3"
+  },
   "dependencies": {
     "@babel/preset-react": "^7.0.0",
     "@rails/webpacker": "^4.0.7",
@@ -9,10 +12,10 @@
     "react": "^16.8.6",
     "react-bulma-components": "2.3.0",
     "react-dom": "^16.8.6",
+    "react-router-dom": "^5.1.2",
     "react-select": "^3.0.4",
     "react-textarea-autosize": "^7.1.0",
-    "react_ujs": "^2.6.0",
-    "yarn": "^1.17.3"
+    "react_ujs": "^2.6.0"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.7.2"

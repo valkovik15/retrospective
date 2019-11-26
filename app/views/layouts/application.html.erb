@@ -5,18 +5,12 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag('https://use.fontawesome.com/releases/v5.3.1/js/all.js') %>
-    <%= yield :scripts %>
   </head>
 
   <body>
-    <div class="column has-background-light">
-      <p id="notice"><%= notice %></p>
-      <p id="alert"><%= alert %></p>
-          
-      <%= yield %>
-    </div>
+    <%= yield %>
   </body>
 </html>
