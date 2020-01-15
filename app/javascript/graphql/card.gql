@@ -1,0 +1,30 @@
+fragment Card on Card {
+  id
+  kind
+  body
+  likes
+  author
+  createdAt
+  updatedAt
+}
+
+mutation M_ADD_CARD($kind: String!, $body: String!, $authorId: ID!, $boardId: ID!) {
+  addCard(attributes: { kind: $kind, body: $body, authorId: $authorId, boardId: $boardId }) {
+    card {
+      ...Card
+    }
+    errors {
+      fullMessages
+    }
+  }
+}
+
+subscription CARD_SUBSCRIPTION {
+  cardAdded {
+    ...Card
+  }
+
+  cardUpdated {
+    ...Card
+  }
+}
