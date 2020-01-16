@@ -1,15 +1,8 @@
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
 
-const GET_BOARDS = gql`
-  query getBoards {
-    boards {
-      title
-    }
-  }
-`;
+import { GET_BOARDS } from "../../graphql/board.gql";
 
 const Boards = () => {
   const { loading, error, data } = useQuery(GET_BOARDS);
@@ -19,13 +12,13 @@ const Boards = () => {
   }
 
   return (
-    <section class="section">
-      <nav class="breadcrumb" aria-label="breadcrumbs">
+    <section className="section">
+      <nav className="breadcrumb" aria-label="breadcrumbs">
         <ul>
           <li>
             <Link to="/">Home</Link>
           </li>
-          <li class="is-active">
+          <li className="is-active">
             <a href="#" aria-current="page">
               Boards
             </a>
@@ -45,6 +38,16 @@ const Boards = () => {
           {data.boards.map(board => (
             <tr key={board.title}>
               <td>{board.title}</td>
+              <td>{board.createdAt}</td>
+              <td>
+                <div className="buttons">
+                  <Link className="button is-primary" to={`/boards/${board.slug}`}>
+                    Show
+                  </Link>
+                  <button className="button is-info">Edit</button>
+                  <button className="button is-danger">Delete</button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>

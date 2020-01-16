@@ -1,9 +1,13 @@
+#import "./user.gql"
+
 fragment Card on Card {
   id
   kind
   body
   likes
-  author
+  author {
+    ...User
+  }
   createdAt
   updatedAt
 }

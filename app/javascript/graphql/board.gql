@@ -1,0 +1,18 @@
+#import "./card.gql"
+
+fragment Board on Board {
+  id
+  title
+  slug
+  cards {
+    ...Card
+  }
+  createdAt
+  updatedAt
+}
+
+query GET_BOARDS {
+  boards {
+    ...Board
+  }
+}
