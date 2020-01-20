@@ -87,3 +87,7 @@ gem 'react-rails'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'dry-monads'
 gem 'aasm'
+
+gem "graphql", "~> 1.9"
+
+gem 'graphiql-rails', group: :development
