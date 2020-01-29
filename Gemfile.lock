@@ -173,6 +173,9 @@ GEM
     formatador (0.2.5)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    graphiql-rails (1.7.0)
+      railties
+      sprockets-rails
     graphql (1.9.18)
     hashdiff (1.0.0)
     hashie (3.6.0)
@@ -416,6 +419,7 @@ DEPENDENCIES
   factory_bot_rails
   faker!
   fog-aws
+  graphiql-rails
   graphql (~> 1.9)
   jbuilder (~> 2.5)
   json_matchers
