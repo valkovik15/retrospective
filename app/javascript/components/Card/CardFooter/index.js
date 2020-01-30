@@ -1,5 +1,5 @@
-import React from "react"
-import Likes from "../Likes"
+import React from 'react';
+import Likes from '../Likes';
 
 class CardFooter extends React.Component {
   constructor(props) {
@@ -12,38 +12,48 @@ class CardFooter extends React.Component {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+        'X-CSRF-Token': document
+          .querySelector("meta[name='csrf-token']")
+          .getAttribute('content')
       }
-    }).then((result) => {
-      if (result.status == 204) {
-        this.props.hideCard()
-      }
-      else { throw result }
-    }).catch((error) => {
-      error.json().then( errorHash => {
-        console.log(errorHash.error)
+    })
+      .then(result => {
+        if (result.status == 204) {
+          this.props.hideCard();
+        } else {
+          throw result;
+        }
       })
-    });
-  }
+      .catch(error => {
+        error.json().then(errorHash => {
+          console.log(errorHash.error);
+        });
+      });
+  };
 
-  render () {
-    const { author, deletable, avatar } = this.props;
+  render() {
+    const {author, deletable, avatar} = this.props;
     const confirmMessage = 'Are you sure you want to delete this card?';
 
     return (
       <div>
-        <hr style={{margin: '0.5rem'}}/>
-        <div className='columns'>
-          <div className='column'>
-            <Likes id={this.props.id} likes={this.props.likes}/>
+        <hr style={{margin: '0.5rem'}} />
+        <div className="columns">
+          <div className="column">
+            <Likes id={this.props.id} likes={this.props.likes} />
           </div>
-          <div className='column'>
-            <img src={avatar} className='avatar'/>
+          <div className="column">
+            <img src={avatar} className="avatar" />
             <span> by {author}</span>
           </div>
         </div>
         <div>
-          <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}} hidden={!deletable}>
+          <a
+            hidden={!deletable}
+            onClick={() => {
+              window.confirm(confirmMessage) && this.handleClick();
+            }}
+          >
             delete
           </a>
         </div>
@@ -52,4 +62,4 @@ class CardFooter extends React.Component {
   }
 }
 
-export default CardFooter
+export default CardFooter;
