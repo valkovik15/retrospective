@@ -6,12 +6,9 @@ module Mutations
     field :errors, Types::ValidationErrorsType, null: true
 
     def resolve(attributes:)
-      # check_authentication!
       card = Card.new(attributes.to_h)
-      # card = Card.new(attributes.to_h.merge(user: context[:current_user]))
 
       if card.save
-        # RetrospectiveSchema.subscriptions.trigger("cardAdded", {}, card)
         { card: card }
       else
         { errors: card.errors.full_messages }

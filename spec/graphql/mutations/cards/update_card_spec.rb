@@ -2,11 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Mutations::UpdateCardMutation, type: :request do
   describe '.resolve' do
-    it 'updates a card' do
-      card = create(:card)
-      author = create(:user)
+    let(:card) { create(:card) }
+    let(:author) { create(:user) }
+    let(:request) { post '/graphql', params: { query: query(id: card.id, author_id: author.id) } }
 
-      post '/graphql', params: { query: query(id: card.id, author_id: author.id) }
+    it 'updates a card' do
+      request
 
       expect(card.reload).to have_attributes(
         'author_id' => author.id,
@@ -15,13 +16,10 @@ RSpec.describe Mutations::UpdateCardMutation, type: :request do
     end
 
     it 'returns a card' do
-      card = create(:card)
-      author = create(:user)
-
-      post '/graphql', params: { query: query(id: card.id, author_id: author.id) }
+      request
 
       json = JSON.parse(response.body)
-      data = json['data']['updateCard']['card']
+      data = json.dig('data', 'updateCard', 'card')
 
       expect(data).to include(
         'id'     => card.id.to_s,
