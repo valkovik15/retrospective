@@ -24,6 +24,14 @@
       ]
     }
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "xo --fix"
+  },
   "dependencies": {
     "@babel/preset-react": "^7.0.0",
     "@rails/webpacker": "^4.0.7",
@@ -42,6 +50,8 @@
     "eslint-config-xo-react": "^0.22.0",
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "husky": ">=4",
+    "lint-staged": ">=10",
     "webpack-dev-server": "^3.7.2",
     "xo": "^0.25.3"
   },
