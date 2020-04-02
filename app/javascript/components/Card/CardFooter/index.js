@@ -2,10 +2,6 @@ import React from 'react';
 import Likes from '../Likes';
 
 class CardFooter extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleClick = () => {
     fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
       method: 'DELETE',
@@ -40,7 +36,7 @@ class CardFooter extends React.Component {
         <hr style={{margin: '0.5rem'}} />
         <div className="columns">
           <div className="column">
-            <Likes id={this.props.id} likes={this.props.likes} />
+            <Likes id={this.props.id} likes={this.props.likes} type={this.props.type} />
           </div>
           <div className="column">
             <img src={avatar} className="avatar" />

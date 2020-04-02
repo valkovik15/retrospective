@@ -15,7 +15,7 @@ class Card extends React.Component {
   };
 
   render() {
-    const {id, body, deletable, editable, author, avatar, likes} = this.props;
+    const {id, body, deletable, editable, author, avatar, likes, type} = this.props;
 
     return (
       <div className="box" style={this.state.cardStyle}>
@@ -27,6 +27,7 @@ class Card extends React.Component {
           hideCard={this.hideCard}
           avatar={avatar}
           likes={likes}
+          type={type}
         />
       </div>
     );

@@ -38,7 +38,7 @@ class Likes extends React.Component {
   }
 
   handleMouseDown = () => {
-    this.setState({style: 'has-text-success is-size-4'});
+    this.setState({style: 'has-text-success'});
     this.addLike();
     this.state.timer = setInterval(() => this.addLike(), 300);
   };
@@ -55,16 +55,23 @@ class Likes extends React.Component {
 
   render() {
     const {likes} = this.state;
+    const emojies = {
+      'mad': '😡',
+      'sad': '😔',
+      'glad': '🤗'
+    };
     return (
-      <a
-        className={this.state.style}
-        onMouseDown={this.handleMouseDown}
-        onMouseUp={this.handleMouseUp}
-        onMouseLeave={this.handleMouseLeave}
-      >
-        <i className="fa fa-heart" />
+      <>
+        <a
+          className={this.state.style}
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseLeave={this.handleMouseLeave}
+        >
+          {emojies[this.props.type]}
+        </a>
         <span> {likes} </span>
-      </a>
+      </>
     );
   }
 }
