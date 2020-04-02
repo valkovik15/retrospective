@@ -32,7 +32,7 @@ class CardFooter extends React.Component {
   };
 
   render() {
-    const {author, deletable, avatar} = this.props;
+    const {author, deletable, avatar, id, likes, type} = this.props;
     const confirmMessage = 'Are you sure you want to delete this card?';
 
     return (
@@ -40,7 +40,7 @@ class CardFooter extends React.Component {
         <hr style={{margin: '0.5rem'}} />
         <div className="columns">
           <div className="column">
-            <Likes id={this.props.id} likes={this.props.likes} />
+            <Likes id={id} likes={likes} type={type} />
           </div>
           <div className="column">
             <img src={avatar} className="avatar" />
