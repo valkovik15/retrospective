@@ -2,7 +2,7 @@
   "name": "retrospective",
   "private": true,
   "engines": {
-    "yarn": "^1.21.1",
+    "yarn": "^1.16.1",
     "node": "^10.0.0 || ^12.0.0 || ^13.0.0"
   },
   "xo": {
