@@ -1,5 +1,5 @@
 <%= form_with(model: card, url: board_cards_path(card.board.slug), local: true) do |form| %>
   <h2>Add new '<%= card.kind %>' card</h2>
-  <%= form.hidden_field(:kind) %>
-  <%= form.text_field :body, class: 'input', autocomplete: 'off' %>
+  <%= form.hidden_field :kind, id: "card_#{card.kind}" %>
+  <%= form.text_field :body, class: 'input', autocomplete: 'off', id: "card_#{card.kind}_body" %>
 <% end %>
