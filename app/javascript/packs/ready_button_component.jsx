@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export class ReadyButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
+export class ReadyButton extends React.PureComponent {
+  state = {
+    isReady: false
+  };
 
-  handleClick() {
+  handleClick = () => {
     fetch(`/api/${window.location.pathname}/memberships/ready_toggle`, {
       method: 'PUT',
       headers: {
@@ -21,10 +20,10 @@ export class ReadyButton extends React.Component {
       .then(result => result.json())
       .then(result => {
         this.setState({
-          ready: result
+          isReady: result
         });
       });
-  }
+  };
 
   componentDidMount() {
     fetch(`/api/${window.location.pathname}/memberships/ready_status`, {
@@ -33,21 +32,20 @@ export class ReadyButton extends React.Component {
       .then(result => result.json())
       .then(result => {
         this.setState({
-          ...this.state,
-          ready: result
+          isReady: result
         });
       });
   }
 
   render() {
-    if (this.state.ready == true) {
-      var className = 'button is-large is-success';
-    } else {
-      var className = 'button is-large';
-    }
+    const {isReady} = this.state;
 
     return (
-      <button className={className} onClick={this.handleClick}>
+      <button
+        className={`button is-large ${isReady ? 'is-success' : ''}`}
+        type="button"
+        onClick={this.handleClick}
+      >
         READY
       </button>
     );
