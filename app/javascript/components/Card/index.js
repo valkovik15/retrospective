@@ -5,20 +5,33 @@ import CardFooter from './CardFooter';
 import './Card.css';
 
 class Card extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+  state = {
+    isHidden: false
+  };
 
   hideCard = () => {
-    this.setState({cardStyle: {display: 'none'}});
+    this.setState({isHidden: true});
   };
 
   render() {
-    const {id, body, deletable, editable, author, avatar, likes, type} = this.props;
+    const {
+      id,
+      body,
+      deletable,
+      editable,
+      author,
+      avatar,
+      likes,
+      type
+    } = this.props;
+    const {isHidden} = this.state;
+
+    if (isHidden) {
+      return null;
+    }
 
     return (
-      <div className="box" style={this.state.cardStyle}>
+      <div className="box">
         <CardBody id={id} editable={editable} body={body} />
         <CardFooter
           id={id}

@@ -42,7 +42,7 @@
   <% if @previous_action_items %>
     <div class='<%= column_class_name %>'>
       <h2 class='subtitle'>
-       PREVIOUS BOARD
+        PREVIOUS BOARD
       </h2>
       <% @previous_action_items.each do |action_item| %>
         <%= react_component('ActionItem/index', {

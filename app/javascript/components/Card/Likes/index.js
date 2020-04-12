@@ -1,14 +1,17 @@
 import React from 'react';
 
-class Likes extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      likes: this.props.likes,
-      style: 'has-text-info',
-      timer: null
-    };
-  }
+const EMOJIES = {
+  mad: '😡',
+  sad: '😔',
+  glad: '🤗'
+};
+
+class Likes extends React.PureComponent {
+  state = {
+    likes: this.props.likes,
+    style: 'has-text-info',
+    timer: null
+  };
 
   addLike() {
     fetch(`/api/${window.location.pathname}/cards/${this.props.id}/like`, {
@@ -22,7 +25,7 @@ class Likes extends React.Component {
       }
     })
       .then(result => {
-        if (result.status == 200) {
+        if (result.status === 200) {
           result.json().then(resultHash => {
             this.setState({likes: resultHash.likes});
           });
@@ -40,7 +43,8 @@ class Likes extends React.Component {
   handleMouseDown = () => {
     this.setState({style: 'has-text-success'});
     this.addLike();
-    this.state.timer = setInterval(() => this.addLike(), 300);
+    const timer = setInterval(() => this.addLike(), 300);
+    this.setState({timer});
   };
 
   handleMouseUp = () => {
@@ -54,21 +58,18 @@ class Likes extends React.Component {
   };
 
   render() {
-    const {likes} = this.state;
-    const emojies = {
-      'mad': '😡',
-      'sad': '😔',
-      'glad': '🤗'
-    };
+    const {type} = this.props;
+    const {likes, style} = this.state;
+
     return (
       <>
         <a
-          className={this.state.style}
+          className={style}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onMouseLeave={this.handleMouseLeave}
         >
-          {emojies[this.props.type]}
+          {EMOJIES[type]}
         </a>
         <span> {likes} </span>
       </>

@@ -3,17 +3,14 @@ import Textarea from 'react-textarea-autosize';
 import './ActionItemBody.css';
 
 class ActionItemBody extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dbValue: this.props.body,
-      inputValue: this.props.body,
-      editMode: false
-    };
-  }
+  state = {
+    dbValue: this.props.body,
+    inputValue: this.props.body,
+    editMode: false
+  };
 
   editModeToggle = () => {
-    this.setState({editMode: !this.state.editMode});
+    this.setState(state => ({editMode: !state.editMode}));
   };
 
   handleChange = e => {
@@ -43,12 +40,12 @@ class ActionItemBody extends React.Component {
       })
     })
       .then(result => {
-        if (result.status == 200) {
+        if (result.status === 200) {
           result.json().then(resultHash => {
             this.setState({dbValue: resultHash.updated_body});
           });
         } else {
-          this.setState({inputValue: this.state.dbValue});
+          this.setState(state => ({inputValue: state.dbValue}));
           throw result;
         }
       })
@@ -68,7 +65,7 @@ class ActionItemBody extends React.Component {
         <div
           className="text"
           hidden={editMode}
-          onDoubleClick={editable && this.editModeToggle}
+          onDoubleClick={editable ? this.editModeToggle : undefined}
         >
           {inputValue}
         </div>
