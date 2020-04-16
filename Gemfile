@@ -77,6 +77,7 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'devise'
 gem 'omniauth-github'
+gem "omniauth-alfred", git: 'https://github.com/cybergizer-hq/omniauth-alfred', branch: 'master'
 gem 'webpacker', '~> 4.x'
 gem 'rails-assets-bulma', source: 'https://rails-assets.org'
 gem 'fog-aws', require: false
