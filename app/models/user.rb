@@ -17,13 +17,13 @@ class User < ApplicationRecord
     if user = find_by_email(auth.info.email)
       return user if user.uid
 
-      user.update(provider: auth.provider, uid: auth.uid, remote_avatar_url: auth.info.image)
+      user.update(provider: auth.provider, uid: auth.uid, remote_avatar_url: auth.info.avatar_url)
       user
     else
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
         user.email = auth.info.email
         user.password = Devise.friendly_token[0, 20]
-        user.remote_avatar_url = auth.info.image
+        user.remote_avatar_url = auth.info.avatar_url
       end
     end
   end
