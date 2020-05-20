@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ActionCable from 'actioncable';
+
+import getOrigin from '../utils/action_cable_helpers';
 
 export class ReadyButton extends React.PureComponent {
   state = {
@@ -22,10 +25,23 @@ export class ReadyButton extends React.PureComponent {
         this.setState({
           isReady: result
         });
-      });
+      })
+      .then(_ => this.sub.send({front_action: 'update_status'}));
   };
 
   componentDidMount() {
+    const cable = ActionCable.createConsumer(
+      `ws://${getOrigin()}${ActionCable.getConfig('url')}`
+    );
+    this.sub = cable.subscriptions.create(
+      {
+        channel: 'BoardChannel',
+        board: window.location.pathname.slice(
+          window.location.pathname.lastIndexOf('/') + 1
+        )
+      },
+      {}
+    );
     fetch(`/api/${window.location.pathname}/memberships/ready_status`, {
       method: 'GET'
     })
