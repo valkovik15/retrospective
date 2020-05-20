@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ActionCable from 'actioncable';
 
 export class ReadyButton extends React.PureComponent {
   state = {
@@ -22,10 +23,23 @@ export class ReadyButton extends React.PureComponent {
         this.setState({
           isReady: result
         });
-      });
+      })
+      .then(_ => this.sub.send({front_action: 'update'}));
   };
 
   componentDidMount() {
+    const cable = ActionCable.createConsumer(
+      `ws://${window.location.hostname}:3000/cable`
+    );
+    this.sub = cable.subscriptions.create(
+      {
+        channel: 'MembershipsChannel',
+        board: window.location.pathname.slice(
+          window.location.pathname.lastIndexOf('/') + 1
+        )
+      },
+      {}
+    );
     fetch(`/api/${window.location.pathname}/memberships/ready_status`, {
       method: 'GET'
     })

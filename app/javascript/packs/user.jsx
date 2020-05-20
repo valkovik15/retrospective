@@ -1,23 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class User extends Component {
-  constructor(props) {
-    super(props);
-    this.ready = this.props.membership.ready;
-    this.email = this.props.membership.user.email;
-    this.id = this.props.membership.id;
-    this.state = {};
-  }
+const User = props => {
+  const {membership} = props;
+  const {ready, id, user} = membership;
+  const {email} = user;
 
-  hideUser(e) {
-    this.setState({
-      ...this.state,
-      displayStyle: {display: 'none'}
-    });
-  }
-
-  deleteUser = e => {
-    fetch(`/api/${window.location.pathname}/memberships/${this.id}`, {
+  const deleteUser = () => {
+    const {handleDelete} = props;
+    fetch(`/api/${window.location.pathname}/memberships/${id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -28,8 +18,8 @@ class User extends Component {
       }
     })
       .then(result => {
-        if (result.status == 204) {
-          this.hideUser();
+        if (result.status === 204) {
+          handleDelete(id);
         } else {
           throw result;
         }
@@ -41,18 +31,12 @@ class User extends Component {
       });
   };
 
-  render() {
-    return (
-      <div
-        key={this.email}
-        className={this.ready ? 'tag is-success' : 'tag is-info'}
-        style={this.state.displayStyle}
-      >
-        <p>{this.email}</p>
-        <a className="delete is-small" onClick={this.deleteUser} />
-      </div>
-    );
-  }
-}
+  return (
+    <div key={email} className={ready ? 'tag is-success' : 'tag is-info'}>
+      <p>{email}</p>
+      <a className="delete is-small" onClick={deleteUser} />
+    </div>
+  );
+};
 
 export default User;
