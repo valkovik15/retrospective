@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ActionCable from 'actioncable';
 
-import getOrigin from '../utils/action_cable_helpers';
-
 export class ReadyButton extends React.PureComponent {
   state = {
     isReady: false
@@ -30,9 +28,7 @@ export class ReadyButton extends React.PureComponent {
   };
 
   componentDidMount() {
-    const cable = ActionCable.createConsumer(
-      `ws://${getOrigin()}${ActionCable.getConfig('url')}`
-    );
+    const cable = ActionCable.createConsumer();
     this.sub = cable.subscriptions.create(
       {
         channel: 'BoardChannel',
@@ -51,6 +47,10 @@ export class ReadyButton extends React.PureComponent {
           isReady: result
         });
       });
+  }
+
+  componentWillUnmount() {
+    this.sub.unsubscribe();
   }
 
   render() {

@@ -4,7 +4,6 @@ import Select from 'react-select';
 import ActionCable from 'actioncable';
 
 import User from './user';
-import getOrigin from '../utils/action_cable_helpers';
 
 export class Autocomplete extends Component {
   state = {
@@ -15,9 +14,7 @@ export class Autocomplete extends Component {
   };
 
   componentDidMount() {
-    const cable = ActionCable.createConsumer(
-      `ws://${getOrigin()}${ActionCable.getConfig('url')}`
-    );
+    const cable = ActionCable.createConsumer();
     this.sub = cable.subscriptions.create(
       {
         channel: 'BoardChannel',
@@ -37,6 +34,10 @@ export class Autocomplete extends Component {
           memberships: result
         }));
       });
+  }
+
+  componentWillUnmount() {
+    this.sub.unsubscribe();
   }
 
   handleReceiveMemberships = data => {
