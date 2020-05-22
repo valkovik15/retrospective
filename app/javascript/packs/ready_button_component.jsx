@@ -30,8 +30,9 @@ export class ReadyButton extends React.PureComponent {
   };
 
   componentDidMount() {
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const cable = ActionCable.createConsumer(
-      `ws://${getOrigin()}${ActionCable.getConfig('url')}`
+      `${protocol}://${getOrigin()}${ActionCable.getConfig('url')}`
     );
     this.sub = cable.subscriptions.create(
       {
@@ -51,6 +52,10 @@ export class ReadyButton extends React.PureComponent {
           isReady: result
         });
       });
+  }
+
+  componentWillUnmount() {
+    this.sub.unsubscribe();
   }
 
   render() {
