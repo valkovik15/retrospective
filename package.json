@@ -15,12 +15,14 @@
     "space": true,
     "rules": {
       "camelcase": 0,
+      "default-case": 0,
       "import/no-unassigned-import": [
         "error",
         {
           "allow": ["**/*.css"]
         }
       ],
+      "no-alert": 0,
       "promise/prefer-await-to-then": 1,
       "react/prop-types": 0,
       "unicorn/filename-case": [
@@ -29,6 +31,7 @@
           "case": "snakeCase"
         }
       ]
+
     }
   },
   "husky": {

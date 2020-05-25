@@ -66,23 +66,13 @@
       <h2 class='subtitle'>
         <%= kind.upcase %>
       </h2>
-      <div class='box'>
-        <%= render 'cards/form', card: @board.cards.build(kind: kind) %>
-      </div>
-
-      <% cards.each do |card| %>
-        <%= react_component('Card/index', {
-              id: card.id,
-              author: card.author.email.split('@').first,
-              avatar: card.author.avatar.url(:thumb),
-              body: card.body,
-              likes: card.likes,
-              type: kind,
-              editable: allowed_to?(:update?, card, with: API::CardPolicy),
-              deletable: allowed_to?(:destroy?, card, with: API::CardPolicy)
+       <%= react_component('card_column', {
+              kind: kind,
+              initCards: cards,
+              submitPath: "/boards/#{@board.slug}/cards",
+              user: current_user.email
             })
         %>
-      <% end %>
     </div>
   <% end %>
 

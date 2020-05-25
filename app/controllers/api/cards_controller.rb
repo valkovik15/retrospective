@@ -17,6 +17,9 @@ module API
 
     def destroy
       if @card.destroy
+        ActionCable.server.broadcast "board_#{params[:board_slug]}",
+                                      front_action: 'remove_card',
+                                      card: ActiveModelSerializers::SerializableResource.new(@card).as_json
         head :no_content
       else
         render json: { error: @card.errors.full_messages.join(',') }, status: :bad_request

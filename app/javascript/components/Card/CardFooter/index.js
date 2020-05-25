@@ -2,12 +2,8 @@ import React from 'react';
 import Likes from '../Likes';
 
 class CardFooter extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleClick = () => {
-    fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
+    fetch(`/api${window.location.pathname}/cards/${this.props.id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -18,7 +14,7 @@ class CardFooter extends React.Component {
       }
     })
       .then(result => {
-        if (result.status == 204) {
+        if (result.status === 204) {
           this.props.hideCard();
         } else {
           throw result;
@@ -50,9 +46,7 @@ class CardFooter extends React.Component {
         <div>
           <a
             hidden={!deletable}
-            onClick={() => {
-              window.confirm(confirmMessage) && this.handleClick();
-            }}
+            onClick={() => window.confirm(confirmMessage) && this.handleClick()}
           >
             delete
           </a>

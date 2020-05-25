@@ -17,9 +17,9 @@ class BoardsController < ApplicationController
   # rubocop: disable Metrics/AbcSize
   def show
     @cards_by_type = {
-      mad: @board.cards.mad.includes(:author),
-      sad: @board.cards.sad.includes(:author),
-      glad: @board.cards.glad.includes(:author)
+      mad: ActiveModelSerializers::SerializableResource.new(@board.cards.mad.includes(:author)).as_json,
+      sad: ActiveModelSerializers::SerializableResource.new(@board.cards.sad.includes(:author)).as_json,
+      glad: ActiveModelSerializers::SerializableResource.new(@board.cards.glad.includes(:author)).as_json,
     }
     @action_items = @board.action_items
     @action_item = ActionItem.new(board_id: @board.id)
