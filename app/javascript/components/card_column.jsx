@@ -7,6 +7,20 @@ const CardColumn = props => {
 
   const [cards, setCards] = useState(initCards);
 
+  useEffect(() => {
+    ActionCable.createConsumer().subscriptions.create(
+      {
+        channel: 'BoardChannel',
+        board: window.location.pathname.slice(
+          window.location.pathname.lastIndexOf('/') + 1
+        )
+      },
+      {
+        received: handleMessages
+      }
+    );
+  }, [handleMessages]);
+
   const handleMessages = data => {
     const {front_action, card} = data;
     switch (front_action) {
@@ -28,23 +42,29 @@ const CardColumn = props => {
 
         break;
       }
+
+      case 'update_card': {
+        if (card.kind === kind) {
+          setCards(oldCards => {
+            const cardIdIndex = oldCards.findIndex(
+              element => element.id === card.id
+            );
+            if (cardIdIndex >= 0) {
+              return [
+                ...oldCards.slice(0, cardIdIndex),
+                card,
+                ...oldCards.slice(cardIdIndex + 1)
+              ];
+            }
+
+            return oldCards;
+          });
+        }
+
+        break;
+      }
     }
   };
-
-  useEffect(() => {
-    // Обновляем заголовок документа с помощью API браузера
-    ActionCable.createConsumer().subscriptions.create(
-      {
-        channel: 'BoardChannel',
-        board: window.location.pathname.slice(
-          window.location.pathname.lastIndexOf('/') + 1
-        )
-      },
-      {
-        received: handleMessages
-      }
-    );
-  }, [handleMessages]);
 
   return (
     <>
@@ -75,6 +95,7 @@ const CardColumn = props => {
       </div>
 
       {cards.map(card => {
+        console.log(card);
         return (
           <Card
             key={card.id}
