@@ -83,7 +83,6 @@ const CardColumn = props => {
       </div>
 
       {cards.map(card => {
-        console.log(card);
         return (
           <Card
             key={card.id}

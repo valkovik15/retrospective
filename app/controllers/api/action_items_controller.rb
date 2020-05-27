@@ -28,6 +28,7 @@ module API
 
     def move
       if @action_item.move!(@board)
+        broadcast_card('move_action_item', params[:board_slug], @action_item)
         head :ok
       else
         render json: { error: @action_item.errors.full_messages.join(',') }, status: :bad_request
@@ -36,6 +37,7 @@ module API
 
     def close
       if @action_item.close!
+        broadcast_card('close_action_item', params[:board_slug], @action_item)
         head :ok
       else
         render json: { error: @action_item.errors.full_messages.join(',') }, status: :bad_request
@@ -44,6 +46,7 @@ module API
 
     def complete
       if @action_item.complete!
+        broadcast_card('complete_action_item', params[:board_slug], @action_item)
         head :ok
       else
         render json: { error: @action_item.errors.full_messages.join(',') }, status: :bad_request
@@ -52,6 +55,7 @@ module API
 
     def reopen
       if @action_item.reopen!
+        broadcast_card('reopen_action_item', params[:board_slug], @action_item)
         head :ok
       else
         render json: { error: @action_item.errors.full_messages.join(',') }, status: :bad_request

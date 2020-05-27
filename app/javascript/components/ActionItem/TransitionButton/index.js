@@ -1,11 +1,6 @@
 import React from 'react';
 
 class TransitionButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   handleClick = () => {
     fetch(
       `/api/${window.location.pathname}/action_items/${this.props.id}/${this.props.action}`,
@@ -21,9 +16,7 @@ class TransitionButton extends React.Component {
       }
     )
       .then(result => {
-        if (result.status == 200) {
-          window.location.reload();
-        } else {
+        if (result.status !== 200) {
           throw result;
         }
       })
@@ -37,6 +30,7 @@ class TransitionButton extends React.Component {
   render() {
     return (
       <button
+        type="button"
         onClick={() => {
           this.handleClick();
         }}
