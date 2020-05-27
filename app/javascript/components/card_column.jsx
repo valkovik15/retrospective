@@ -1,25 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Card from './Card';
-import ActionCable from 'actioncable';
+import {useBoardSubscription} from '../utils/subscription';
 
 const CardColumn = props => {
   const {submitPath, kind, initCards, user} = props;
 
   const [cards, setCards] = useState(initCards);
-
-  useEffect(() => {
-    ActionCable.createConsumer().subscriptions.create(
-      {
-        channel: 'BoardChannel',
-        board: window.location.pathname.slice(
-          window.location.pathname.lastIndexOf('/') + 1
-        )
-      },
-      {
-        received: handleMessages
-      }
-    );
-  }, [handleMessages]);
 
   const handleMessages = data => {
     const {front_action, card} = data;
@@ -65,6 +51,8 @@ const CardColumn = props => {
       }
     }
   };
+
+  useBoardSubscription(handleMessages);
 
   return (
     <>

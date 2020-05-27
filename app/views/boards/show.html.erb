@@ -77,6 +77,14 @@
   <% end %>
 
   <div class='<%= column_class_name %>'>
+  <%= react_component('action_item_column', {
+              creators: @board_creators,
+              initItems: @action_items,
+              submitPath: "/boards/#{@board.slug}/action_items",
+              user: current_user.email
+            })
+        %>
+    <% if false %>
     <h2 class='subtitle'>
       ACTION ITEMS
     </h2>
@@ -93,6 +101,7 @@
             })
         %>
       <% end %>
+      <%end%>
   </div>
 
 </div>

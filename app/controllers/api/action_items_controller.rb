@@ -2,6 +2,7 @@
 
 module API
   class ActionItemsController < API::ApplicationController
+    include BroadcastActions
     before_action :set_board, :set_action_item
     before_action do
       authorize! @action_item, context: { board: @board }
@@ -9,6 +10,7 @@ module API
 
     def update
       if @action_item.update(body: params.permit(:edited_body)[:edited_body])
+        broadcast_card('update_action_item', params[:board_slug], @action_item)
         render json: { updated_body: @action_item.body }, status: :ok
       else
         render json: { error: @action_item.errors }, status: :bad_request
@@ -17,6 +19,7 @@ module API
 
     def destroy
       if @action_item.destroy
+        broadcast_card('remove_action_item', params[:board_slug], @action_item)
         head :no_content
       else
         render json: { error: @action_item.errors.full_messages.join(',') }, status: :bad_request
