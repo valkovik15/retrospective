@@ -4,7 +4,8 @@ import ActionCable from 'actioncable';
 
 export class ReadyButton extends React.PureComponent {
   state = {
-    isReady: false
+    isReady: false,
+    id: 0
   };
 
   handleClick = () => {
@@ -19,12 +20,21 @@ export class ReadyButton extends React.PureComponent {
       }
     })
       .then(result => result.json())
-      .then(result => {
-        this.setState({
-          isReady: result
-        });
-      })
       .then(_ => this.sub.send({front_action: 'update_status'}));
+  };
+
+  handleMessages = data => {
+    const {front_action, id} = data;
+    switch (front_action) {
+      case 'update_status': {
+        if (id === this.state.id) {
+          this.setState(state => ({
+            ...state,
+            isReady: !state.isReady
+          }));
+        }
+      }
+    }
   };
 
   componentDidMount() {
@@ -36,7 +46,9 @@ export class ReadyButton extends React.PureComponent {
           window.location.pathname.lastIndexOf('/') + 1
         )
       },
-      {}
+      {
+        received: this.handleMessages
+      }
     );
     fetch(`/api/${window.location.pathname}/memberships/ready_status`, {
       method: 'GET'
@@ -44,7 +56,8 @@ export class ReadyButton extends React.PureComponent {
       .then(result => result.json())
       .then(result => {
         this.setState({
-          isReady: result
+          isReady: result.ready,
+          id: result.id
         });
       });
   }

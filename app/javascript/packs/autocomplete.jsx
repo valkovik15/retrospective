@@ -75,9 +75,6 @@ export class Autocomplete extends Component {
         }));
         break;
       }
-
-      default:
-        console.log('Unknown message received');
     }
   };
 
