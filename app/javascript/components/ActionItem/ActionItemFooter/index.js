@@ -4,10 +4,6 @@ import TransitionButton from '../TransitionButton';
 import './ActionItemFooter.css';
 
 class ActionItemFooter extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleDeleteClick = () => {
     fetch(`/api/${window.location.pathname}/action_items/${this.props.id}`, {
       method: 'DELETE',
@@ -20,7 +16,7 @@ class ActionItemFooter extends React.Component {
       }
     })
       .then(result => {
-        if (result.status == 204) {
+        if (result.status === 204) {
           this.props.hideActionItem();
         } else {
           throw result;
@@ -48,7 +44,7 @@ class ActionItemFooter extends React.Component {
       }
     )
       .then(result => {
-        if (result.status == 200) {
+        if (result.status === 200) {
           window.location.reload();
         } else {
           throw result;
@@ -74,12 +70,12 @@ class ActionItemFooter extends React.Component {
 
   generateChevrons = () => {
     const {times_moved} = this.props;
-    const icon = (
+    const chevrons = Array.from({length: times_moved}, (_, index) => (
       <i
+        key={index}
         className={`fas fa-chevron-right ${this.pickColor(times_moved)}_font`}
       />
-    );
-    const chevrons = Array.from({length: times_moved}, () => icon);
+    ));
     return chevrons;
   };
 
@@ -105,6 +101,7 @@ class ActionItemFooter extends React.Component {
         )}
         {movable && (
           <button
+            type="button"
             onClick={() => {
               window.confirm(confirmMoveMessage) && this.handleMoveClick();
             }}

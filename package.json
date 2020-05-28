@@ -23,6 +23,12 @@
         }
       ],
       "no-alert": 0,
+      "no-unused-expressions": [
+        "error",
+        {
+          "allowShortCircuit":true
+        }
+      ],
       "promise/prefer-await-to-then": 1,
       "react/prop-types": 0,
       "unicorn/filename-case": [

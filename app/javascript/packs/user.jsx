@@ -6,7 +6,6 @@ const User = props => {
   const {email} = user;
 
   const deleteUser = () => {
-    const {handleDelete} = props;
     fetch(`/api/${window.location.pathname}/memberships/${id}`, {
       method: 'DELETE',
       headers: {
@@ -18,9 +17,7 @@ const User = props => {
       }
     })
       .then(result => {
-        if (result.status === 204) {
-          handleDelete(id);
-        } else {
+        if (result.status !== 204) {
           throw result;
         }
       })

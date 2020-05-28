@@ -19,6 +19,7 @@ module API
       member = Membership.find(params[:id])
       authorize! member
       if member.destroy
+        broadcast_membership('remove_user', params[:board_slug], member)
         head :no_content
       else
         render json: { error: member.errors }, status: :bad_request
