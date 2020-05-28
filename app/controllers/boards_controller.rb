@@ -17,13 +17,17 @@ class BoardsController < ApplicationController
   # rubocop: disable Metrics/AbcSize
   def show
     @cards_by_type = {
-      mad: ActiveModelSerializers::SerializableResource.new(@board.cards.mad.includes(:author).order(created_at: :asc)).as_json,
-      sad: ActiveModelSerializers::SerializableResource.new(@board.cards.sad.includes(:author).order(created_at: :asc)).as_json,
-      glad: ActiveModelSerializers::SerializableResource.new(@board.cards.glad.includes(:author).order(created_at: :asc)).as_json,
+      mad: ActiveModelSerializers::SerializableResource.new(@board.cards.mad.includes(:author)
+                                                            .order(created_at: :asc)).as_json,
+      sad: ActiveModelSerializers::SerializableResource.new(@board.cards.sad.includes(:author)
+                                                            .order(created_at: :asc)).as_json,
+      glad: ActiveModelSerializers::SerializableResource.new(@board.cards.glad.includes(:author)
+                                                             .order(created_at: :asc)).as_json
     }
     @action_items = ActiveModelSerializers::SerializableResource.new(@board.action_items).as_json
     @action_item = ActionItem.new(board_id: @board.id)
-    @board_creators = User.find(@board.memberships.where(role: 'creator').pluck(:user_id)).pluck(:email)
+    @board_creators = User.find(@board.memberships.where(role: 'creator').pluck(:user_id))
+                          .pluck(:email)
 
     @previous_action_items = if @board.previous_board&.action_items&.any?
                                @board.previous_board.action_items

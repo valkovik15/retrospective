@@ -27,12 +27,12 @@ module API
     end
 
     def ready_status
-      render json: {ready: @membership.ready, id: @membership.id}
+      render json: { ready: @membership.ready, id: @membership.id }
     end
 
     def ready_toggle
       @membership.update(ready: !@membership.ready)
-      
+
       render json: @membership.ready
     end
 

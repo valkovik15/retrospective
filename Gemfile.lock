@@ -21,6 +21,8 @@ GEM
   specs:
     aasm (5.0.6)
       concurrent-ruby (~> 1.0)
+    action-cable-testing (0.6.1)
+      actioncable (>= 5.0)
     action_policy (0.3.2)
     actioncable (6.0.0)
       actionpack (= 6.0.0)
@@ -412,6 +414,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
+  action-cable-testing
   action_policy (~> 0.3.0)
   active_model_serializers (~> 0.10.0)
   bootsnap (>= 1.1.0)

@@ -37,6 +37,10 @@ RSpec.describe API::ActionItemsController do
         allow(action_item).to receive(:destroy).and_return(true)
       end
 
+      it 'broadcasts deleted item' do
+        expect { delete :destroy, params: params }.to have_broadcasted_to("board_#{board.slug}")
+      end
+
       it_behaves_like :controllers_api_successful_action, :no_content
     end
   end
@@ -78,6 +82,10 @@ RSpec.describe API::ActionItemsController do
 
       it_behaves_like :controllers_api_successful_action
 
+      it 'broadcasts updated item' do
+        expect { patch :update, params: params }.to have_broadcasted_to("board_#{board.slug}")
+      end
+      
       it { is_expected.to match_json_schema('api/cards/update') }
     end
   end
@@ -109,6 +117,10 @@ RSpec.describe API::ActionItemsController do
         allow(Board).to receive(:find_by!).with(slug: board.slug).and_return(board)
         allow(ActionItem).to receive(:find).with(action_item.id.to_s).and_return(action_item)
         allow(action_item).to receive(:move!).with(board).and_return(true)
+      end
+
+      it 'broadcasts moved item' do
+        expect { post :move, params: params }.to have_broadcasted_to("board_#{board.slug}")
       end
 
       it_behaves_like :controllers_api_successful_action
@@ -144,6 +156,10 @@ RSpec.describe API::ActionItemsController do
         allow(action_item).to receive(:close!).and_return(true)
       end
 
+      it 'broadcasts closed item' do
+        expect { put :close, params: params }.to have_broadcasted_to("board_#{board.slug}")
+      end
+
       it_behaves_like :controllers_api_successful_action
     end
   end
@@ -177,6 +193,10 @@ RSpec.describe API::ActionItemsController do
         allow(action_item).to receive(:complete!).and_return(true)
       end
 
+      it 'broadcasts completed item' do
+        expect { put :complete, params: params }.to have_broadcasted_to("board_#{board.slug}")
+      end
+
       it_behaves_like :controllers_api_successful_action
     end
   end
@@ -208,6 +228,10 @@ RSpec.describe API::ActionItemsController do
         allow(Board).to receive(:find_by!).with(slug: board.slug).and_return(board)
         allow(ActionItem).to receive(:find).with(action_item.id.to_s).and_return(action_item)
         allow(action_item).to receive(:reopen!).and_return(true)
+      end
+
+      it 'broadcasts reopened item' do
+        expect { put :reopen, params: params }.to have_broadcasted_to("board_#{board.slug}")
       end
 
       it_behaves_like :controllers_api_successful_action

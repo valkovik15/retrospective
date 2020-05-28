@@ -18,7 +18,8 @@ RSpec.describe Boards::ActionItemsController do
 
   before { bypass_rescue }
 
-  describe 'PUT #create' do
+  describe 'POST #create' do
+    
     subject(:response) { post :create, params: params }
     let_it_be(:params) do
       { board_slug: board.slug,
@@ -48,6 +49,9 @@ RSpec.describe Boards::ActionItemsController do
         before { login_as creator }
         context 'with valid params' do
           it { is_expected.to have_http_status(:redirect) }
+          it 'broadcasts new item' do
+            expect { post :create, params: params }.to have_broadcasted_to("board_#{board.slug}")
+          end
         end
 
         context 'with invalid params' do

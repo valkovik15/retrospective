@@ -37,6 +37,10 @@ RSpec.describe API::CardsController do
         allow(card).to receive(:destroy).and_return(true)
       end
 
+      it 'broadcasts deleted item' do
+        expect { delete :destroy, params: params }.to have_broadcasted_to("board_#{board.slug}")
+      end
+
       it_behaves_like :controllers_api_successful_action, :no_content
     end
   end
@@ -78,6 +82,10 @@ RSpec.describe API::CardsController do
 
       it_behaves_like :controllers_api_successful_action
 
+      it 'broadcasts updated item' do
+        expect { patch :update, params: params }.to have_broadcasted_to("board_#{board.slug}")
+      end
+
       it { is_expected.to match_json_schema('api/cards/update') }
     end
   end
@@ -117,6 +125,10 @@ RSpec.describe API::CardsController do
       end
 
       it_behaves_like :controllers_api_successful_action
+
+      it 'broadcasts liked item' do
+        expect { patch :like, params: params }.to have_broadcasted_to("board_#{board.slug}")
+      end
 
       it { is_expected.to match_json_schema('api/cards/like') }
     end

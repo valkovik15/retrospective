@@ -85,6 +85,10 @@ RSpec.describe API::MembershipsController do
           .and_return(membership)
       end
 
+      it 'broadcasts created item' do
+        expect {delete :destroy, params: params}.to have_broadcasted_to("board_#{board.slug}")
+      end
+
       it_behaves_like :controllers_api_successful_action, :no_content
     end
   end
