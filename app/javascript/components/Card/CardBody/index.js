@@ -4,10 +4,20 @@ import './CardBody.css';
 
 class CardBody extends React.Component {
   state = {
-    dbValue: this.props.body,
     inputValue: this.props.body,
     editMode: false
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.editMode === false) {
+      return {
+        inputValue: nextProps.body,
+        editMode: prevState.editMode
+      };
+    }
+
+    return prevState;
+  }
 
   editModeToggle = () => {
     this.setState(state => ({editMode: !state.editMode}));
@@ -40,12 +50,9 @@ class CardBody extends React.Component {
       })
     })
       .then(result => {
-        if (result.status === 200) {
-          result.json().then(resultHash => {
-            this.setState({dbValue: resultHash.updated_body});
-          });
-        } else {
-          this.setState(state => ({inputValue: state.dbValue}));
+        const {body} = this.props;
+        if (result.status !== 200) {
+          this.setState(state => ({...state, inputValue: body}));
           throw result;
         }
       })
@@ -58,7 +65,7 @@ class CardBody extends React.Component {
 
   render() {
     const {inputValue, editMode} = this.state;
-    const {editable} = this.props;
+    const {editable, body} = this.props;
 
     return (
       <div>
@@ -67,7 +74,7 @@ class CardBody extends React.Component {
           hidden={editMode}
           onDoubleClick={editable ? this.editModeToggle : undefined}
         >
-          {inputValue}
+          {body}
         </div>
         <Textarea
           value={inputValue}

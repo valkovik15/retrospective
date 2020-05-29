@@ -91,3 +91,6 @@ gem 'aasm'
 gem "graphql", "~> 1.9"
 
 gem 'graphiql-rails', group: :development
+group :test, :development do
+  gem 'action-cable-testing'
+end

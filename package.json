@@ -15,10 +15,18 @@
     "space": true,
     "rules": {
       "camelcase": 0,
+      "default-case": 0,
       "import/no-unassigned-import": [
         "error",
         {
           "allow": ["**/*.css"]
+        }
+      ],
+      "no-alert": 0,
+      "no-unused-expressions": [
+        "error",
+        {
+          "allowShortCircuit":true
         }
       ],
       "promise/prefer-await-to-then": 1,
@@ -29,6 +37,7 @@
           "case": "snakeCase"
         }
       ]
+
     }
   },
   "husky": {

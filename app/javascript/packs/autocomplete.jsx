@@ -41,12 +41,14 @@ export class Autocomplete extends Component {
   }
 
   handleReceiveMemberships = data => {
-    const {id, ready, user, front_action} = data;
+    const {id, front_action, users} = data;
     switch (front_action) {
-      case 'add_user': {
+      case 'add_users': {
         this.setState((state, _) => ({
           ...state,
-          memberships: [...new Set(state.memberships.concat({id, user, ready}))]
+          memberships: [
+            ...new Set(state.memberships.concat(...Object.values(users)))
+          ]
         }));
         break;
       }
@@ -75,14 +77,7 @@ export class Autocomplete extends Component {
         }));
         break;
       }
-
-      default:
-        console.log('Unknown message received');
     }
-  };
-
-  handleUserDelete = id => {
-    this.sub.send({id, front_action: 'remove_user'});
   };
 
   handleSubmit = e => {
@@ -114,7 +109,7 @@ export class Autocomplete extends Component {
           ...state,
           selectedOption: null
         }));
-        this.sub.send(Object.assign(result[0], {front_action: 'add_user'}));
+        this.sub.send({users: {...result}, front_action: 'add_users'});
       })
       .catch(error => {
         this.setState((state, _) => ({
@@ -162,13 +157,7 @@ export class Autocomplete extends Component {
   render() {
     const {memberships} = this.state;
     const usersListComponent = memberships.map(membership => {
-      return (
-        <User
-          key={membership.id}
-          membership={membership}
-          handleDelete={this.handleUserDelete}
-        />
-      );
+      return <User key={membership.id} membership={membership} />;
     });
     const components = {
       DropdownIndicator: null

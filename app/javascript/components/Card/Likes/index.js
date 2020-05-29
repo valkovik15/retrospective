@@ -8,7 +8,6 @@ const EMOJIES = {
 
 class Likes extends React.PureComponent {
   state = {
-    likes: this.props.likes,
     style: 'has-text-info',
     timer: null
   };
@@ -25,11 +24,7 @@ class Likes extends React.PureComponent {
       }
     })
       .then(result => {
-        if (result.status === 200) {
-          result.json().then(resultHash => {
-            this.setState({likes: resultHash.likes});
-          });
-        } else {
+        if (result.status !== 200) {
           throw result;
         }
       })
@@ -58,8 +53,8 @@ class Likes extends React.PureComponent {
   };
 
   render() {
-    const {type} = this.props;
-    const {likes, style} = this.state;
+    const {type, likes} = this.props;
+    const {style} = this.state;
 
     return (
       <>

@@ -41,24 +41,12 @@
 <div class='columns'>
   <% if @previous_action_items %>
     <div class='<%= column_class_name %>'>
-      <h2 class='subtitle'>
-        PREVIOUS BOARD
-      </h2>
-      <% @previous_action_items.each do |action_item| %>
-        <%= react_component('ActionItem/index', {
-              id: action_item.id,
-              body: action_item.body,
-              status: action_item.status,
-              times_moved: action_item.times_moved,
-              movable: allowed_to?(:move?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
-              transitionable: {
-                can_close: allowed_to?(:close?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
-                can_complete: allowed_to?(:complete?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
-                can_reopen: allowed_to?(:reopen?, action_item, with: API::ActionItemPolicy, context: { board: @board })
-              }
+      <%= react_component('prev_action_item_column', {
+              creators: @board_creators,
+              initItems: @previous_action_items,
+              user: current_user.email
             })
         %>
-      <% end %>
     </div>
   <% end %>
   <% @cards_by_type.each do |kind, cards| %>
@@ -66,43 +54,24 @@
       <h2 class='subtitle'>
         <%= kind.upcase %>
       </h2>
-      <div class='box'>
-        <%= render 'cards/form', card: @board.cards.build(kind: kind) %>
-      </div>
-
-      <% cards.each do |card| %>
-        <%= react_component('Card/index', {
-              id: card.id,
-              author: card.author.email.split('@').first,
-              avatar: card.author.avatar.url(:thumb),
-              body: card.body,
-              likes: card.likes,
-              type: kind,
-              editable: allowed_to?(:update?, card, with: API::CardPolicy),
-              deletable: allowed_to?(:destroy?, card, with: API::CardPolicy)
+       <%= react_component('card_column', {
+              kind: kind,
+              initCards: cards,
+              submitPath: "/boards/#{@board.slug}/cards",
+              user: current_user.email
             })
         %>
-      <% end %>
     </div>
   <% end %>
 
   <div class='<%= column_class_name %>'>
-    <h2 class='subtitle'>
-      ACTION ITEMS
-    </h2>
-    <div class='box'>
-      <%= render 'action_items/form', action_item: @action_item %>
-    </div>
-      <%  @action_items.each do |action_item| %>
-        <%= react_component('ActionItem/index', {
-              id: action_item.id,
-              body: action_item.body,
-              times_moved: action_item.times_moved,
-              editable: allowed_to?(:update?, action_item, with: API::ActionItemPolicy, context: { board: @board }),
-              deletable: allowed_to?(:destroy?, action_item, with: API::ActionItemPolicy, context: { board: @board })
+  <%= react_component('action_item_column', {
+              creators: @board_creators,
+              initItems: @action_items,
+              submitPath: "/boards/#{@board.slug}/action_items",
+              user: current_user.email
             })
         %>
-      <% end %>
   </div>
 
 </div>

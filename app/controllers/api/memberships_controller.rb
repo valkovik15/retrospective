@@ -2,6 +2,7 @@
 
 module API
   class MembershipsController < API::ApplicationController
+    include BroadcastActions
     before_action :set_board, :set_membership
     authorize :membership, through: :current_membership
 
@@ -18,6 +19,7 @@ module API
       member = Membership.find(params[:id])
       authorize! member
       if member.destroy
+        broadcast_membership('remove_user', params[:board_slug], member)
         head :no_content
       else
         render json: { error: member.errors }, status: :bad_request
@@ -25,11 +27,12 @@ module API
     end
 
     def ready_status
-      render json: @membership.ready
+      render json: { ready: @membership.ready, id: @membership.id }
     end
 
     def ready_toggle
       @membership.update(ready: !@membership.ready)
+
       render json: @membership.ready
     end
 
