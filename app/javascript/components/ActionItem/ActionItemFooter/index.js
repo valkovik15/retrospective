@@ -44,9 +44,7 @@ class ActionItemFooter extends React.Component {
       }
     )
       .then(result => {
-        if (result.status === 200) {
-          window.location.reload();
-        } else {
+        if (result.status !== 200) {
           throw result;
         }
       })

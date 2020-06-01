@@ -7,6 +7,8 @@ const CardColumn = props => {
 
   const [cards, setCards] = useState(initCards);
 
+  let submitable = true;
+
   const handleMessages = data => {
     const {front_action, card} = data;
     switch (front_action) {
@@ -54,10 +56,16 @@ const CardColumn = props => {
 
   useBoardSubscription(handleMessages);
 
+  const submitHandler = _ => {
+    const prevValue = submitable;
+    submitable = false;
+    return prevValue;
+  };
+
   return (
     <>
       <div className="box">
-        <form action={submitPath} method="post">
+        <form action={submitPath} method="post" onSubmit={submitHandler}>
           <h2> Add new {kind} card</h2>
           <input
             type="hidden"
