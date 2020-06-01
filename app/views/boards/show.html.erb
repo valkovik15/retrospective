@@ -38,40 +38,14 @@
   <% column_class_name = 'column is-one-quarter' %>
 <% end %>
 
-<div class='columns'>
-  <% if @previous_action_items %>
-    <div class='<%= column_class_name %>'>
-      <%= react_component('prev_action_item_column', {
+<%= react_component('card_table', {
+              actionItems: @action_items,
+              board: @board,
+              cardsByType: @cards_by_type,
               creators: @board_creators,
-              initItems: @previous_action_items,
+              initPrevItems: @previous_action_items || [],
               user: current_user.email
             })
-        %>
-    </div>
-  <% end %>
-  <% @cards_by_type.each do |kind, cards| %>
-    <div class='<%= column_class_name %>'>
-      <h2 class='subtitle'>
-        <%= kind.upcase %>
-      </h2>
-       <%= react_component('card_column', {
-              kind: kind,
-              initCards: cards,
-              submitPath: "/boards/#{@board.slug}/cards",
-              user: current_user.email
-            })
-        %>
-    </div>
-  <% end %>
-
-  <div class='<%= column_class_name %>'>
-  <%= react_component('action_item_column', {
-              creators: @board_creators,
-              initItems: @action_items,
-              submitPath: "/boards/#{@board.slug}/action_items",
-              user: current_user.email
-            })
-        %>
-  </div>
+%>
 
 </div>

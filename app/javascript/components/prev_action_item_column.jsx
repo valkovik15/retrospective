@@ -3,7 +3,7 @@ import ActionItem from './ActionItem';
 import {useBoardSubscription} from '../utils/subscription';
 
 const PrevActionItemColumn = props => {
-  const {initItems, user, creators} = props;
+  const {creators, handleEmpty, initItems, user} = props;
 
   const [items, setItems] = useState(initItems);
 
@@ -11,7 +11,14 @@ const PrevActionItemColumn = props => {
     const {front_action, card} = data;
     switch (front_action) {
       case 'move_action_item':
-        setItems(oldItems => oldItems.filter(el => el.id !== card.id));
+        setItems(oldItems => {
+          const newItems = oldItems.filter(el => el.id !== card.id);
+          if (newItems.length === 0) {
+            handleEmpty();
+          }
+
+          return newItems;
+        });
         break;
       case 'close_action_item':
       case 'complete_action_item':
