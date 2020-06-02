@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Select from 'react-select';
-import ActionCable from 'actioncable';
+import consumer from '../channels/consumer';
 
 import User from './user';
 
@@ -14,8 +14,7 @@ export class Autocomplete extends Component {
   };
 
   componentDidMount() {
-    const cable = ActionCable.createConsumer();
-    this.sub = cable.subscriptions.create(
+    this.sub = consumer.subscriptions.create(
       {
         channel: 'BoardChannel',
         board: window.location.pathname.slice(

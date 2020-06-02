@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ActionCable from 'actioncable';
+import consumer from '../channels/consumer';
 
 export class ReadyButton extends React.PureComponent {
   state = {
@@ -38,8 +38,7 @@ export class ReadyButton extends React.PureComponent {
   };
 
   componentDidMount() {
-    const cable = ActionCable.createConsumer();
-    this.sub = cable.subscriptions.create(
+    this.sub = consumer.subscriptions.create(
       {
         channel: 'BoardChannel',
         board: window.location.pathname.slice(
