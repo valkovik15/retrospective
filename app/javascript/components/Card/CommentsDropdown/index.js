@@ -1,43 +1,23 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useContext} from 'react';
 import Picker from 'emoji-picker-react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSmile} from '@fortawesome/free-regular-svg-icons';
+import UserContext from '../../../utils/user_context';
+import Comment from './Comment';
+import {createComment} from '../../../utils/api';
 
 const CommentsDropdown = props => {
   const controlEl = useRef(null);
   const {visible, id, comments} = props;
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const user = useContext(UserContext);
   const [newComment, setNewComment] = useState('');
 
-  const handleSubmit = async commentContent => {
-    try {
-      controlEl.current.disabled = true;
-      const response = await fetch(
-        `/api/${window.location.pathname}/cards/${id}/comments`,
-        {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document
-              .querySelector("meta[name='csrf-token']")
-              .getAttribute('content')
-          },
-          body: JSON.stringify({
-            content: commentContent
-          })
-        }
-      );
-      controlEl.current.disabled = false;
-      if (response.status === 200) {
-        setNewComment('');
-      } else {
-        throw response;
-      }
-    } catch (error) {
-      const errorHash = await error.json();
-      console.log(errorHash.error);
-    }
+  const handleSubmit = commentContent => {
+    controlEl.current.disabled = true;
+    createComment(id, commentContent, () => setNewComment(''));
+    controlEl.current.disabled = false;
+    setShowEmojiPicker(false);
   };
 
   const handleSmileClick = () => {
@@ -80,22 +60,14 @@ const CommentsDropdown = props => {
               onEmojiClick={handleEmojiPickerClick}
             />
           )}
-          {comments.map(comment => {
-            return (
-              <div key={comment.id} className="dropdown-item">
-                <div className="columns">
-                  <div className="column">{comment.content}</div>
-                  <div className="column is-two-fifths bottom-content">
-                    <img
-                      src={comment.author.avatar.thumb.url}
-                      className="avatar"
-                    />
-                    <span> by {comment.author.email.split('@')[0]}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {comments.map(item => (
+            <Comment
+              key={item.id}
+              comment={item}
+              deletable={user === item.author.email}
+              editable={user === item.author.email}
+            />
+          ))}
         </div>
       </div>
     </div>
