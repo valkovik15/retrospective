@@ -1,0 +1,29 @@
+.dropdown-comments-menu {
+  min-width: 12rem;
+  padding-top: 4px;
+  z-index: 20;
+}
+
+.dropdown-comments-content {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.textarea-container {
+  position: relative
+}
+
+.textarea-container textarea {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.textarea-container button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #92B5FA;
+}
