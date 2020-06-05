@@ -2,14 +2,12 @@
 
 module API
   class CommentPolicy < ApplicationPolicy
-    authorize :board, allow_nil: true
-
     def create?
-      check?(:user_is_creator?)
+      check?(:user_is_member?)
     end
 
-    def user_is_creator?
-      record.author?(user)
+    def user_is_member?
+      record.card.board.member?(user)
     end
   end
 end
