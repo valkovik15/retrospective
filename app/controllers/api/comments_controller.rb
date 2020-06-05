@@ -9,6 +9,7 @@ module API
       @comment = Comment.new(author: current_user, card: @card, content: params[:content])
       authorize! @comment, context: { board: @board }, with: API::CommentPolicy
       if @comment.save
+        broadcast_card('update_card', params[:board_slug], @card)
         render json: { comment: @comment }, status: :ok
       else
         render json: { error: @comment.errors }, status: :bad_request

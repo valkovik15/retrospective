@@ -36,7 +36,7 @@ const CardFooter = props => {
     setShowComments(!showComments);
   };
 
-  const {author, deletable, avatar, id, likes, type} = props;
+  const {author, deletable, avatar, id, likes, type, comments} = props;
   const confirmMessage = 'Are you sure you want to delete this card?';
 
   return (
@@ -55,7 +55,7 @@ const CardFooter = props => {
           <img src={avatar} className="avatar" />
           <span> by {author}</span>
         </div>
-        <CommentsDropdown visible={showComments} id={id} />
+        <CommentsDropdown visible={showComments} id={id} comments={comments} />
       </div>
       <div>
         <a

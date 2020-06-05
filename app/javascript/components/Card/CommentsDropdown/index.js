@@ -2,10 +2,12 @@ import React, {useRef} from 'react';
 
 const CommentsDropdown = props => {
   const inputEl = useRef(null);
+  const controlEl = useRef(null);
 
-  const {visible, id} = props;
+  const {visible, id, comments} = props;
 
   const handleSubmit = () => {
+    controlEl.current.disabled = true;
     fetch(`/api/${window.location.pathname}/cards/${id}/comments`, {
       method: 'POST',
       headers: {
@@ -20,8 +22,9 @@ const CommentsDropdown = props => {
       })
     })
       .then(result => {
+        controlEl.current.disabled = false;
         if (result.status === 200) {
-          window.location.reload();
+          inputEl.current.value = '';
         } else {
           throw result;
         }
@@ -35,12 +38,13 @@ const CommentsDropdown = props => {
 
   return (
     visible && (
-      <div className="column">
+      <div className="column comments-column">
         <div className="dropdown-comments-menu" role="menu">
           <div className="dropdown-comments-content">
-            <div className="textarea-container">
+            <div className="textarea-container dropdown-item">
               <textarea ref={inputEl} className="textarea" />
               <button
+                ref={controlEl}
                 className="button is-small"
                 type="button"
                 onClick={handleSubmit}
@@ -49,13 +53,22 @@ const CommentsDropdown = props => {
               </button>
             </div>
 
-            <a className="dropdown-item">Other dropdown item</a>
-            <a href="#" className="dropdown-item is-active">
-              Active dropdown item
-            </a>
-            <a href="#" className="dropdown-item">
-              Other dropdown item
-            </a>
+            {comments.map(comment => {
+              return (
+                <div key={comment.id} className="dropdown-item">
+                  <div className="columns">
+                    <div className="column">{comment.content}</div>
+                    <div className="column is-two-fifths bottom-content">
+                      <img
+                        src={comment.author.avatar.thumb.url}
+                        className="avatar"
+                      />
+                      <span> by {comment.author.email.split('@')[0]}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
