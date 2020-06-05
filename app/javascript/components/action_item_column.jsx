@@ -7,6 +7,8 @@ const ActionItemColumn = props => {
 
   const [items, setItems] = useState(initItems);
 
+  let submitable = true;
+
   const handleMessages = data => {
     const {front_action, card} = data;
     switch (front_action) {
@@ -43,11 +45,17 @@ const ActionItemColumn = props => {
 
   useBoardSubscription(handleMessages);
 
+  const submitHandler = _ => {
+    const prevValue = submitable;
+    submitable = false;
+    return prevValue;
+  };
+
   return (
     <>
       <h2 className="subtitle">ACTION ITEMS</h2>
       <div className="box">
-        <form action={submitPath} method="post">
+        <form action={submitPath} method="post" onSubmit={submitHandler}>
           <h2> Add new action item card</h2>
           <input
             type="hidden"

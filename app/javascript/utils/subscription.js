@@ -1,9 +1,9 @@
 import {useEffect} from 'react';
-import ActionCable from 'actioncable';
+import consumer from '../channels/consumer';
 
 export function useBoardSubscription(handler) {
   useEffect(() => {
-    const sub = ActionCable.createConsumer().subscriptions.create(
+    const sub = consumer.subscriptions.create(
       {
         channel: 'BoardChannel',
         board: window.location.pathname.slice(
