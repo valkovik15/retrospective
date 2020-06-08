@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Card from './Card';
 import {useBoardSubscription} from '../utils/subscription';
+import UserContext from '../utils/user_context';
 
 const CardColumn = props => {
   const {submitPath, kind, initCards, user} = props;
@@ -63,7 +64,7 @@ const CardColumn = props => {
   };
 
   return (
-    <>
+    <UserContext.Provider value={user}>
       <div className="box">
         <form action={submitPath} method="post" onSubmit={submitHandler}>
           <h2> Add new {kind} card</h2>
@@ -106,7 +107,7 @@ const CardColumn = props => {
           />
         );
       })}
-    </>
+    </UserContext.Provider>
   );
 };
 
