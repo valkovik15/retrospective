@@ -1,11 +1,13 @@
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import './ActionItemBody.css';
+import {editActionItem, removeActionItem} from '../../../utils/api';
 
 class ActionItemBody extends React.Component {
   state = {
     inputValue: this.props.body,
-    editMode: false
+    editMode: false,
+    showDropdown: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -19,6 +21,16 @@ class ActionItemBody extends React.Component {
     return prevState;
   }
 
+  handleDeleteClick = () => {
+    this.hideDropdown();
+    removeActionItem(this.props.id);
+  };
+
+  handleEditClick = () => {
+    this.editModeToggle();
+    this.hideDropdown();
+  };
+
   editModeToggle = () => {
     this.setState(state => ({editMode: !state.editMode}));
   };
@@ -27,48 +39,74 @@ class ActionItemBody extends React.Component {
     this.setState({inputValue: e.target.value});
   };
 
+  resetTextChanges = () => {
+    this.setState(state => ({...state, inputValue: this.props.body}));
+  };
+
   handleKeyPress = e => {
     if (e.key === 'Enter') {
       this.editModeToggle();
-      this.submitRequest();
-      e.preventDefault();
+      editActionItem(
+        this.props.id,
+        this.state.inputValue,
+        this.resetTextChanges
+      );
     }
   };
 
-  submitRequest() {
-    fetch(`/api/${window.location.pathname}/action_items/${this.props.id}`, {
-      method: 'PATCH',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document
-          .querySelector("meta[name='csrf-token']")
-          .getAttribute('content')
-      },
-      body: JSON.stringify({
-        edited_body: this.state.inputValue
-      })
-    })
-      .then(result => {
-        const {body} = this.props;
-        if (result.status !== 200) {
-          this.setState(state => ({...state, inputValue: body}));
-          throw result;
-        }
-      })
-      .catch(error => {
-        error.json().then(errorHash => {
-          console.log(errorHash.error);
-        });
-      });
-  }
+  toggleDropdown = () => {
+    this.setState(prevState => ({showDropdown: !prevState.showDropdown}));
+  };
+
+  hideDropdown = () => {
+    this.setState({showDropdown: false});
+  };
 
   render() {
     const {inputValue, editMode} = this.state;
-    const {editable, body} = this.props;
+    const {editable, deletable, body} = this.props;
 
     return (
       <div>
+        {editable && deletable && (
+          <div className="dropdown">
+            <div
+              className="dropdown-btn"
+              tabIndex="1"
+              onClick={this.toggleDropdown}
+              onBlur={this.hideDropdown}
+            >
+              …
+            </div>
+            <div hidden={!this.state.showDropdown} className="dropdown-content">
+              {!editMode && (
+                <div>
+                  <a
+                    onClick={this.handleEditClick}
+                    onMouseDown={event => {
+                      event.preventDefault();
+                    }}
+                  >
+                    Edit
+                  </a>
+                  <hr style={{margin: '5px 0'}} />
+                </div>
+              )}
+              <a
+                onClick={() => {
+                  window.confirm(
+                    'Are you sure you want to delete this ActionItem?'
+                  ) && this.handleDeleteClick();
+                }}
+                onMouseDown={event => {
+                  event.preventDefault();
+                }}
+              >
+                Delete
+              </a>
+            </div>
+          </div>
+        )}
         <div
           className="text"
           hidden={editMode}
