@@ -48,8 +48,9 @@ const CardFooter = props => {
         </div>
         <div className="column is-one-quarter">
           <a className="has-text-info" onClick={toggleDropdown}>
-            <FontAwesomeIcon icon={faCommentAlt} />
+            <FontAwesomeIcon fixedWidth icon={faCommentAlt} />
           </a>
+          <span>{comments.length}</span>
         </div>
         <div className="column is-half">
           <img src={avatar} className="avatar" />

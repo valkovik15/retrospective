@@ -1,3 +1,8 @@
+
+aside.emoji-picker-react {
+  width: auto
+}
+
 .bottom-content {
   align-self: flex-end;
   text-align: right;
@@ -27,6 +32,10 @@
   border-top: 0;
 }
 
+span {
+  word-break: break-word;
+}
+
 
 .textarea-container {
   padding: 0;
@@ -45,4 +54,10 @@
   bottom: 0;
   right: 0;
   background-color: #92B5FA;
+}
+
+.textarea-container a {
+  position: absolute;
+  bottom: 0;
+  left: 5px;
 }

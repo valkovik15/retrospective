@@ -1,10 +1,17 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
+
+import Picker from 'emoji-picker-react';
+
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSmile} from '@fortawesome/free-regular-svg-icons';
 
 const CommentsDropdown = props => {
   const inputEl = useRef(null);
   const controlEl = useRef(null);
 
   const {visible, id, comments} = props;
+
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleSubmit = () => {
     controlEl.current.disabled = true;
@@ -36,6 +43,14 @@ const CommentsDropdown = props => {
       });
   };
 
+  const handleSmileClick = () => {
+    setShowEmojiPicker(isShown => !isShown);
+  };
+
+  const handleEmojiPickerClick = (_, emoji) => {
+    inputEl.current.value += emoji.emoji;
+  };
+
   return (
     visible && (
       <div className="column comments-column">
@@ -51,8 +66,16 @@ const CommentsDropdown = props => {
               >
                 Add comment
               </button>
+              <a className="has-text-info" onClick={handleSmileClick}>
+                <FontAwesomeIcon icon={faSmile} />
+              </a>
             </div>
-
+            {showEmojiPicker && (
+              <Picker
+                style={{width: 'auto'}}
+                onEmojiClick={handleEmojiPickerClick}
+              />
+            )}
             {comments.map(comment => {
               return (
                 <div key={comment.id} className="dropdown-item">
