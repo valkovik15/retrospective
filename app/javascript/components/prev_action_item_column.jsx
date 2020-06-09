@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import ActionItem from './ActionItem';
 import {useBoardSubscription} from '../utils/subscription';
+import UserContext from '../utils/user_context';
 
 const PrevActionItemColumn = props => {
-  const {creators, handleEmpty, initItems, user} = props;
+  const {creators, handleEmpty, initItems} = props;
 
   const [items, setItems] = useState(initItems);
+
+  const user = useContext(UserContext);
 
   const handleMessages = data => {
     const {front_action, card} = data;
