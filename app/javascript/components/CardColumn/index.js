@@ -1,31 +1,38 @@
 import React, {useState, useContext} from 'react';
+import {useMutation, useSubscription} from '@apollo/react-hooks';
 import Card from './Card';
-import {useBoardSubscription} from '../utils/subscription';
+import {useBoardSubscription} from '../../utils/subscription';
+import {cardSubscription, addCardMutation} from './operations.gql';
 import UserContext from '../utils/user_context';
 import './table.css';
-
 const CardColumn = props => {
   const user = useContext(UserContext);
   const {submitPath, kind, initCards} = props;
 
   const [cards, setCards] = useState(initCards);
+  const [newCard, setNewCard] = useState('');
 
-  let submitable = true;
+  const [addCard] = useMutation(addCardMutation);
+
+  useSubscription(cardSubscription, {
+    onSubscriptionData: opts => {
+      const {data} = opts.subscriptionData;
+      const {cardAdded} = data;
+      if (cardAdded) {
+        if (
+          cardAdded.kind === kind &&
+          cards.findIndex(element => element.id === cardAdded.id) === -1
+        ) {
+          setCards(oldCards => [...oldCards, cardAdded]);
+        }
+      }
+    },
+    variables: {boardSlug: window.location.pathname.split('/')[2]}
+  });
 
   const handleMessages = data => {
     const {front_action, card} = data;
     switch (front_action) {
-      case 'add_card': {
-        if (
-          card.kind === kind &&
-          cards.findIndex(element => element.id === card.id) === -1
-        ) {
-          setCards(oldCards => [...oldCards, card]);
-        }
-
-        break;
-      }
-
       case 'remove_card': {
         if (card.kind === kind) {
           setCards(oldCards => oldCards.filter(el => el.id !== card.id));
@@ -59,35 +66,35 @@ const CardColumn = props => {
 
   useBoardSubscription(handleMessages);
 
-  const submitHandler = _ => {
-    const prevValue = submitable;
-    submitable = false;
-    return prevValue;
+  const submitHandler = e => {
+    e.preventDefault();
+    addCard({
+      variables: {
+        boardSlug: window.location.pathname.split('/')[2],
+        kind,
+        body: newCard
+      }
+    }).then(({data}) => {
+      if (data.addCard.card) {
+        setNewCard('');
+      } else {
+        console.log(data.addCard.error);
+      }
+    });
   };
 
   return (
     <>
       <div className="box">
-        <form action={submitPath} method="post" onSubmit={submitHandler}>
-          <input
-            type="hidden"
-            name="authenticity_token"
-            value={document
-              .querySelector('meta[name="csrf-token"]')
-              .getAttribute('content')}
-          />
-          <input
-            type="hidden"
-            name="card[kind]"
-            id={`card_${kind}`}
-            value={kind}
-          />
+        <form onSubmit={submitHandler}>
+          <h2> Add new {kind} card</h2>
           <input
             className="input"
             autoComplete="off"
             id={`card_${kind}_body`}
             type="text"
-            name="card[body]"
+            value={newCard}
+            onChange={e => setNewCard(e.target.value)}
           />
           <div className="btn-save">
             <button

@@ -3,6 +3,7 @@ import PrevActionItemColumn from './prev_action_item_column';
 import CardColumn from './card_column';
 import ActionItemColumn from './action_item_column';
 import UserContext from '../utils/user_context';
+import Provider from './Provider';
 
 const CardTable = props => {
   const {
@@ -48,6 +49,7 @@ const CardTable = props => {
   };
 
   return (
+<Provider>
     <UserContext.Provider value={user}>
       <div className="columns">
         {displayPrevItems ? (
@@ -72,6 +74,7 @@ const CardTable = props => {
         </div>
       </div>
     </UserContext.Provider>
+</Provider>
   );
 };
 

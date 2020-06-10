@@ -1,0 +1,16 @@
+#import '../../fragments/card.graphql'
+mutation addCardMutation($boardSlug: String!, $kind: String!, $body: String!) {
+  addCard(
+    input: { attributes: { boardSlug: $boardSlug, kind: $kind, body: $body } }
+  ) {
+    card {
+      id
+    }
+  }
+}
+
+subscription cardSubscription($boardSlug: String!) {
+  cardAdded(boardSlug: $boardSlug) {
+   ...Card
+  }
+}

@@ -8,14 +8,19 @@ module Mutations
     field :errors, Types::ValidationErrorsType, null: true
 
     def resolve(attributes:)
-      card = Card.new(attributes.to_h)
-
-      if card.save
-        RetrospectiveSchema.subscriptions.trigger('card_added', {}, card)
+      params = attributes.to_h
+      board = Board.find_by(slug: params.delete(:board_slug))
+      card = Card.new(card_params(params, board))
+      if allowed_to?(:create?, card, context: { user: context[:current_user] }) && card.save
+        RetrospectiveSchema.subscriptions.trigger('card_added', {board_slug: board.slug}, card)
         { card: card }
       else
-        { errors: card.errors.full_messages }
+        { errors: card.errors.full_messages || 'Unauthorized' }
       end
+    end
+
+    def card_params(params, board)
+      params.merge(board: board, author: context[:current_user])
     end
   end
 end

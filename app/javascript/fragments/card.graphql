@@ -8,8 +8,4 @@ fragment Card on Card {
   kind
   body
   likes
-  createdAt
-  updatedAt
-  authorId
-  boardId
 }
