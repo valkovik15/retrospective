@@ -8,6 +8,8 @@ RSpec.describe Mutations::DestroyCardMutation, type: :request do
     let(:author) { create(:user) }
     let(:request) { post '/graphql', params: { query: query(id: card.id) } }
 
+    before { sign_in author }
+
     it 'removes card' do
       expect { request.to change { Card.count }.by(-1) }
     end
@@ -16,14 +18,10 @@ RSpec.describe Mutations::DestroyCardMutation, type: :request do
       request
 
       json = JSON.parse(response.body)
-      data = json.dig('data', 'destroyCard', 'card')
+      data = json.dig('data', 'destroyCard')
 
       expect(data).to include(
-        'id' => card.id.to_s,
-        'kind' => card.kind,
-        'body' => card.body,
-        'boardId' => card.board.id.to_s,
-        'author' => { 'id' => author.id.to_s }
+        'id' => card.id
       )
     end
   end
@@ -36,15 +34,7 @@ RSpec.describe Mutations::DestroyCardMutation, type: :request do
             id: #{id}
           }
         ) {
-          card {
-            id
-            kind
-            body
-            author {
-              id
-            }
-            boardId
-          }
+          id
         }
       }
     GQL

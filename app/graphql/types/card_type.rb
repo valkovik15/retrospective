@@ -2,7 +2,7 @@
 
 module Types
   class CardType < Types::BaseObject
-    field :id, ID, null: false
+    field :id, Int, null: false
     field :kind, Enums::Kind, null: false
     field :body, String, null: false
     field :likes, Int, null: false

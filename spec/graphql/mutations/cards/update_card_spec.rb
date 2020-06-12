@@ -4,9 +4,11 @@ require 'rails_helper'
 
 RSpec.describe Mutations::UpdateCardMutation, type: :request do
   describe '.resolve' do
-    let(:card) { create(:card) }
     let(:author) { create(:user) }
-    let(:request) { post '/graphql', params: { query: query(id: card.id, author_id: author.id) } }
+    let(:card) { create(:card, author: author) }
+    let(:request) { post '/graphql', params: { query: query(id: card.id, body: 'New body') } }
+
+    before { sign_in author }
 
     it 'updates a card' do
       request
@@ -24,21 +26,21 @@ RSpec.describe Mutations::UpdateCardMutation, type: :request do
       data = json.dig('data', 'updateCard', 'card')
 
       expect(data).to include(
-        'id' => card.id.to_s,
-        'body' => card.body,
+        'id' => card.id,
+        'body' => 'New body',
         'author' => { 'id' => author.id.to_s }
       )
     end
   end
 
-  def query(id:, author_id:)
+  def query(id:, body:)
     <<~GQL
       mutation {
         updateCard(
           input: {
             id: #{id}
             attributes: {
-              authorId: #{author_id}
+              body: "#{body}"
             }
           }
         ) {

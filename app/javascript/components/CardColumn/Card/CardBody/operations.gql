@@ -1,0 +1,13 @@
+#import '../../../../fragments/card.graphql'
+mutation updateCardMutation($id: ID!, $body: String!) {
+  updateCard(
+    input: { id: $id, attributes: { body: $body } }
+  ) {
+    card {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}

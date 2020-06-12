@@ -6,11 +6,27 @@ mutation addCardMutation($boardSlug: String!, $kind: String!, $body: String!) {
     card {
       id
     }
+    errors {
+      fullMessages
+    }
   }
 }
 
-subscription cardSubscription($boardSlug: String!) {
+subscription cardAddedSubscription($boardSlug: String!) {
   cardAdded(boardSlug: $boardSlug) {
+   ...Card
+  }
+}
+
+subscription cardDestroyedSubscription($boardSlug: String!) {
+  cardDestroyed(boardSlug: $boardSlug) {
+    id
+    kind
+  }
+}
+
+subscription cardUpdatedSubscription($boardSlug: String!) {
+  cardUpdated(boardSlug: $boardSlug) {
    ...Card
   }
 }

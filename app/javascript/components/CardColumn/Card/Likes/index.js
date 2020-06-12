@@ -1,58 +1,67 @@
-import React from 'react';
-import {likeCard} from '../../../utils/api';
-
+import React, {useState, useEffect} from 'react';
+import {useMutation} from '@apollo/react-hooks';
+import {likeCardMutation} from './operations.gql';
 const EMOJIES = {
   mad: '😡',
   sad: '😔',
-  glad: '🤗',
+  glad: '🤗'
   universal: '👍'
 };
 
-class Likes extends React.PureComponent {
-  state = {
-    style: 'has-text-info',
-    timer: null
+const Likes = props => {
+  const {type, likes, id} = props;
+  const [likeCard] = useMutation(likeCardMutation);
+  const [style, setStyle] = useState('has-text-info');
+  const [timer, setTimer] = useState(null);
+
+  useEffect(() => {
+    return function() {
+      clearInterval(timer);
+    };
+  }, [timer]);
+
+  const addLike = () => {
+    likeCard({
+      variables: {
+        id
+      }
+    }).then(({data}) => {
+      if (!data.likeCard.card) {
+        console.log(data.likeCard.errors.fullMessages.join(' '));
+      }
+    });
   };
 
-  addLike() {
-    likeCard(this.props.id);
-  }
-
-  handleMouseDown = () => {
-    this.setState({style: 'has-text-success'});
-    this.addLike();
-    const timer = setInterval(() => this.addLike(), 300);
-    this.setState({timer});
+  const handleMouseDown = () => {
+    setStyle({style: 'has-text-success'});
+    addLike();
+    const timer = setInterval(() => addLike(), 300);
+    setTimer(timer);
   };
 
-  handleMouseUp = () => {
-    this.setState({style: 'has-text-info'});
-    clearInterval(this.state.timer);
+  const handleMouseUp = currentTimer => {
+    setStyle('has-text-info');
+    clearInterval(currentTimer);
   };
 
-  handleMouseLeave = () => {
-    this.setState({style: 'has-text-info'});
-    clearInterval(this.state.timer);
+  const handleMouseLeave = currentTimer => {
+    setStyle('has-text-info');
+    clearInterval(currentTimer);
   };
 
-  render() {
-    const {type, likes} = this.props;
-    const {style} = this.state;
-
-    return (
-      <>
-        <a
-          className={style}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onMouseLeave={this.handleMouseLeave}
-        >
-          {EMOJIES[type] || EMOJIES.universal}
-        </a>
-        <span> {likes} </span>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <a
+        className={style}
+        onMouseDown={handleMouseDown}
+        onMouseUp={() => handleMouseUp(timer)}
+        onMouseLeave={() => handleMouseLeave(timer)}
+      >
+        {EMOJIES[type] || EMOJIES.universal}
+      </a>
+      <span> {likes} </span>
+    </>
+  );
+};
 
 export default Likes;

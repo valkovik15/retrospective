@@ -4,6 +4,8 @@ import CommentsDropdown from '../CommentsDropdown';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCommentAlt} from '@fortawesome/free-regular-svg-icons';
 import './CardFooter.css';
+import {useMutation} from '@apollo/react-hooks';
+import {destroyCardMutation} from './operations.gql';
 
 const CardFooter = props => {
   const [showComments, setShowComments] = useState(false);
@@ -16,6 +18,20 @@ const CardFooter = props => {
     type,
     comments
   } = props;
+  const [destroyCard] = useMutation(destroyCardMutation);
+  const handleClick = () => {
+    destroyCard({
+      variables: {
+        id
+      }
+    }).then(({data}) => {
+      if (!data.destroyCard.id) {
+        console.log(data.destroyCard.errors.fullMessages.join(' '));
+      }
+    });
+  };
+
+  const confirmMessage = 'Are you sure you want to delete this card?';
 
   return (
     <div>

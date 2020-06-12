@@ -1,0 +1,11 @@
+#import '../../../../fragments/card.graphql'
+mutation destroyCardMutation($id: ID!) {
+  destroyCard(
+    input: { id: $id }
+  ) {
+    id
+    errors {
+      fullMessages
+    }
+  }
+}

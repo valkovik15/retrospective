@@ -2,7 +2,12 @@ import React, {useState, useContext} from 'react';
 import {useMutation, useSubscription} from '@apollo/react-hooks';
 import Card from './Card';
 import {useBoardSubscription} from '../../utils/subscription';
-import {cardSubscription, addCardMutation} from './operations.gql';
+import {
+  cardAddedSubscription,
+  cardDestroyedSubscription,
+  cardUpdatedSubscription,
+  addCardMutation
+} from './operations.gql';
 import UserContext from '../utils/user_context';
 import './table.css';
 const CardColumn = props => {
@@ -14,7 +19,7 @@ const CardColumn = props => {
 
   const [addCard] = useMutation(addCardMutation);
 
-  useSubscription(cardSubscription, {
+  useSubscription(cardAddedSubscription, {
     onSubscriptionData: opts => {
       const {data} = opts.subscriptionData;
       const {cardAdded} = data;
@@ -30,41 +35,40 @@ const CardColumn = props => {
     variables: {boardSlug: window.location.pathname.split('/')[2]}
   });
 
-  const handleMessages = data => {
-    const {front_action, card} = data;
-    switch (front_action) {
-      case 'remove_card': {
-        if (card.kind === kind) {
-          setCards(oldCards => oldCards.filter(el => el.id !== card.id));
-        }
-
-        break;
+  useSubscription(cardDestroyedSubscription, {
+    onSubscriptionData: opts => {
+      const {data} = opts.subscriptionData;
+      const {cardDestroyed} = data;
+      if (cardDestroyed && cardDestroyed.kind === kind) {
+        setCards(oldCards => oldCards.filter(el => el.id !== cardDestroyed.id));
       }
+    },
+    variables: {boardSlug: window.location.pathname.split('/')[2]}
+  });
 
-      case 'update_card': {
-        if (card.kind === kind) {
-          setCards(oldCards => {
-            const cardIdIndex = oldCards.findIndex(
-              element => element.id === card.id
-            );
-            if (cardIdIndex >= 0) {
-              return [
-                ...oldCards.slice(0, cardIdIndex),
-                card,
-                ...oldCards.slice(cardIdIndex + 1)
-              ];
-            }
+  useSubscription(cardUpdatedSubscription, {
+    onSubscriptionData: opts => {
+      const {data} = opts.subscriptionData;
+      const {cardUpdated} = data;
+      if (cardUpdated && cardUpdated.kind === kind) {
+        setCards(oldCards => {
+          const cardIdIndex = oldCards.findIndex(
+            element => element.id === cardUpdated.id
+          );
+          if (cardIdIndex >= 0) {
+            return [
+              ...oldCards.slice(0, cardIdIndex),
+              cardUpdated,
+              ...oldCards.slice(cardIdIndex + 1)
+            ];
+          }
 
-            return oldCards;
-          });
-        }
-
-        break;
+          return oldCards;
+        });
       }
-    }
-  };
-
-  useBoardSubscription(handleMessages);
+    },
+    variables: {boardSlug: window.location.pathname.split('/')[2]}
+  });
 
   const submitHandler = e => {
     e.preventDefault();
@@ -78,7 +82,7 @@ const CardColumn = props => {
       if (data.addCard.card) {
         setNewCard('');
       } else {
-        console.log(data.addCard.error);
+        console.log(data.addCard.errors.fullMessages.join(' '));
       }
     });
   };
