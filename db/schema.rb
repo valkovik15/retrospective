@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_17_083034) do
+ActiveRecord::Schema.define(version: 2020_06_03_122333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,16 @@ ActiveRecord::Schema.define(version: 2019_10_17_083034) do
     t.integer "likes", default: 0
     t.index ["author_id"], name: "index_cards_on_author_id"
     t.index ["board_id"], name: "index_cards_on_board_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.bigint "card_id", null: false
+    t.bigint "author_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["card_id"], name: "index_comments_on_card_id"
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -92,6 +102,8 @@ ActiveRecord::Schema.define(version: 2019_10_17_083034) do
   add_foreign_key "boards", "boards", column: "previous_board_id"
   add_foreign_key "cards", "boards"
   add_foreign_key "cards", "users", column: "author_id"
+  add_foreign_key "comments", "cards"
+  add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "memberships", "boards"
   add_foreign_key "memberships", "users"
   add_foreign_key "teams_users", "teams"

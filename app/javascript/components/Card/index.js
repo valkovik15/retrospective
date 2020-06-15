@@ -22,7 +22,8 @@ class Card extends React.Component {
       author,
       avatar,
       likes,
-      type
+      type,
+      comments
     } = this.props;
     const {isHidden} = this.state;
 
@@ -41,6 +42,7 @@ class Card extends React.Component {
           avatar={avatar}
           likes={likes}
           type={type}
+          comments={comments}
         />
       </div>
     );

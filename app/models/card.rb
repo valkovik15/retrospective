@@ -4,6 +4,8 @@ class Card < ApplicationRecord
   belongs_to :author, class_name: 'User'
   belongs_to :board
 
+  has_many :comments, dependent: :destroy
+
   validates_presence_of :kind, :body
   validates :kind, inclusion: { in: %w[mad sad glad] }
 

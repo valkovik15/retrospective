@@ -51,6 +51,10 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.8.3",
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-regular-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.10",
     "@rails/actioncable": "^6.0.3-1",
     "@rails/webpacker": "^4.2.2",
     "actioncable": "^5.2.4-3",
@@ -61,6 +65,7 @@
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "emoji-picker-react": "^3.2.1",
     "graphql": "^14.6.0",
     "graphql-ruby-client": "^1.6.8",
     "graphql-tag": "^2.10.3",

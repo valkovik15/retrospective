@@ -102,6 +102,7 @@ const CardColumn = props => {
             type={kind}
             editable={user === card.author.email}
             deletable={user === card.author.email}
+            comments={card.comments}
           />
         );
       })}
