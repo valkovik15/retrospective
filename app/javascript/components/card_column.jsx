@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Card from './Card';
 import {useBoardSubscription} from '../utils/subscription';
+import UserContext from '../utils/user_context';
 
 const CardColumn = props => {
-  const {submitPath, kind, initCards, user} = props;
+  const user = useContext(UserContext);
+  const {submitPath, kind, initCards} = props;
 
   const [cards, setCards] = useState(initCards);
 

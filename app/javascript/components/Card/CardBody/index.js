@@ -1,6 +1,7 @@
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import './CardBody.css';
+import {editCard} from '../../../utils/api';
 
 class CardBody extends React.Component {
   state = {
@@ -27,41 +28,16 @@ class CardBody extends React.Component {
     this.setState({inputValue: e.target.value});
   };
 
+  resetTextChanges = () => {
+    this.setState(state => ({...state, inputValue: this.props.body}));
+  };
+
   handleKeyPress = e => {
     if (e.key === 'Enter') {
       this.editModeToggle();
-      this.submitRequest();
-      e.preventDefault();
+      editCard(this.props.id, this.state.inputValue, this.resetTextChanges);
     }
   };
-
-  submitRequest() {
-    fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
-      method: 'PATCH',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document
-          .querySelector("meta[name='csrf-token']")
-          .getAttribute('content')
-      },
-      body: JSON.stringify({
-        edited_body: this.state.inputValue
-      })
-    })
-      .then(result => {
-        const {body} = this.props;
-        if (result.status !== 200) {
-          this.setState(state => ({...state, inputValue: body}));
-          throw result;
-        }
-      })
-      .catch(error => {
-        error.json().then(errorHash => {
-          console.log(errorHash.error);
-        });
-      });
-  }
 
   render() {
     const {inputValue, editMode} = this.state;

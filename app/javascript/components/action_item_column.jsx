@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import ActionItem from './ActionItem';
 import {useBoardSubscription} from '../utils/subscription';
+import UserContext from '../utils/user_context';
 
 const ActionItemColumn = props => {
-  const {submitPath, initItems, user, creators} = props;
+  const {submitPath, initItems, creators} = props;
+  const user = useContext(UserContext);
 
   const [items, setItems] = useState(initItems);
 

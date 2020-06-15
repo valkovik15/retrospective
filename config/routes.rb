@@ -53,7 +53,7 @@ Rails.application.routes.draw do
         member do
           put 'like'
         end
-        resources :comments, only: %i[create]
+        resources :comments, only: %i[create update destroy]
       end
       resources :action_items, only: %i[update destroy] do
         member do

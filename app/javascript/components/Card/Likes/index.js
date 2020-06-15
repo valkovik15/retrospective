@@ -1,4 +1,5 @@
 import React from 'react';
+import {likeCard} from '../../../utils/api';
 
 const EMOJIES = {
   mad: '😡',
@@ -13,26 +14,7 @@ class Likes extends React.PureComponent {
   };
 
   addLike() {
-    fetch(`/api/${window.location.pathname}/cards/${this.props.id}/like`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document
-          .querySelector("meta[name='csrf-token']")
-          .getAttribute('content')
-      }
-    })
-      .then(result => {
-        if (result.status !== 200) {
-          throw result;
-        }
-      })
-      .catch(error => {
-        error.json().then(errorHash => {
-          console.log(errorHash.error);
-        });
-      });
+    likeCard(this.props.id);
   }
 
   handleMouseDown = () => {
