@@ -19,7 +19,7 @@
 
     <div class='level-right'>
       <% if !current_user %>
-        <%= link_to 'Sign up to Join', new_user_session_path, class: 'button is-large' %>
+        <%= link_to 'Sign in with Alfred', user_alfred_omniauth_authorize_path, class: 'button is-large' %>
       <% elsif @board.memberships.exists?(user_id: current_user.id) %>
         <div id='ready-button'></div>
       <% else %>
@@ -44,7 +44,7 @@
               cardsByType: @cards_by_type,
               creators: @board_creators,
               initPrevItems: @previous_action_items || [],
-              user: current_user.email
+              user: current_user&.email
             })
 %>
 
