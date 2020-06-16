@@ -3,7 +3,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Picker from 'emoji-picker-react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSmile} from '@fortawesome/free-regular-svg-icons';
-import {editComment, removeComment} from '../../../../utils/api';
+import {editComment, removeComment} from '../../../../../utils/api';
 
 const Comment = props => {
   const {comment, deletable, editable} = props;

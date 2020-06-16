@@ -4,7 +4,7 @@ import {likeCardMutation} from './operations.gql';
 const EMOJIES = {
   mad: '😡',
   sad: '😔',
-  glad: '🤗'
+  glad: '🤗',
   universal: '👍'
 };
 

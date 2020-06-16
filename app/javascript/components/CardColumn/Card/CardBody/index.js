@@ -1,135 +1,141 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Textarea from 'react-textarea-autosize';
+import {useMutation} from '@apollo/react-hooks';
+import {updateCardMutation, destroyCardMutation} from './operations.gql';
+
 import './CardBody.css';
-import {editCard, removeCard} from '../../../utils/api';
+const CardBody = props => {
+  const {id, editable, deletable, body} = props;
+  const [inputValue, setInputValue] = useState(body);
+  const [editMode, setEditMode] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [editCard] = useMutation(updateCardMutation);
+  const [destroyCard] = useMutation(destroyCardMutation);
 
-class CardBody extends React.Component {
-  state = {
-    inputValue: this.props.body,
-    editMode: false,
-    showDropdown: false
+  console.log(id);
+
+  useEffect(() => {
+    setInputValue(body);
+  }, [body, props.body]);
+
+  const handleEditClick = () => {
+    editModeToggle();
+    setShowDropdown(false);
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.editMode === false) {
-      return {
-        inputValue: nextProps.body,
-        editMode: prevState.editMode
-      };
-    }
-
-    return prevState;
-  }
-
-  editModeToggle = () => {
-    this.setState(state => ({editMode: !state.editMode}));
+  const editModeToggle = () => {
+    setEditMode(isEdited => !isEdited);
   };
 
-  handleChange = e => {
-    this.setState({inputValue: e.target.value});
+  const handleChange = e => {
+    setInputValue(e.target.value);
   };
 
-  resetTextChanges = () => {
-    this.setState(state => ({...state, inputValue: this.props.body}));
-  };
-
-  handleKeyPress = e => {
+  const handleKeyPress = e => {
     if (e.key === 'Enter') {
-      this.editModeToggle();
-      editCard(this.props.id, this.state.inputValue, this.resetTextChanges);
+      editModeToggle();
+      editCard({
+        variables: {
+          id,
+          body: inputValue
+        }
+      }).then(({data}) => {
+        if (!data.updateCard.card) {
+          console.log(data.updateCard.errors.fullMessages.join(' '));
+        }
+      });
+      e.preventDefault();
     }
   };
 
-  handleEditClick = () => {
-    this.editModeToggle();
-    this.hideDropdown();
+  const handleSaveClick = () => {
+    editModeToggle();
+    editCard({
+      variables: {
+        id,
+        body: inputValue
+      }
+    }).then(({data}) => {
+      if (!data.updateCard.card) {
+        console.log(data.updateCard.errors.fullMessages.join(' '));
+      }
+    });
   };
 
-  toggleDropdown = () => {
-    this.setState(prevState => ({showDropdown: !prevState.showDropdown}));
-  };
-
-  hideDropdown = () => {
-    this.setState({showDropdown: false});
-  };
-
-  handleSaveClick = () => {
-    this.editModeToggle();
-    editCard(this.props.id, this.state.inputValue, this.resetTextChanges);
-  };
-
-  render() {
-    const {inputValue, editMode} = this.state;
-    const {editable, deletable, body, id} = this.props;
-
-    return (
-      <div>
-        {editable && deletable && (
-          <div className="dropdown">
-            <div
-              className="dropdown-btn"
-              tabIndex="1"
-              onClick={this.toggleDropdown}
-              onBlur={this.hideDropdown}
-            >
-              …
-            </div>
-            <div hidden={!this.state.showDropdown} className="dropdown-content">
-              {!editMode && (
-                <div>
-                  <a
-                    onClick={this.handleEditClick}
-                    onMouseDown={event => {
-                      event.preventDefault();
-                    }}
-                  >
-                    Edit
-                  </a>
-                  <hr style={{margin: '5px 0'}} />
-                </div>
-              )}
-              <a
-                onClick={() =>
-                  window.confirm(
-                    'Are you sure you want to delete this card?'
-                  ) && removeCard(id)
-                }
-                onMouseDown={event => {
-                  event.preventDefault();
-                }}
-              >
-                Delete
-              </a>
-            </div>
+  return (
+    <div>
+      {editable && deletable && (
+        <div className="dropdown">
+          <div
+            className="dropdown-btn"
+            tabIndex="1"
+            onClick={() => setShowDropdown(!showDropdown)}
+            onBlur={() => setShowDropdown(false)}
+          >
+            …
           </div>
-        )}
-        <div
-          className="text"
-          hidden={editMode}
-          onDoubleClick={editable ? this.editModeToggle : undefined}
-        >
-          {body}
+          <div hidden={!showDropdown} className="dropdown-content">
+            {!editMode && (
+              <div>
+                <a
+                  onClick={handleEditClick}
+                  onMouseDown={event => {
+                    event.preventDefault();
+                  }}
+                >
+                  Edit
+                </a>
+                <hr style={{margin: '5px 0'}} />
+              </div>
+            )}
+            <a
+              onClick={() =>
+                window.confirm('Are you sure you want to delete this card?') &&
+                destroyCard({
+                  variables: {
+                    id
+                  }
+                }).then(({data}) => {
+                  if (!data.destroyCard.id) {
+                    console.log(data.destroyCard.errors.fullMessages.join(' '));
+                  }
+                })
+              }
+              onMouseDown={event => {
+                event.preventDefault();
+              }}
+            >
+              Delete
+            </a>
+          </div>
         </div>
-        <div hidden={!editMode}>
-          <Textarea
-            className="input"
-            value={inputValue}
-            onChange={this.handleChange}
-            onKeyPress={this.handleKeyPress}
-          />
-          <div className="btn-add">
-            <button
-              className="tag is-info button"
-              type="button"
-              onClick={this.handleSaveClick}
-            >
-              Save
-            </button>
-          </div>
+      )}
+      <div
+        className="text"
+        hidden={editMode}
+        onDoubleClick={editable ? editModeToggle : undefined}
+      >
+        {body}
+      </div>
+      <div hidden={!editMode}>
+        <Textarea
+          className="input"
+          value={inputValue}
+          onChange={handleChange}
+          onKeyPress={handleKeyPress}
+        />
+        <div className="btn-add">
+          <button
+            className="tag is-info button"
+            type="button"
+            onClick={handleSaveClick}
+          >
+            Save
+          </button>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default CardBody;

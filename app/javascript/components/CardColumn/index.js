@@ -1,18 +1,17 @@
 import React, {useState, useContext} from 'react';
 import {useMutation, useSubscription} from '@apollo/react-hooks';
 import Card from './Card';
-import {useBoardSubscription} from '../../utils/subscription';
 import {
   cardAddedSubscription,
   cardDestroyedSubscription,
   cardUpdatedSubscription,
   addCardMutation
 } from './operations.gql';
-import UserContext from '../utils/user_context';
-import './table.css';
+import UserContext from '../../utils/user_context';
+import '../table.css';
 const CardColumn = props => {
   const user = useContext(UserContext);
-  const {submitPath, kind, initCards} = props;
+  const {kind, initCards} = props;
 
   const [cards, setCards] = useState(initCards);
   const [newCard, setNewCard] = useState('');
@@ -21,6 +20,7 @@ const CardColumn = props => {
 
   useSubscription(cardAddedSubscription, {
     onSubscriptionData: opts => {
+      console.log(opts);
       const {data} = opts.subscriptionData;
       const {cardAdded} = data;
       if (cardAdded) {
@@ -113,6 +113,7 @@ const CardColumn = props => {
       </div>
 
       {cards.map(card => {
+        console.log(card);
         return (
           <Card
             key={card.id}
@@ -120,11 +121,11 @@ const CardColumn = props => {
             author={card.author.email.split('@')[0]}
             avatar={card.author.avatar.thumb.url}
             body={card.body}
+            comments={card.comments}
             likes={card.likes}
             type={kind}
             editable={user === card.author.email}
             deletable={user === card.author.email}
-            comments={card.comments}
           />
         );
       })}

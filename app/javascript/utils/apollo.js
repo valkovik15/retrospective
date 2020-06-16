@@ -6,7 +6,7 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
 import {HttpLink} from 'apollo-link-http';
 import {onError} from 'apollo-link-error';
 import {ApolloLink, Observable} from 'apollo-link';
-import ActionCableLink from 'graphql-ruby-client/subscriptions/ActionCableLink';
+import {ActionCableLink} from 'graphql-ruby-client';
 import {createConsumer} from '@rails/actioncable';
 
 export const createCache = () => {

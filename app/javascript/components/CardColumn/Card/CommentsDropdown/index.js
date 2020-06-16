@@ -2,9 +2,9 @@ import React, {useRef, useState, useContext} from 'react';
 import Picker from 'emoji-picker-react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSmile} from '@fortawesome/free-regular-svg-icons';
-import UserContext from '../../../utils/user_context';
+import UserContext from '../../../../utils/user_context';
 import Comment from './Comment';
-import {createComment} from '../../../utils/api';
+import {createComment} from '../../../../utils/api';
 
 const CommentsDropdown = props => {
   const controlEl = useRef(null);
