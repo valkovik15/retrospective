@@ -2,45 +2,15 @@ import React from 'react';
 
 import TransitionButton from '../TransitionButton';
 import './ActionItemFooter.css';
+import {getHeaders} from '../../../utils/http';
 
 class ActionItemFooter extends React.Component {
-  handleDeleteClick = () => {
-    fetch(`/api/${window.location.pathname}/action_items/${this.props.id}`, {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document
-          .querySelector("meta[name='csrf-token']")
-          .getAttribute('content')
-      }
-    })
-      .then(result => {
-        if (result.status === 204) {
-          this.props.hideActionItem();
-        } else {
-          throw result;
-        }
-      })
-      .catch(error => {
-        error.json().then(errorHash => {
-          console.log(errorHash.error);
-        });
-      });
-  };
-
   handleMoveClick = () => {
     fetch(
       `/api/${window.location.pathname}/action_items/${this.props.id}/move`,
       {
         method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document
-            .querySelector("meta[name='csrf-token']")
-            .getAttribute('content')
-        }
+        headers: getHeaders()
       }
     )
       .then(result => {
@@ -78,10 +48,7 @@ class ActionItemFooter extends React.Component {
   };
 
   render() {
-    const {id, deletable, movable, transitionable} = this.props;
-    const confirmDeleteMessage =
-      'Are you sure you want to delete this ActionItem?';
-    const confirmMoveMessage = 'Are you sure you want to move this ActionItem?';
+    const {id, movable, transitionable} = this.props;
 
     return (
       <div>
@@ -101,25 +68,14 @@ class ActionItemFooter extends React.Component {
           <button
             type="button"
             onClick={() => {
-              window.confirm(confirmMoveMessage) && this.handleMoveClick();
+              window.confirm(
+                'Are you sure you want to move this ActionItem?'
+              ) && this.handleMoveClick();
             }}
           >
             move
           </button>
         )}
-
-        <div>
-          {deletable && (
-            <a
-              onClick={() => {
-                window.confirm(confirmDeleteMessage) &&
-                  this.handleDeleteClick();
-              }}
-            >
-              delete
-            </a>
-          )}
-        </div>
       </div>
     );
   }

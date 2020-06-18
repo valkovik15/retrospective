@@ -58,6 +58,27 @@ export const editCard = async (cardId, inputValue, resetFunc) => {
   }
 };
 
+export const editActionItem = async (actionItemId, inputValue, resetFunc) => {
+  try {
+    const response = await fetch(
+      `/api${window.location.pathname}/action_items/${actionItemId}`,
+      {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({
+          edited_body: inputValue
+        })
+      }
+    );
+    if (response.status !== 200) {
+      resetFunc();
+      throw response;
+    }
+  } catch (error) {
+    await logError(error);
+  }
+};
+
 export const editComment = async (cardId, commentId, inputValue, resetFunc) => {
   try {
     const response = await fetch(
@@ -96,7 +117,7 @@ export const likeCard = async cardId => {
   }
 };
 
-export const removeCard = async (cardId, onComplete) => {
+export const removeCard = async cardId => {
   try {
     const response = await fetch(
       `/api${window.location.pathname}/cards/${cardId}`,
@@ -107,15 +128,30 @@ export const removeCard = async (cardId, onComplete) => {
     );
     if (response.status !== 204) {
       throw response;
-    } else if (onComplete) {
-      onComplete(response);
     }
   } catch (error) {
     await logError(error);
   }
 };
 
-export const removeComment = async (cardId, commentId, onComplete) => {
+export const removeActionItem = async actionItemId => {
+  try {
+    const response = await fetch(
+      `/api${window.location.pathname}/action_items/${actionItemId}`,
+      {
+        method: 'DELETE',
+        headers
+      }
+    );
+    if (response.status !== 204) {
+      throw response;
+    }
+  } catch (error) {
+    await logError(error);
+  }
+};
+
+export const removeComment = async (cardId, commentId) => {
   try {
     const response = await fetch(
       `/api${window.location.pathname}/cards/${cardId}/comments/${commentId}`,
@@ -126,8 +162,6 @@ export const removeComment = async (cardId, commentId, onComplete) => {
     );
     if (response.status !== 204) {
       throw response;
-    } else if (onComplete) {
-      onComplete(response);
     }
   } catch (error) {
     await logError(error);

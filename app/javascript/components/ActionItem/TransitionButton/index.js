@@ -1,4 +1,5 @@
 import React from 'react';
+import {getHeaders} from '../../../utils/http';
 
 class TransitionButton extends React.Component {
   handleClick = () => {
@@ -6,13 +7,7 @@ class TransitionButton extends React.Component {
       `/api/${window.location.pathname}/action_items/${this.props.id}/${this.props.action}`,
       {
         method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document
-            .querySelector("meta[name='csrf-token']")
-            .getAttribute('content')
-        }
+        headers: getHeaders()
       }
     )
       .then(result => {

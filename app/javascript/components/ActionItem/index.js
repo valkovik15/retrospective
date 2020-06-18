@@ -5,15 +5,6 @@ import ActionItemFooter from './ActionItemFooter';
 import './ActionItem.css';
 
 class ActionItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  hideActionItem = () => {
-    this.setState({ActionItemStyle: {display: 'none'}});
-  };
-
   pickColor = () => {
     switch (this.props.status) {
       case 'done':
@@ -35,24 +26,22 @@ class ActionItem extends React.Component {
       movable,
       transitionable
     } = this.props;
-    const footerNotEmpty =
-      deletable || movable || transitionable || times_moved != 0;
+    const footerNotEmpty = movable || transitionable || times_moved !== 0;
 
     return (
-      <div
-        className={`box ${this.pickColor()}_bg`}
-        style={this.state.ActionItemStyle}
-      >
-        <ActionItemBody id={id} editable={editable} body={body} />
+      <div className={`box ${this.pickColor()}_bg`}>
+        <ActionItemBody
+          id={id}
+          editable={editable}
+          deletable={deletable}
+          body={body}
+        />
         {footerNotEmpty && (
           <ActionItemFooter
             id={id}
-            deletable={deletable}
             times_moved={times_moved}
             movable={movable}
             transitionable={transitionable}
-            hideActionItem={this.hideActionItem}
-            paintActionItem={this.paintActionItem}
           />
         )}
       </div>

@@ -3,7 +3,6 @@ import Likes from '../Likes';
 import CommentsDropdown from '../CommentsDropdown';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCommentAlt} from '@fortawesome/free-regular-svg-icons';
-import {removeCard} from '../../../utils/api';
 import './CardFooter.css';
 
 const CardFooter = props => {
@@ -11,15 +10,12 @@ const CardFooter = props => {
 
   const {
     author,
-    deletable,
     avatar,
     id,
     likes,
     type,
-    comments,
-    hideCard
+    comments
   } = props;
-  const confirmMessage = 'Are you sure you want to delete this card?';
 
   return (
     <div>
@@ -42,16 +38,6 @@ const CardFooter = props => {
           <span> by {author}</span>
         </div>
         <CommentsDropdown visible={showComments} id={id} comments={comments} />
-      </div>
-      <div>
-        <a
-          hidden={!deletable && showComments}
-          onClick={async () =>
-            window.confirm(confirmMessage) && removeCard(id, hideCard)
-          }
-        >
-          delete
-        </a>
       </div>
     </div>
   );
