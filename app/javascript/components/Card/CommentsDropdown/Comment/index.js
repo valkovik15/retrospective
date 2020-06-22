@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import Textarea from 'react-textarea-autosize';
+import TextareaAutosize from 'react-textarea-autosize';
 import Picker from 'emoji-picker-react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSmile} from '@fortawesome/free-regular-svg-icons';
@@ -9,6 +9,7 @@ const Comment = props => {
   const {comment, deletable, editable} = props;
   const [editMode, setEditMode] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isDropdownShown, setIsDropdownShown] = useState(false);
   const [inputValue, setInputValue] = useState(comment.content);
 
   useEffect(() => {
@@ -23,6 +24,11 @@ const Comment = props => {
 
   const handleChange = e => {
     setInputValue(e.target.value);
+  };
+
+  const handleEditClick = () => {
+    editModeToggle();
+    setIsDropdownShown(false);
   };
 
   const handleSmileClick = () => {
@@ -46,21 +52,60 @@ const Comment = props => {
   return (
     <>
       <div key={comment.id} className="dropdown-item">
-        {!editMode && (
-          <div
-            className="columns"
-            onDoubleClick={editable ? editModeToggle : undefined}
-          >
-            <div className="column">{comment.content}</div>
-            <div className="column is-two-fifths bottom-content">
-              <img src={comment.author.avatar.thumb.url} className="avatar" />
-              <span> by {comment.author.email.split('@')[0]}</span>
+        {editable && deletable && (
+          <div className="dropdown">
+            <div
+              className="dropdown-btn"
+              tabIndex="1"
+              onClick={() => setIsDropdownShown(!isDropdownShown)}
+              onBlur={() => setIsDropdownShown(false)}
+            >
+              …
+            </div>
+            <div hidden={!isDropdownShown} className="dropdown-content">
+              {!editMode && (
+                <div>
+                  <a
+                    onClick={() => handleEditClick()}
+                    onMouseDown={event => {
+                      event.preventDefault();
+                    }}
+                  >
+                    Edit
+                  </a>
+                  <hr style={{margin: '5px 0'}} />
+                </div>
+              )}
+              <a
+                onClick={() => removeComment(comment.card_id, comment.id)}
+                onMouseDown={event => {
+                  event.preventDefault();
+                }}
+              >
+                Delete
+              </a>
             </div>
           </div>
         )}
+        {!editMode && (
+          <>
+            <div
+              className="columns"
+              onDoubleClick={editable ? editModeToggle : undefined}
+            >
+              <div className="column" style={{wordBreak: 'break-all'}}>
+                {comment.content}
+              </div>
+            </div>
+            <div className="column is-offset-three-fifths is-two-fifths bottom-content">
+              <img src={comment.author.avatar.thumb.url} className="avatar" />
+              <span> by {comment.author.email.split('@')[0]}</span>
+            </div>
+          </>
+        )}
         {editMode && (
           <>
-            <Textarea
+            <TextareaAutosize
               value={inputValue}
               hidden={!editMode}
               onChange={handleChange}
@@ -70,13 +115,6 @@ const Comment = props => {
               <FontAwesomeIcon icon={faSmile} />
             </a>
           </>
-        )}
-        {deletable && (
-          <div>
-            <a onClick={() => removeComment(comment.card_id, comment.id)}>
-              delete
-            </a>
-          </div>
         )}
       </div>
       {showEmojiPicker && (

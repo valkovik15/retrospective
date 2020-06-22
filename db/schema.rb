@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2020_06_03_122333) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.text "content"
+    t.text "content", null: false
     t.bigint "card_id", null: false
     t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
