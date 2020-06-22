@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import Card from './Card';
 import {useBoardSubscription} from '../utils/subscription';
 import UserContext from '../utils/user_context';
+import './table.css';
 
 const CardColumn = props => {
   const user = useContext(UserContext);
@@ -89,6 +90,15 @@ const CardColumn = props => {
             type="text"
             name="card[body]"
           />
+          <div className="btn-save">
+            <button
+              className="tag is-info button"
+              type="submit"
+              onSubmit={submitHandler}
+            >
+              Add
+            </button>
+          </div>
         </form>
       </div>
 

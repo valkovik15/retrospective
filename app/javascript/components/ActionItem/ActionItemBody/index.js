@@ -62,6 +62,11 @@ class ActionItemBody extends React.Component {
     this.setState({showDropdown: false});
   };
 
+  handleSaveClick = () => {
+    this.editModeToggle();
+    editActionItem(this.props.id, this.state.inputValue, this.resetTextChanges);
+  };
+
   render() {
     const {inputValue, editMode} = this.state;
     const {editable, deletable, body} = this.props;
@@ -114,12 +119,23 @@ class ActionItemBody extends React.Component {
         >
           {body}
         </div>
-        <Textarea
-          value={inputValue}
-          hidden={!editMode}
-          onChange={this.handleChange}
-          onKeyPress={this.handleKeyPress}
-        />
+        <div hidden={!editMode}>
+          <Textarea
+            className="input"
+            value={inputValue}
+            onChange={this.handleChange}
+            onKeyPress={this.handleKeyPress}
+          />
+          <div className="btn-add">
+            <button
+              className="tag is-info button"
+              type="button"
+              onClick={this.handleSaveClick}
+            >
+              Save
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
