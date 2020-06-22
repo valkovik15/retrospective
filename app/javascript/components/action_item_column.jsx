@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import ActionItem from './ActionItem';
 import {useBoardSubscription} from '../utils/subscription';
 import UserContext from '../utils/user_context';
+import './table.css';
 
 const ActionItemColumn = props => {
   const {submitPath, initItems, creators} = props;
@@ -73,6 +74,15 @@ const ActionItemColumn = props => {
             type="text"
             name="action_item[body]"
           />
+          <div className="btn-save">
+            <button
+              className="tag is-info button"
+              type="submit"
+              onSubmit={submitHandler}
+            >
+              Add
+            </button>
+          </div>
         </form>
       </div>
       {items.map(item => {
