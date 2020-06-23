@@ -4,10 +4,19 @@ require 'rails_helper'
 
 RSpec.describe ActionItem, type: :model do
   let_it_be(:action_item) { build_stubbed(:action_item) }
+  let_it_be(:user) { create(:user) }
 
   context 'validations' do
     it 'is valid with valid attributes' do
       expect(action_item).to be_valid
+    end
+
+    it 'is valid with appointed' do
+      expect(build_stubbed(:action_item, appointed_id: user.id)).to be_valid
+    end
+
+    it 'is valid without appointed' do
+      expect(build_stubbed(:action_item, appointed: nil)).to be_valid
     end
 
     it 'is not valid without a body' do
