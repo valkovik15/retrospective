@@ -48,12 +48,24 @@ class ActionItemFooter extends React.Component {
   };
 
   render() {
-    const {id, movable, transitionable} = this.props;
+    const {id, movable, transitionable, appointed, avatar} = this.props;
 
     return (
       <div>
         <hr style={{margin: '0.5rem'}} />
         <div className="chevrons">{this.generateChevrons()}</div>
+
+        {appointed && (
+          <div className="columns is-multiline">
+            <div className="column is-one-quarter column-appointed">
+              <img src={avatar} className="avatar" />
+            </div>
+            <div className="column column-appointed">
+              <p> Assigned to</p>
+              <p> {appointed}</p>
+            </div>
+          </div>
+        )}
 
         {transitionable && transitionable.can_close && (
           <TransitionButton id={id} action="close" />

@@ -69,7 +69,6 @@ const CardColumn = props => {
     <>
       <div className="box">
         <form action={submitPath} method="post" onSubmit={submitHandler}>
-          <h2> Add new {kind} card</h2>
           <input
             type="hidden"
             name="authenticity_token"

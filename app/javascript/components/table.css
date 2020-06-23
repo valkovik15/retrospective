@@ -2,3 +2,25 @@
 	direction: rtl;
 	padding-top: 5px;
 }
+
+.columns-footer {
+	padding-top: 5px;
+}
+
+.column-btn-save {
+	direction: rtl;
+}
+
+.column-select {
+	width: 100%;
+}
+
+.column .select {
+	background-color: white;
+	border-color: #dbdbdb;
+	box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+}
+
+.column .select:active {
+	border-color: #dbdbdb;
+}

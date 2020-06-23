@@ -11,7 +11,8 @@ const CardTable = props => {
     cardsByType,
     creators,
     initPrevItems,
-    user
+    user,
+    users
   } = props;
 
   const [columnClass, setColumnClass] = useState(
@@ -66,6 +67,7 @@ const CardTable = props => {
             creators={creators}
             initItems={actionItems || []}
             submitPath={`/boards/${board.slug}/action_items`}
+            users={users}
           />
         </div>
       </div>

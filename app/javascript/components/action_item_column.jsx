@@ -5,7 +5,7 @@ import UserContext from '../utils/user_context';
 import './table.css';
 
 const ActionItemColumn = props => {
-  const {submitPath, initItems, creators} = props;
+  const {submitPath, initItems, creators, users} = props;
   const user = useContext(UserContext);
 
   const [items, setItems] = useState(initItems);
@@ -59,7 +59,6 @@ const ActionItemColumn = props => {
       <h2 className="subtitle">ACTION ITEMS</h2>
       <div className="box">
         <form action={submitPath} method="post" onSubmit={submitHandler}>
-          <h2> Add new action item card</h2>
           <input
             type="hidden"
             name="authenticity_token"
@@ -74,14 +73,28 @@ const ActionItemColumn = props => {
             type="text"
             name="action_item[body]"
           />
-          <div className="btn-save">
-            <button
-              className="tag is-info button"
-              type="submit"
-              onSubmit={submitHandler}
-            >
-              Add
-            </button>
+          <div className="columns is-multiline columns-footer">
+            <div className="column column-select">
+              <select name="action_item[appointed_id]" className="select">
+                <option value=" ">Assigned to ...</option>
+                {users.map(user => {
+                  return (
+                    <option key={user.id} value={user.id}>
+                      {user.email.split('@')[0]}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="column column-btn-save">
+              <button
+                className="tag is-info button"
+                type="submit"
+                onSubmit={submitHandler}
+              >
+                Add
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -94,6 +107,8 @@ const ActionItemColumn = props => {
             times_moved={item.times_moved}
             editable={creators.includes(user)}
             deletable={creators.includes(user)}
+            appointed={item.appointed?.email.split('@')[0]}
+            avatar={item.appointed?.avatar.thumb.url}
           />
         );
       })}
