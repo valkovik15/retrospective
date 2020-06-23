@@ -10,12 +10,23 @@ const CommentsDropdown = props => {
   const controlEl = useRef(null);
   const {visible, id, comments} = props;
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isError, setIsError] = useState(false);
   const user = useContext(UserContext);
   const [newComment, setNewComment] = useState('');
 
+  const handleErrorSubmit = () => {
+    setNewComment('');
+    setIsError(true);
+  };
+
+  const handleSuccessSubmit = () => {
+    setNewComment('');
+    setIsError(false);
+  };
+
   const handleSubmit = commentContent => {
     controlEl.current.disabled = true;
-    createComment(id, commentContent, () => setNewComment(''));
+    createComment(id, commentContent, handleSuccessSubmit, handleErrorSubmit);
     controlEl.current.disabled = false;
     setShowEmojiPicker(false);
   };
@@ -40,19 +51,22 @@ const CommentsDropdown = props => {
             <textarea
               className="textarea"
               value={newComment}
+              style={isError ? {outline: 'solid 1px red'} : {}}
               onChange={e => setNewComment(e.target.value)}
             />
-            <button
-              ref={controlEl}
-              className="button is-small"
-              type="button"
-              onClick={() => handleSubmit(newComment)}
-            >
-              Add comment
-            </button>
-            <a className="has-text-info" onClick={handleSmileClick}>
-              <FontAwesomeIcon icon={faSmile} />
-            </a>
+            <div className="edit-panel-wrapper">
+              <a className="has-text-info" onClick={handleSmileClick}>
+                <FontAwesomeIcon icon={faSmile} />
+              </a>
+              <button
+                ref={controlEl}
+                className="button is-small"
+                type="button"
+                onClick={() => handleSubmit(newComment)}
+              >
+                Add comment
+              </button>
+            </div>
           </div>
           {showEmojiPicker && (
             <Picker

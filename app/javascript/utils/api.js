@@ -1,6 +1,6 @@
 const logError = async error => {
   const errorHash = await error.json();
-  console.log(errorHash.error);
+  console.log(errorHash.error.content.join(' '));
 };
 
 const getCSRFToken = () => {
@@ -15,7 +15,12 @@ const headers = {
   'X-CSRF-Token': getCSRFToken()
 };
 
-export const createComment = async (cardId, commentContent, onComplete) => {
+export const createComment = async (
+  cardId,
+  commentContent,
+  onComplete,
+  onError
+) => {
   try {
     const response = await fetch(
       `/api${window.location.pathname}/cards/${cardId}/comments`,
@@ -34,6 +39,7 @@ export const createComment = async (cardId, commentContent, onComplete) => {
     }
   } catch (error) {
     await logError(error);
+    onError();
   }
 };
 
