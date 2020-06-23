@@ -2,6 +2,7 @@
 
 module API
   class BoardsController < API::ApplicationController
+    include BroadcastActions
     before_action :set_board
     before_action do
       authorize! @board
@@ -11,6 +12,7 @@ module API
       users = Boards::FindUsersToInvite.new(board_params[:email], @board).call
       if users.any?
         result = Boards::InviteUsers.new(@board, users).call
+        broadcast_all_memberships(@board)
         render json: result.value!, each_serializer: MembershipSerializer
       else
         render json: { error: 'User was not found' }, status: 400

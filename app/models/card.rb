@@ -7,11 +7,6 @@ class Card < ApplicationRecord
   has_many :comments, dependent: :destroy
 
   validates_presence_of :kind, :body
-  validates :kind, inclusion: { in: %w[mad sad glad] }
-
-  scope :mad, -> { where(kind: :mad) }
-  scope :sad, -> { where(kind: :sad) }
-  scope :glad, -> { where(kind: :glad) }
 
   def author?(user)
     author == user

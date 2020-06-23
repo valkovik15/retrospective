@@ -11,8 +11,20 @@
     </div>
   <% end %>
   <div class='field'>
-  <%= form.text_field :title, class: 'input' %>
+    <%= form.text_field :title, class: 'input' %>
   </div>
+  <div class='field'>
+    <%= form.check_box :private%>
+    <%= form.label(:private, 'Make board private')%>
+  </div>
+
+  <% @board.column_names.each_with_index do |name, index| %>
+    <div class='field'>
+      <%= form.label(:private, "The #{(index+1).ordinalize} column name")%>
+      <%= form.text_field :column_names, class: 'input', multiple: true, value: name %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= form.submit %>
   </div>

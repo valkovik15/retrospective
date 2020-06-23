@@ -5,6 +5,10 @@ class BoardPolicy < ApplicationPolicy
     true
   end
 
+  def show?
+    record.private ? user_is_member? : true
+  end
+
   def new?
     true
   end
@@ -29,7 +33,15 @@ class BoardPolicy < ApplicationPolicy
     user_is_creator?
   end
 
+  def create_cards?
+    user_is_member?
+  end
+
   def user_is_creator?
     record.creator?(user)
+  end
+
+  def user_is_member?
+    record.member?(user)
   end
 end

@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 const User = props => {
-  const {membership} = props;
+  const {membership, shouldDisplayReady, boardSlug, shouldHandleDelete} = props;
   const {ready, id, user} = membership;
   const {email} = user;
+  const [style, setStyle] = useState({});
 
   const deleteUser = () => {
-    fetch(`/api/${window.location.pathname}/memberships/${id}`, {
+    fetch(`/api/boards/${boardSlug}/memberships/${id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -17,7 +18,11 @@ const User = props => {
       }
     })
       .then(result => {
-        if (result.status !== 204) {
+        if (result.status === 204) {
+          if (shouldHandleDelete) {
+            setStyle({display: 'none'});
+          }
+        } else {
           throw result;
         }
       })
@@ -29,9 +34,15 @@ const User = props => {
   };
 
   return (
-    <div key={email} className={ready ? 'tag is-success' : 'tag is-info'}>
+    <div
+      key={email}
+      style={style}
+      className={shouldDisplayReady && ready ? 'tag is-success' : 'tag is-info'}
+    >
       <p>{email}</p>
-      <a className="delete is-small" onClick={deleteUser} />
+      {shouldHandleDelete && (
+        <a className="delete is-small" onClick={deleteUser} />
+      )}
     </div>
   );
 };

@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import Select from 'react-select';
-import consumer from '../channels/consumer';
 
 import User from './user';
 
-export class Autocomplete extends Component {
+class InviteBlock extends Component {
   state = {
     suggestions: [],
     memberships: [],
@@ -14,18 +12,7 @@ export class Autocomplete extends Component {
   };
 
   componentDidMount() {
-    this.sub = consumer.subscriptions.create(
-      {
-        channel: 'BoardChannel',
-        board: window.location.pathname.slice(
-          window.location.pathname.lastIndexOf('/') + 1
-        )
-      },
-      {
-        received: this.handleReceiveMemberships
-      }
-    );
-    fetch(`/api/${window.location.pathname}/memberships`)
+    fetch(`/api/boards/${this.props.boardSlug}/memberships`)
       .then(res => res.json())
       .then(result => {
         this.setState((state, _) => ({
@@ -35,53 +22,9 @@ export class Autocomplete extends Component {
       });
   }
 
-  componentWillUnmount() {
-    this.sub.unsubscribe();
-  }
-
-  handleReceiveMemberships = data => {
-    const {id, front_action, users} = data;
-    switch (front_action) {
-      case 'add_users': {
-        this.setState((state, _) => ({
-          ...state,
-          memberships: [
-            ...new Set(state.memberships.concat(...Object.values(users)))
-          ]
-        }));
-        break;
-      }
-
-      case 'remove_user': {
-        this.setState((state, _) => ({
-          ...state,
-          memberships: state.memberships.filter(el => el.id !== id)
-        }));
-        break;
-      }
-
-      case 'update_status': {
-        const objIndex = this.state.memberships.findIndex(obj => obj.id === id);
-        const updatedObj = {
-          ...this.state.memberships[objIndex],
-          ready: !this.state.memberships[objIndex].ready
-        };
-        this.setState((state, _) => ({
-          ...state,
-          memberships: [
-            ...state.memberships.slice(0, objIndex),
-            updatedObj,
-            ...state.memberships.slice(objIndex + 1)
-          ]
-        }));
-        break;
-      }
-    }
-  };
-
   handleSubmit = e => {
     e.preventDefault();
-    fetch(`/api/${window.location.pathname}/invite`, {
+    fetch(`/api/boards/${this.props.boardSlug}/invite`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -104,17 +47,22 @@ export class Autocomplete extends Component {
         throw res;
       })
       .then(result => {
-        this.setState((state, _) => ({
-          ...state,
-          selectedOption: null
-        }));
-        this.sub.send({users: {...result}, front_action: 'add_users'});
+        this.setState(prevState => {
+          return {
+            ...prevState,
+            memberships: [...new Set(prevState.memberships.concat(result))],
+            selectedOption: null
+          };
+        });
       })
       .catch(error => {
-        this.setState((state, _) => ({
-          ...state,
-          selectedOption: null
-        }));
+        console.log(error);
+        this.setState(prevState => {
+          return {
+            ...prevState,
+            selectedOption: null
+          };
+        });
         error.text().then(errorMessage => {
           console.log(errorMessage);
         });
@@ -127,7 +75,7 @@ export class Autocomplete extends Component {
 
   onInputChange = e => {
     if (e) {
-      fetch(`/api/${window.location.pathname}/suggestions?autocomplete=${e}`)
+      fetch(`/api/boards/${this.props.boardSlug}/suggestions?autocomplete=${e}`)
         .then(res => res.json())
         .then(result => {
           this.setState((state, _) => ({
@@ -156,7 +104,15 @@ export class Autocomplete extends Component {
   render() {
     const {memberships} = this.state;
     const usersListComponent = memberships.map(membership => {
-      return <User key={membership.id} membership={membership} />;
+      return (
+        <User
+          key={membership.id}
+          shouldHandleDelete
+          membership={membership}
+          shouldDisplayReady={false}
+          boardSlug={this.props.boardSlug}
+        />
+      );
     });
     const components = {
       DropdownIndicator: null
@@ -182,6 +138,4 @@ export class Autocomplete extends Component {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(<Autocomplete />, document.querySelector('#autocomplete'));
-});
+export default InviteBlock;
