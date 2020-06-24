@@ -11,12 +11,12 @@ RSpec.describe ActionItem, type: :model do
       expect(action_item).to be_valid
     end
 
-    it 'is valid with appointed' do
-      expect(build_stubbed(:action_item, appointed_id: user.id)).to be_valid
+    it 'is valid with assignee' do
+      expect(build_stubbed(:action_item, assignee_id: user.id)).to be_valid
     end
 
-    it 'is valid without appointed' do
-      expect(build_stubbed(:action_item, appointed: nil)).to be_valid
+    it 'is valid without assignee' do
+      expect(build_stubbed(:action_item, assignee: nil)).to be_valid
     end
 
     it 'is not valid without a body' do

@@ -3,7 +3,7 @@
 class ActionItem < ApplicationRecord
   include AASM
 
-  belongs_to :appointed, class_name: 'User', optional: true
+  belongs_to :assignee, class_name: 'User', optional: true
   belongs_to :board
 
   validates_presence_of :body, :status

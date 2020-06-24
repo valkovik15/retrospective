@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :action_item do
     body { Faker::ChuckNorris.fact }
     association :board
-    association :appointed, factory: :user
+    association :assignee, factory: :user
   end
 end

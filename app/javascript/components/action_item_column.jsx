@@ -75,7 +75,7 @@ const ActionItemColumn = props => {
           />
           <div className="columns is-multiline columns-footer">
             <div className="column column-select">
-              <select name="action_item[appointed_id]" className="select">
+              <select name="action_item[assignee_id]" className="select">
                 <option value=" ">Assigned to ...</option>
                 {users.map(user => {
                   return (
@@ -107,8 +107,8 @@ const ActionItemColumn = props => {
             times_moved={item.times_moved}
             editable={creators.includes(user)}
             deletable={creators.includes(user)}
-            appointed={item.appointed?.email.split('@')[0]}
-            avatar={item.appointed?.avatar.thumb.url}
+            assignee={item.assignee_name}
+            avatar={item.assignee_avatar_url}
           />
         );
       })}

@@ -25,11 +25,11 @@ class ActionItem extends React.Component {
       editable,
       movable,
       transitionable,
-      appointed,
+      assignee,
       avatar
     } = this.props;
     const footerNotEmpty =
-      movable || transitionable || times_moved !== 0 || appointed !== undefined;
+      movable || transitionable || times_moved !== 0 || assignee !== null;
 
     return (
       <div className={`box ${this.pickColor()}_bg`}>
@@ -45,7 +45,7 @@ class ActionItem extends React.Component {
             times_moved={times_moved}
             movable={movable}
             transitionable={transitionable}
-            appointed={appointed}
+            assignee={assignee}
             avatar={avatar}
           />
         )}

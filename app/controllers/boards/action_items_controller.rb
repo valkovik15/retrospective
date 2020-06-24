@@ -23,7 +23,7 @@ module Boards
     end
 
     def action_item_params
-      params.require(:action_item).permit(:status, :body, :appointed_id)
+      params.require(:action_item).permit(:status, :body, :assignee_id)
     end
   end
 end
