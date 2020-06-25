@@ -15,7 +15,7 @@ RSpec.describe API::CommentsController do
 
   describe 'POST #create' do
     subject(:response) { post :create, params: params }
-    let(:params) { { board_slug: board.slug, card_id: card.id } }
+    let(:params) { { board_slug: board.slug, card_id: card.id, content: comment.content } }
 
     context 'authentication' do
       it_behaves_like :controllers_api_unauthenticated_action

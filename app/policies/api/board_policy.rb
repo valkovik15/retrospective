@@ -13,5 +13,9 @@ module API
     def user_is_member?
       record.member?(user)
     end
+
+    def user_is_creator?
+      record.creator?(user)
+    end
   end
 end

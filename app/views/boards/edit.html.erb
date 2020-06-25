@@ -1,9 +1,18 @@
+<%= javascript_pack_tag 'application'%>
 <div class='box'>
   <h1>Editing Board</h1>
 </div>
 <div class='box'>
+<% if allowed_to?(:update?, @board) %>
   <%= render 'form', board: @board %>
+<% end %>
 </div>
 
-<%= link_to 'Show', @board %> |
-<%= link_to 'Back', boards_path %>
+<% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
+  <div class='box'>
+    <%= react_component 'invite_block', {boardSlug: @board.slug}%>
+  </div>
+<% end %>
+
+<%= link_to 'Board page', @board %> |
+<%= link_to 'Boards menu', boards_path %>

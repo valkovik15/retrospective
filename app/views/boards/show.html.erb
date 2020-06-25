@@ -1,26 +1,29 @@
 <% content_for :scripts do %>
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application' %>
-
-  <%= javascript_pack_tag 'ready_button_component' %>
-  <% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
-    <%= javascript_pack_tag 'autocomplete' %>
+  <% if allowed_to?(:create_cards?, @board) %>
+    <%= javascript_pack_tag 'ready_button_component' %>
   <% end %>
+
 <% end %>
 
 <div class='box has-text-centered'>
   <div class='level'>
+  <%if allowed_to?(:edit?, @board)%>
+    <div id='settings-button'>
+       <%= link_to "Settings", edit_board_path(@board), class: 'button is-large' %>
+    </div>
+  <%end%>
 
     <div class='level-item has-text-centered'>
       <h1 class='title'>
         <%= @board.title %>
       </h1>
     </div>
-
     <div class='level-right'>
       <% if !current_user %>
         <%= link_to 'Sign in with Alfred', user_alfred_omniauth_authorize_path, class: 'button is-large' %>
-      <% elsif @board.memberships.exists?(user_id: current_user.id) %>
+      <% elsif allowed_to?(:create_cards?, @board) %>
         <div id='ready-button'></div>
       <% else %>
         <%= link_to 'Join', board_memberships_path(board_slug: @board.slug), method: :post, class: 'button is-large' %>
@@ -30,7 +33,11 @@
   </div>
 </div>
 
-<div class="box" id='autocomplete'></div>
+<% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
+  <div class="box">
+    <%= react_component('membership_list')%>
+  </div>
+<% end %>
 
 <% if @previous_action_items %>
   <% column_class_name = 'column is-one-fifth' %>

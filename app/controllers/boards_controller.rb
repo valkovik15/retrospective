@@ -14,19 +14,12 @@ class BoardsController < ApplicationController
     @boards = current_user.boards.order(created_at: :desc)
   end
 
-  # rubocop: disable Metrics/AbcSize
   def show
-    @cards_by_type = {
-      mad: ActiveModelSerializers::SerializableResource.new(@board.cards.mad.includes(:author,
-                                                                                      comments: [:author])
-                                                            .order(created_at: :asc)).as_json,
-      sad: ActiveModelSerializers::SerializableResource.new(@board.cards.sad.includes(:author,
-                                                                                      comments: [:author])
-                                                            .order(created_at: :asc)).as_json,
-      glad: ActiveModelSerializers::SerializableResource.new(@board.cards.glad.includes(:author,
-                                                                                        comments: [:author])
-                                                             .order(created_at: :asc)).as_json
-    }
+    authorize! @board
+    @cards_by_type = @board.column_names.map do |column|
+      [[column, ActiveModelSerializers::SerializableResource.new(@board.cards.where(kind: column)
+        .includes(:author, comments: [:author]).order(created_at: :asc)).as_json]].to_h
+    end.reduce({}, :merge).as_json
     @action_items = ActiveModelSerializers::SerializableResource.new(@board.action_items).as_json
     @action_item = ActionItem.new(board_id: @board.id)
     @board_creators = User.find(@board.memberships.where(role: 'creator').pluck(:user_id))
@@ -62,7 +55,7 @@ class BoardsController < ApplicationController
   def update
     authorize! @board
     if @board.update(board_params)
-      redirect_to boards_path, notice: 'Board was successfully updated.'
+      redirect_to edit_board_path(@board), notice: 'Board was successfully updated.'
     else
       render :edit
     end
@@ -90,7 +83,7 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.require(:board).permit(:title, :team_id, :email)
+    params.require(:board).permit(:title, :team_id, :email, :private, column_names: [])
   end
 
   def set_board

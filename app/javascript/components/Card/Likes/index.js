@@ -4,7 +4,8 @@ import {likeCard} from '../../../utils/api';
 const EMOJIES = {
   mad: '😡',
   sad: '😔',
-  glad: '🤗'
+  glad: '🤗',
+  universal: '👍'
 };
 
 class Likes extends React.PureComponent {
@@ -46,7 +47,7 @@ class Likes extends React.PureComponent {
           onMouseUp={this.handleMouseUp}
           onMouseLeave={this.handleMouseLeave}
         >
-          {EMOJIES[type]}
+          {EMOJIES[type] || EMOJIES.universal}
         </a>
         <span> {likes} </span>
       </>

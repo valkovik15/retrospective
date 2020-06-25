@@ -14,4 +14,11 @@ module BroadcastActions
                                  front_action: action_name,
                                  id: membership.id
   end
+
+  def broadcast_all_memberships(board)
+    ActionCable.server.broadcast "board_#{board.slug}",
+                                 front_action: 'add_users',
+                                 memberships: ActiveModelSerializers::SerializableResource.new(board.memberships,
+                                                                                               each_serializer: MembershipSerializer).as_json
+  end
 end

@@ -19,7 +19,8 @@ module Boards
 
       new_board = Board.new(
         title: default_board_name,
-        previous_board_id: prev_board.id
+        previous_board_id: prev_board.id,
+        column_names: prev_board.column_names
       )
 
       new_board.memberships = duplicate_memberships

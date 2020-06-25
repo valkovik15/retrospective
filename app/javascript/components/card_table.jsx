@@ -13,7 +13,7 @@ const CardTable = props => {
     initPrevItems,
     user
   } = props;
-  const {mad, sad, glad} = cardsByType;
+
   const [columnClass, setColumnClass] = useState(
     initPrevItems.length > 0 ? 'column is-one-fifth' : 'column is-one-fourth'
   );
@@ -25,6 +25,25 @@ const CardTable = props => {
   const prevActionsEmptyHandler = () => {
     setDisplayPrevItems(false);
     setColumnClass('column is-one-fourth');
+  };
+
+  const generateColumns = cardTypePairs => {
+    const content = [];
+    for (const [columnName, cards] of Object.entries(cardTypePairs)) {
+      content.push(
+        <div key={`${columnName}_column`} className={columnClass}>
+          <h2 className="subtitle">{columnName.toUpperCase()}</h2>
+          <CardColumn
+            key={columnName}
+            kind={columnName}
+            initCards={cards}
+            submitPath={`/boards/${board.slug}/cards`}
+          />
+        </div>
+      );
+    }
+
+    return content;
   };
 
   return (
@@ -40,32 +59,7 @@ const CardTable = props => {
           </div>
         ) : null}
 
-        <div className={columnClass}>
-          <h2 className="subtitle">MAD</h2>
-          <CardColumn
-            kind="mad"
-            initCards={mad}
-            submitPath={`/boards/${board.slug}/cards`}
-          />
-        </div>
-
-        <div className={columnClass}>
-          <h2 className="subtitle">SAD</h2>
-          <CardColumn
-            kind="sad"
-            initCards={sad}
-            submitPath={`/boards/${board.slug}/cards`}
-          />
-        </div>
-
-        <div className={columnClass}>
-          <h2 className="subtitle">GLAD</h2>
-          <CardColumn
-            kind="glad"
-            initCards={glad}
-            submitPath={`/boards/${board.slug}/cards`}
-          />
-        </div>
+        {generateColumns(cardsByType)}
 
         <div className={columnClass}>
           <ActionItemColumn

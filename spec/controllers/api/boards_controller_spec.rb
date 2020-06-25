@@ -102,4 +102,5 @@ RSpec.describe API::BoardsController do
       it { is_expected.to match_json_schema('api/boards/suggestions') }
     end
   end
+
 end
