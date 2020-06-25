@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 2020_06_25_042959) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "times_moved", default: 0, null: false
+    t.bigint "assignee_id"
+    t.index ["assignee_id"], name: "index_action_items_on_assignee_id"
     t.index ["board_id"], name: "index_action_items_on_board_id"
   end
 
@@ -101,6 +103,7 @@ ActiveRecord::Schema.define(version: 2020_06_25_042959) do
   end
 
   add_foreign_key "action_items", "boards"
+  add_foreign_key "action_items", "users", column: "assignee_id"
   add_foreign_key "boards", "boards", column: "previous_board_id"
   add_foreign_key "cards", "boards"
   add_foreign_key "cards", "users", column: "author_id"

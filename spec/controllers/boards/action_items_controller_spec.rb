@@ -54,6 +54,22 @@ RSpec.describe Boards::ActionItemsController do
           end
         end
 
+        context 'is valid without assignee' do
+          let_it_be(:params) { params.merge action_item: { assignee: nil, body: params[:action_item][:body] } }
+          it { is_expected.to have_http_status(:redirect) }
+          it 'broadcasts new item' do
+            expect { post :create, params: params }.to have_broadcasted_to("board_#{board.slug}")
+          end
+        end
+
+        context 'is valid with assignee' do
+          let_it_be(:params) { params.merge action_item: { assignee_id: creator.id, body: params[:action_item][:body] } }
+          it { is_expected.to have_http_status(:redirect) }
+          it 'broadcasts new item' do
+            expect { post :create, params: params }.to have_broadcasted_to("board_#{board.slug}")
+          end
+        end
+
         context 'with invalid params' do
           let_it_be(:params) { params.merge action_item: { body: nil } }
           it { is_expected.to have_http_status(:redirect) }

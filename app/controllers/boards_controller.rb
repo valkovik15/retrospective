@@ -24,10 +24,10 @@ class BoardsController < ApplicationController
     @action_item = ActionItem.new(board_id: @board.id)
     @board_creators = User.find(@board.memberships.where(role: 'creator').pluck(:user_id))
                           .pluck(:email)
-
     @previous_action_items = if @board.previous_board&.action_items&.any?
-                               @board.previous_board.action_items
+                               ActiveModelSerializers::SerializableResource.new(@board.previous_board.action_items).as_json
                              end
+    @users = ActiveModelSerializers::SerializableResource.new(User.find(@board.memberships.pluck(:user_id))).as_json
   end
   # rubocop: enable Metrics/AbcSize
 
