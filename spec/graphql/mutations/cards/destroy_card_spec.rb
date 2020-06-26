@@ -4,14 +4,14 @@ require 'rails_helper'
 
 RSpec.describe Mutations::DestroyCardMutation, type: :request do
   describe '#resolve' do
-    let(:card) { create(:card, author: author) }
-    let(:author) { create(:user) }
+    let!(:author) { create(:user) }
+    let!(:card) { create(:card, author: author) }
     let(:request) { post '/graphql', params: { query: query(id: card.id) } }
 
     before { sign_in author }
 
     it 'removes card' do
-      expect { request.to change { Card.count }.by(-1) }
+      expect { request }.to change { Card.count }.by -1
     end
 
     it 'returns a card' do

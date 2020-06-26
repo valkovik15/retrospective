@@ -1,0 +1,13 @@
+#import "./user.graphql"
+
+fragment ActionItem on ActionItem {
+  id
+  assignee {
+    ...User
+  }
+  body
+  times_moved
+  assignee_name
+  assignee_avatar_url
+  status
+}

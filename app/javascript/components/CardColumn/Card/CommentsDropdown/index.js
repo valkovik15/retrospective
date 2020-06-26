@@ -4,7 +4,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSmile} from '@fortawesome/free-regular-svg-icons';
 import UserContext from '../../../../utils/user_context';
 import Comment from './Comment';
-import {createComment} from '../../../../utils/api';
+import {useMutation} from '@apollo/react-hooks';
+import {addCommentMutation} from './operations.gql';
 
 const CommentsDropdown = props => {
   const controlEl = useRef(null);
@@ -13,6 +14,7 @@ const CommentsDropdown = props => {
   const [isError, setIsError] = useState(false);
   const user = useContext(UserContext);
   const [newComment, setNewComment] = useState('');
+  const [addComment] = useMutation(addCommentMutation);
 
   const handleErrorSubmit = () => {
     setNewComment('');
@@ -26,7 +28,19 @@ const CommentsDropdown = props => {
 
   const handleSubmit = commentContent => {
     controlEl.current.disabled = true;
-    createComment(id, commentContent, handleSuccessSubmit, handleErrorSubmit);
+    addComment({
+      variables: {
+        cardId: id,
+        content: commentContent
+      }
+    }).then(({data}) => {
+      if (data.addComment.comment) {
+        handleSuccessSubmit();
+      } else {
+        console.log(data.addComment.errors.fullMessages.join(' '));
+        handleErrorSubmit();
+      }
+    });
     controlEl.current.disabled = false;
     setShowEmojiPicker(false);
   };
@@ -77,6 +91,7 @@ const CommentsDropdown = props => {
           {comments.map(item => (
             <Comment
               key={item.id}
+              id={item.id}
               comment={item}
               deletable={user === item.author.email}
               editable={user === item.author.email}

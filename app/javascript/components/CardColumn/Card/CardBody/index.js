@@ -12,8 +12,6 @@ const CardBody = props => {
   const [editCard] = useMutation(updateCardMutation);
   const [destroyCard] = useMutation(destroyCardMutation);
 
-  console.log(id);
-
   useEffect(() => {
     setInputValue(body);
   }, [body, props.body]);

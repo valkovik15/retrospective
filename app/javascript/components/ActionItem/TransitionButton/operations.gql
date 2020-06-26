@@ -1,0 +1,34 @@
+mutation closeActionItemMutation($id: ID!, $boardSlug: String!) {
+  closeActionItem(input: { id: $id, boardSlug: $boardSlug}) {
+    actionItem {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}
+
+mutation completeActionItemMutation($id: ID!, $boardSlug: String!) {
+  completeActionItem(input: { id: $id, boardSlug: $boardSlug}) {
+    actionItem {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}
+
+
+mutation reopenActionItemMutation($id: ID!, $boardSlug: String!) {
+  reopenActionItem(input: { id: $id, boardSlug: $boardSlug}) {
+    actionItem {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}
+

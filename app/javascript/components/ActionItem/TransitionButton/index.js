@@ -1,39 +1,65 @@
 import React from 'react';
-import {getHeaders} from '../../../utils/http';
+import {useMutation} from '@apollo/react-hooks';
+import {
+  closeActionItemMutation,
+  completeActionItemMutation,
+  reopenActionItemMutation
+} from './operations.gql';
 
-class TransitionButton extends React.Component {
-  handleClick = () => {
-    fetch(
-      `/api/${window.location.pathname}/action_items/${this.props.id}/${this.props.action}`,
-      {
-        method: 'PUT',
-        headers: getHeaders()
-      }
-    )
-      .then(result => {
-        if (result.status !== 200) {
-          throw result;
-        }
-      })
-      .catch(error => {
-        error.json().then(errorHash => {
-          console.log(errorHash.error);
+const TransitionButton = props => {
+  const {id, action} = props;
+  const [closeActionItem] = useMutation(closeActionItemMutation);
+  const [completeActionItem] = useMutation(completeActionItemMutation);
+  const [reopenActionItem] = useMutation(reopenActionItemMutation);
+
+  const handleClick = () => {
+    switch (action) {
+      case 'close':
+        closeActionItem({
+          variables: {
+            id,
+            boardSlug: window.location.pathname.split('/')[2]
+          }
+        }).then(({data}) => {
+          if (!data.closeActionItem.actionItem) {
+            console.log(data.closeActionItem.errors.fullMessages.join(' '));
+          }
         });
-      });
+        break;
+
+      case 'complete':
+        completeActionItem({
+          variables: {
+            id,
+            boardSlug: window.location.pathname.split('/')[2]
+          }
+        }).then(({data}) => {
+          if (!data.completeActionItem.actionItem) {
+            console.log(data.completeActionItem.errors.fullMessages.join(' '));
+          }
+        });
+        break;
+
+      case 'reopen':
+        reopenActionItem({
+          variables: {
+            id,
+            boardSlug: window.location.pathname.split('/')[2]
+          }
+        }).then(({data}) => {
+          if (!data.reopenActionItem.actionItem) {
+            console.log(data.reopenActionItem.errors.fullMessages.join(' '));
+          }
+        });
+        break;
+    }
   };
 
-  render() {
-    return (
-      <button
-        type="button"
-        onClick={() => {
-          this.handleClick();
-        }}
-      >
-        {this.props.action}
-      </button>
-    );
-  }
-}
+  return (
+    <button type="button" onClick={handleClick}>
+      {action}
+    </button>
+  );
+};
 
 export default TransitionButton;

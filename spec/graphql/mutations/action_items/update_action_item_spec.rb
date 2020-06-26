@@ -2,19 +2,21 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::UpdateCardMutation, type: :request do
+RSpec.describe Mutations::UpdateActionItemMutation, type: :request do
   describe '.resolve' do
     let(:author) { create(:user) }
-    let(:card) { create(:card, author: author) }
-    let(:request) { post '/graphql', params: { query: query(id: card.id, body: 'New body') } }
-
+    let!(:board) { create(:board) }
+    let!(:action_item) { create(:action_item, board: board) }
+    let(:request) { post '/graphql', params: { query: query(id: action_item.id, body: 'New body') } }
+    let!(:creatorship) do
+      create(:membership, board: board, user: author, role: 'creator')
+    end
     before { sign_in author }
 
-    it 'updates a card' do
+    it 'updates an action item' do
       request
 
-      expect(card.reload).to have_attributes(
-        'author_id' => author.id,
+      expect(action_item.reload).to have_attributes(
         'body' => 'New body'
       )
     end
@@ -23,12 +25,11 @@ RSpec.describe Mutations::UpdateCardMutation, type: :request do
       request
 
       json = JSON.parse(response.body)
-      data = json.dig('data', 'updateCard', 'card')
+      data = json.dig('data', 'updateActionItem', 'actionItem')
 
       expect(data).to include(
-        'id' => card.id,
+        'id' => action_item.id,
         'body' => 'New body',
-        'author' => { 'id' => author.id.to_s }
       )
     end
   end
@@ -36,7 +37,7 @@ RSpec.describe Mutations::UpdateCardMutation, type: :request do
   def query(id:, body:)
     <<~GQL
       mutation {
-        updateCard(
+        updateActionItem(
           input: {
             id: #{id}
             attributes: {
@@ -44,12 +45,9 @@ RSpec.describe Mutations::UpdateCardMutation, type: :request do
             }
           }
         ) {
-          card {
+          actionItem {
             id
             body
-            author {
-              id
-            }
           }
         }
       }

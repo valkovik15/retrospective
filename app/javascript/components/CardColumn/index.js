@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {useMutation, useSubscription} from '@apollo/react-hooks';
 import Card from './Card';
 import {
@@ -15,12 +15,13 @@ const CardColumn = props => {
 
   const [cards, setCards] = useState(initCards);
   const [newCard, setNewCard] = useState('');
+  const [skip, setSkip] = useState(true); // Workaround for https://github.com/apollographql/react-apollo/issues/3802
 
   const [addCard] = useMutation(addCardMutation);
 
   useSubscription(cardAddedSubscription, {
+    skip,
     onSubscriptionData: opts => {
-      console.log(opts);
       const {data} = opts.subscriptionData;
       const {cardAdded} = data;
       if (cardAdded) {
@@ -36,6 +37,7 @@ const CardColumn = props => {
   });
 
   useSubscription(cardDestroyedSubscription, {
+    skip,
     onSubscriptionData: opts => {
       const {data} = opts.subscriptionData;
       const {cardDestroyed} = data;
@@ -47,6 +49,7 @@ const CardColumn = props => {
   });
 
   useSubscription(cardUpdatedSubscription, {
+    skip,
     onSubscriptionData: opts => {
       const {data} = opts.subscriptionData;
       const {cardUpdated} = data;
@@ -69,6 +72,10 @@ const CardColumn = props => {
     },
     variables: {boardSlug: window.location.pathname.split('/')[2]}
   });
+
+  useEffect(() => {
+    setSkip(false);
+  }, []);
 
   const submitHandler = e => {
     e.preventDefault();
@@ -113,7 +120,6 @@ const CardColumn = props => {
       </div>
 
       {cards.map(card => {
-        console.log(card);
         return (
           <Card
             key={card.id}

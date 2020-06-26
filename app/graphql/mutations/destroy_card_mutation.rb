@@ -19,7 +19,7 @@ module Mutations
                                                   id: id, kind: card.kind)
         { id: id }
       else
-        { errors: card.errors.full_messages }
+        { errors: card.errors }
       end
     end
   end

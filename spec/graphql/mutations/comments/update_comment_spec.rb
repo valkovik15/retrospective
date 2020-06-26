@@ -2,51 +2,52 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::UpdateCardMutation, type: :request do
+RSpec.describe Mutations::UpdateCommentMutation, type: :request do
   describe '.resolve' do
     let(:author) { create(:user) }
     let(:card) { create(:card, author: author) }
-    let(:request) { post '/graphql', params: { query: query(id: card.id, body: 'New body') } }
+    let(:comment) { create(:comment, author: author, card: card) }
+    let(:request) { post '/graphql', params: { query: query(id: comment.id, content: 'Updated') } }
 
     before { sign_in author }
 
-    it 'updates a card' do
+    it 'updates a comment' do
       request
 
-      expect(card.reload).to have_attributes(
+      expect(comment.reload).to have_attributes(
         'author_id' => author.id,
-        'body' => 'New body'
+        'content' => 'Updated'
       )
     end
 
-    it 'returns a card' do
+    it 'returns a comment' do
       request
 
       json = JSON.parse(response.body)
-      data = json.dig('data', 'updateCard', 'card')
+      data = json.dig('data', 'updateComment', 'comment')
 
       expect(data).to include(
-        'id' => card.id,
-        'body' => 'New body',
+        'id' => comment.id,
+        'content' => 'Updated',
         'author' => { 'id' => author.id.to_s }
       )
     end
   end
 
-  def query(id:, body:)
+  def query(id:, content:)
     <<~GQL
       mutation {
-        updateCard(
+        updateComment(
           input: {
             id: #{id}
             attributes: {
-              body: "#{body}"
+              content: "#{content}"
             }
           }
         ) {
-          card {
+          comment {
             id
-            body
+            content
             author {
               id
             }

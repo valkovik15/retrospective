@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import PrevActionItemColumn from './prev_action_item_column';
+import PrevActionItemColumn from './PrevActionItemColumn';
 import CardColumn from './CardColumn';
-import ActionItemColumn from './action_item_column';
+import ActionItemColumn from './ActionItemColumn';
 import UserContext from '../utils/user_context';
 import Provider from './Provider';
 
@@ -68,7 +68,6 @@ const CardTable = props => {
             <ActionItemColumn
               creators={creators}
               initItems={actionItems || []}
-              submitPath={`/boards/${board.slug}/action_items`}
               users={users}
             />
           </div>

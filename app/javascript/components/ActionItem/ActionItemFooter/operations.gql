@@ -1,0 +1,10 @@
+mutation moveActionItemMutation($id: ID!, $boardSlug: String!) {
+  moveActionItem(input: { id: $id, boardSlug: $boardSlug}) {
+    actionItem {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}
