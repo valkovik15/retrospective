@@ -2,7 +2,7 @@
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application' %>
   <% if allowed_to?(:create_cards?, @board) %>
-    <%= javascript_pack_tag 'ready_button_component' %>
+    <%= javascript_pack_tag 'ready_button' %>
   <% end %>
 
 <% end %>

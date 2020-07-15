@@ -13,6 +13,7 @@ module Types
     field :like_card, mutation: Mutations::LikeCardMutation
     field :move_action_item, mutation: Mutations::MoveActionItemMutation
     field :reopen_action_item, mutation: Mutations::ReopenActionItemMutation
+    field :toggle_ready_status, mutation: Mutations::ToggleReadyStatusMutation
     field :update_action_item, mutation: Mutations::UpdateActionItemMutation
     field :update_card, mutation: Mutations::UpdateCardMutation
     field :update_comment, mutation: Mutations::UpdateCommentMutation

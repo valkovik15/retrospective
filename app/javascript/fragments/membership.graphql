@@ -1,0 +1,4 @@
+fragment Membership on Membership {
+  id
+  ready
+}
