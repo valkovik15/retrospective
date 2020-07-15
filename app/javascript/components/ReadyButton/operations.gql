@@ -1,4 +1,3 @@
-#import '../../fragments/membership.graphql'
 mutation toggleReadyStatusMutation($id: ID!) {
   toggleReadyStatus(
     input: { id: $id }
@@ -14,12 +13,14 @@ mutation toggleReadyStatusMutation($id: ID!) {
 
 query getMembership($boardSlug: String!){
   membership(boardSlug: $boardSlug) {
-    ...Membership
+    id
+    ready
   }
 }
 
 subscription membershipUpdatedSubscription($boardSlug: String!) {
   membershipUpdated(boardSlug: $boardSlug) {
-   ...Membership
+   id
+   ready
   }
 }

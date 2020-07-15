@@ -2,31 +2,33 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::DestroyActionItemMutation, type: :request do
+RSpec.describe Mutations::DestroyMembershipMutation, type: :request do
   describe '#resolve' do
     let!(:board) { create(:board) }
-    let!(:action_item) { create(:action_item, board: board) }
     let(:author) { create(:user) }
-    let(:request) { post '/graphql', params: { query: query(id: action_item.id) } }
-
+    let(:non_author) { create(:user) }
     let!(:creatorship) do
       create(:membership, board: board, user: author, role: 'creator')
     end
+    let!(:non_creatorship) do
+      create(:membership, board: board, user: non_author, role: 'member')
+    end
+    let(:request) { post '/graphql', params: { query: query(id: non_creatorship.id) } }
 
     before { sign_in author }
 
-    it 'removes action item' do
-      expect { request }.to change { ActionItem.count }.by(-1)
+    it 'removes membership' do
+      expect { request }.to change { Membership.count }.by(-1)
     end
 
-    it 'returns a action item' do
+    it 'returns a membership' do
       request
 
       json = JSON.parse(response.body)
-      data = json.dig('data', 'destroyActionItem')
+      data = json.dig('data', 'destroyMembership')
 
       expect(data).to include(
-        'id' => action_item.id
+        'id' => non_creatorship.id
       )
     end
   end
@@ -34,7 +36,7 @@ RSpec.describe Mutations::DestroyActionItemMutation, type: :request do
   def query(id:)
     <<~GQL
       mutation {
-        destroyActionItem(
+        destroyMembership(
           input: {
             id: #{id}
           }

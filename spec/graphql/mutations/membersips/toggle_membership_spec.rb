@@ -11,7 +11,6 @@ RSpec.describe Mutations::ToggleReadyStatusMutation, type: :request do
     end
     let(:request) { post '/graphql', params: { query: query(id: creatorship.id) } }
 
-
     before { sign_in author }
 
     it 'toggles membership status' do

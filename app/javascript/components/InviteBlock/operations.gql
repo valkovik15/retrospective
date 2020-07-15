@@ -1,0 +1,13 @@
+#import '../../fragments/membership.graphql'
+mutation inviteMembersMutation($boardSlug: String!, $email: String!) {
+  inviteMembers(
+    input: { boardSlug: $boardSlug, email: $email }
+  ) {
+    memberships {
+      ...Membership
+    }
+    errors {
+      fullMessages
+    }
+  }
+}

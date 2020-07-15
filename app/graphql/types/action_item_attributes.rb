@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Types
   class ActionItemAttributes < Types::BaseInputObject
-    description "Attributes for creating or updating action item"
+    description 'Attributes for creating or updating action item'
 
     argument :status, String, required: false
     argument :body, String, required: false

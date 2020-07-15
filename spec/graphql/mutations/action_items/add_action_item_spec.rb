@@ -25,7 +25,7 @@ RSpec.describe Mutations::AddActionItemMutation, type: :request do
 
       expect(data).to include(
         'id' => be_present,
-        'body' => 'Some text',
+        'body' => 'Some text'
       )
     end
   end

@@ -9,7 +9,9 @@ module Types
     field :complete_action_item, mutation: Mutations::CompleteActionItemMutation
     field :destroy_action_item, mutation: Mutations::DestroyActionItemMutation
     field :destroy_card, mutation: Mutations::DestroyCardMutation
+    field :destroy_membership, mutation: Mutations::DestroyMembershipMutation
     field :destroy_comment, mutation: Mutations::DestroyCommentMutation
+    field :invite_members, mutation: Mutations::InviteMembersMutation
     field :like_card, mutation: Mutations::LikeCardMutation
     field :move_action_item, mutation: Mutations::MoveActionItemMutation
     field :reopen_action_item, mutation: Mutations::ReopenActionItemMutation

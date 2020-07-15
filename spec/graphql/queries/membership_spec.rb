@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Queries::Membership, type: :request do
-
   describe '.resolve' do
     let!(:author) { create(:user) }
     let!(:board) { create(:board) }
@@ -14,7 +13,6 @@ RSpec.describe Queries::Membership, type: :request do
     before { sign_in author }
 
     it 'returns membership for provided id' do
-
       post '/graphql', params: { query: query(board_slug: board.slug) }
 
       json = JSON.parse(response.body)
@@ -24,7 +22,7 @@ RSpec.describe Queries::Membership, type: :request do
         'id' => be_present,
         'board' => { 'id' => board.id.to_s },
         'user' => { 'id' => author.id.to_s },
-        'ready' =>  creatorship.ready
+        'ready' => creatorship.ready
       )
     end
   end

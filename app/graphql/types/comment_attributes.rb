@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class CommentAttributes < Types::BaseInputObject
     description 'Attributes for creating or updating comment'

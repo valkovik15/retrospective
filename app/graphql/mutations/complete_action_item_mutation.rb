@@ -10,7 +10,7 @@ module Mutations
 
     def resolve(id:, board_slug:)
       action_item = ActionItem.find(id)
-      board = Board.find_by(slug: board_slug)
+      board = Board.find_by!(slug: board_slug)
       unless allowed_to?(:complete?, action_item, context: { user: context[:current_user], board: board }, with: API::ActionItemPolicy)
         return { errors:
           { full_messages: ['Unauthorized to perform this action'] } }

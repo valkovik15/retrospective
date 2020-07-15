@@ -9,7 +9,7 @@ module Mutations
 
     def resolve(attributes:)
       params = attributes.to_h
-      board = Board.find_by(slug: params.delete(:board_slug))
+      board = Board.find_by!(slug: params.delete(:board_slug))
       card = Card.new(card_params(params, board))
       unless allowed_to?(:create?, card, context: { user: context[:current_user] })
         return { errors:

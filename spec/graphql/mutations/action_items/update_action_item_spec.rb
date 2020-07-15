@@ -29,7 +29,7 @@ RSpec.describe Mutations::UpdateActionItemMutation, type: :request do
 
       expect(data).to include(
         'id' => action_item.id,
-        'body' => 'New body',
+        'body' => 'New body'
       )
     end
   end

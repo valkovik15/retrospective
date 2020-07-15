@@ -29,17 +29,36 @@ module Types
       argument :boardSlug, String, required: true
     end
 
+    field :membership_destroyed, Types::MembershipType, null: false, description: 'A membership record was destroyed' do
+      argument :boardSlug, String, required: true
+    end
+
+    field :membership_list_updated, [Types::MembershipType], null: false, description: 'List of board members was updated' do
+      argument :boardSlug, String, required: true
+    end
+
     field :membership_updated, Types::MembershipType, null: false, description: 'A membership record was updated' do
       argument :boardSlug, String, required: true
     end
 
     def action_item_added(*); end
+
     def action_item_moved(*); end
+
     def action_item_destroyed(*); end
+
     def action_item_updated(*); end
+
     def card_added(*); end
+
     def card_updated(*); end
+
     def card_destroyed(*); end
+
+    def membership_destroyed(*); end
+
+    def membership_list_updated(*); end
+
     def membership_updated(*); end
   end
 end
