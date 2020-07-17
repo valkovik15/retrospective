@@ -16,7 +16,7 @@ class CardPolicy < ApplicationPolicy
   def like?
     !check?(:user_is_author?)
   end
-  
+
   def user_is_member?
     record.board.member?(user)
   end

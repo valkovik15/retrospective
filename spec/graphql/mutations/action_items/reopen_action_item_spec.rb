@@ -10,7 +10,10 @@ RSpec.describe Mutations::ReopenActionItemMutation, type: :request do
     let_it_be(:board) { create(:board) }
     let_it_be(:action_item) { create(:action_item, board: old_board, status: 'closed') }
 
-    let(:request) { post '/graphql', params: { query: query(id: action_item.id, board_slug: board.slug) } }
+    let(:request) do
+      post '/graphql', params: { query: query(id: action_item.id,
+                                              board_slug: board.slug) }
+    end
     let_it_be(:creatorship) do
       create(:membership, board: board, user: author, role: 'creator')
     end

@@ -8,9 +8,11 @@ module Mutations
     field :memberships, [Types::MembershipType], null: true
     field :errors, Types::ValidationErrorsType, null: true
 
+    # rubocop:disable Metrics/MethodLength
     def resolve(email:, board_slug:)
       board = Board.find_by!(slug: board_slug)
-      unless allowed_to?(:invite?, board, context: { user: context[:current_user] }, with: API::BoardPolicy)
+      unless allowed_to?(:invite?, board, context: { user: context[:current_user] },
+                                          with: API::BoardPolicy)
         return { errors:
           { full_messages: ['Unauthorized to perform this action'] } }
       end
@@ -19,7 +21,8 @@ module Mutations
       if users.any?
         result = Boards::InviteUsers.new(board, users).call
         memberships = result.value!
-        RetrospectiveSchema.subscriptions.trigger('membership_list_updated', { board_slug: board.slug },
+        RetrospectiveSchema.subscriptions.trigger('membership_list_updated',
+                                                  { board_slug: board.slug },
                                                   memberships)
         { memberships: memberships }
       else
@@ -27,5 +30,6 @@ module Mutations
           { full_messages: ['User was not found'] } }
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

@@ -7,21 +7,25 @@ module Mutations
     field :comment, Types::CommentType, null: true
     field :errors, Types::ValidationErrorsType, null: true
 
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def resolve(attributes:)
       params = attributes.to_h
       comment = Comment.new(params.merge(author: context[:current_user]))
-      unless allowed_to?(:create?, comment, context: { user: context[:current_user] }, with: API::CommentPolicy)
+      unless allowed_to?(:create?, comment, context: { user: context[:current_user] },
+                                            with: API::CommentPolicy)
         return { errors:
           { full_messages: ['Unauthorized to perform this action'] } }
       end
 
       if comment.save
         card = comment.card
-        RetrospectiveSchema.subscriptions.trigger('card_updated', { board_slug: card.board.slug }, card)
+        RetrospectiveSchema.subscriptions.trigger('card_updated',
+                                                  { board_slug: card.board.slug }, card)
         { comment: comment }
       else
         { errors: comment.errors }
       end
     end
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
   end
 end

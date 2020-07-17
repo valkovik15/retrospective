@@ -12,8 +12,8 @@ module Mutations
       params = attributes.to_h
       board = Board.find_by!(slug: params.delete(:board_slug))
       action_item = ActionItem.new(item_params(params, board))
-      unless allowed_to?(:create?, action_item, context: { user: context[:current_user],
-                                                           board: board })
+      unless allowed_to?(:create?, action_item,
+                         context: { user: context[:current_user], board: board })
         return { errors:
           { full_messages: ['Unauthorized to perform this action'] } }
       end

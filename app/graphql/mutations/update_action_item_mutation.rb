@@ -8,6 +8,7 @@ module Mutations
     field :action_item, Types::ActionItemType, null: true
     field :errors, Types::ValidationErrorsType, null: true
 
+    # rubocop:disable Metrics/MethodLength
     def resolve(id:, attributes:)
       action_item = ActionItem.find(id)
 
@@ -27,5 +28,6 @@ module Mutations
         { errors: action_item.errors }
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

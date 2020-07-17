@@ -9,19 +9,17 @@ RSpec.describe Mutations::InviteMembersMutation, type: :request do
     let!(:creatorship) do
       create(:membership, board: board, user: author, role: 'creator')
     end
-    let(:non_member) { create(:user) }
-    let(:another_non_member) { create(:user) }
-    let(:request) { post '/graphql', params: { query: query(board_slug: board.slug, email: non_member.email) } }
-    let(:double_invite_request) do
-      post '/graphql', params: { query: query(board_slug: board.slug,
-                                              email: "#{non_member.email},#{another_non_member.email}") }
-    end
 
     let(:invitee_1) { build_stubbed(:user) }
     let(:invitee_2) { build_stubbed(:user) }
 
     let(:membership_1) { build_stubbed(:membership, board: board, user: invitee_1) }
     let(:membership_2) { build_stubbed(:membership, board: board, user: invitee_2) }
+
+    let(:request) do
+      post '/graphql', params: { query: query(board_slug: board.slug,
+                                              email: "#{invitee_1.email},#{invitee_2.email}") }
+    end
 
     before do
       sign_in author
@@ -35,7 +33,6 @@ RSpec.describe Mutations::InviteMembersMutation, type: :request do
 
     it 'returns a list of memberships' do
       request
-
       json = JSON.parse(response.body)
       data = json.dig('data', 'inviteMembers', 'memberships')
 

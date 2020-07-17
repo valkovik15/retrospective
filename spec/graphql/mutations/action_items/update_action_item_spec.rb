@@ -7,7 +7,10 @@ RSpec.describe Mutations::UpdateActionItemMutation, type: :request do
     let(:author) { create(:user) }
     let!(:board) { create(:board) }
     let!(:action_item) { create(:action_item, board: board) }
-    let(:request) { post '/graphql', params: { query: query(id: action_item.id, body: 'New body') } }
+    let(:request) do
+      post '/graphql', params: { query: query(id: action_item.id,
+                                              body: 'New body') }
+    end
     let!(:creatorship) do
       create(:membership, board: board, user: author, role: 'creator')
     end

@@ -7,10 +7,13 @@ module Mutations
     field :id, Int, null: true
     field :errors, Types::ValidationErrorsType, null: true
 
+    # rubocop:disable Metrics/MethodLength
     def resolve(id:)
       membership = Membership.find(id)
-      unless allowed_to?(:destroy?, membership, context: { membership: Membership.find_by(user: context[:current_user], board: membership.board) },
-                                                with: API::MembershipPolicy)
+      unless allowed_to?(:destroy?, membership,
+                         context: { membership: Membership.find_by(user: context[:current_user],
+                                                                   board: membership.board) },
+                         with: API::MembershipPolicy)
         return { errors:
           { full_messages: ['Unauthorized to perform this action'] } }
       end
@@ -23,5 +26,6 @@ module Mutations
         { errors: card.errors }
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

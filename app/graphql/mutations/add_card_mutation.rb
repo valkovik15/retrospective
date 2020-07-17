@@ -7,6 +7,7 @@ module Mutations
     field :card, Types::CardType, null: true
     field :errors, Types::ValidationErrorsType, null: true
 
+    # rubocop:disable Metrics/MethodLength
     def resolve(attributes:)
       params = attributes.to_h
       board = Board.find_by!(slug: params.delete(:board_slug))
@@ -23,6 +24,7 @@ module Mutations
         { errors: card.errors.full_messages || 'Unauthorized' }
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     def card_params(params, board)
       params.merge(board: board, author: context[:current_user])

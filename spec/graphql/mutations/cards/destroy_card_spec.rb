@@ -11,7 +11,7 @@ RSpec.describe Mutations::DestroyCardMutation, type: :request do
     before { sign_in author }
 
     it 'removes card' do
-      expect { request }.to change { Card.count }.by -1
+      expect { request }.to change { Card.count }.by(-1)
     end
 
     it 'returns a card' do

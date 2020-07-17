@@ -7,6 +7,7 @@ module Mutations
     field :id, Int, null: false
     field :errors, Types::ValidationErrorsType, null: true
 
+    # rubocop:disable Metrics/MethodLength
     def resolve(id:)
       card = Card.find(id)
       unless allowed_to?(:destroy?, card, context: { user: context[:current_user] })
@@ -22,5 +23,6 @@ module Mutations
         { errors: card.errors }
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

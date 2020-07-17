@@ -45,11 +45,6 @@ const PrevActionItemColumn = props => {
             element => element.id === actionItemUpdated.id
           );
           if (cardIdIndex >= 0) {
-            console.log([
-              ...oldItems.slice(0, cardIdIndex),
-              actionItemUpdated,
-              ...oldItems.slice(cardIdIndex + 1)
-            ]);
             return [
               ...oldItems.slice(0, cardIdIndex),
               actionItemUpdated,

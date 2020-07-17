@@ -8,10 +8,12 @@ module Mutations
     field :comment, Types::CommentType, null: true
     field :errors, Types::ValidationErrorsType, null: true
 
+    # rubocop:disable Metrics/MethodLength
     def resolve(id:, attributes:)
       comment = Comment.find(id)
 
-      unless allowed_to?(:update?, comment, context: { user: context[:current_user] }, with: API::CommentPolicy)
+      unless allowed_to?(:update?, comment, context: { user: context[:current_user] },
+                                            with: API::CommentPolicy)
         return { errors:
           { full_messages: ['Unauthorized to perform this action'] } }
       end
@@ -25,5 +27,6 @@ module Mutations
         { errors: comment.errors }
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end
