@@ -1,26 +1,34 @@
-import React, {useState, useEffect} from 'react';
-import {useSubscription} from '@apollo/react-hooks';
+import React, {useState, useEffect, useContext} from 'react';
+import {useSubscription, useQuery} from '@apollo/react-hooks';
 import {
+  getMembershipsQuery,
   membershipUpdatedSubscription,
   membershipListUpdatedSubscription,
   membershipDestroyedSubscription
 } from './operations.gql';
 import User from '../User';
+import BoardSlugContext from '../../utils/board_slug_context';
 
 const MembershipList = () => {
+  const boardSlug = useContext(BoardSlugContext);
   const [memberships, setMemberships] = useState([]);
-  const [skip, setSkip] = useState(true);
+  const [skipMutation, setSkipMutation] = useState(true);
+  const [skipQuery, setSkipQuery] = useState(false);
+  const {loading, data} = useQuery(getMembershipsQuery, {
+    variables: {boardSlug},
+    skip: skipQuery
+  });
 
   useEffect(() => {
-    fetch(`/api/${window.location.pathname}/memberships`)
-      .then(res => res.json())
-      .then(result => {
-        setMemberships(result);
-      });
-  }, []);
+    if (!loading && Boolean(data)) {
+      const {memberships} = data;
+      setMemberships(memberships);
+      setSkipQuery(true);
+    }
+  }, [data, loading]);
 
   useSubscription(membershipDestroyedSubscription, {
-    skip,
+    skip: skipMutation,
     onSubscriptionData: opts => {
       const {data} = opts.subscriptionData;
       const {membershipDestroyed} = data;
@@ -29,11 +37,11 @@ const MembershipList = () => {
         setMemberships(memberships => memberships.filter(el => el.id !== id));
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useSubscription(membershipUpdatedSubscription, {
-    skip,
+    skip: skipMutation,
     onSubscriptionData: opts => {
       const {data} = opts.subscriptionData;
       const {membershipUpdated} = data;
@@ -49,11 +57,11 @@ const MembershipList = () => {
         });
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useSubscription(membershipListUpdatedSubscription, {
-    skip,
+    skip: skipMutation,
     onSubscriptionData: opts => {
       const {data} = opts.subscriptionData;
       const {membershipListUpdated} = data;
@@ -63,11 +71,11 @@ const MembershipList = () => {
         );
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useEffect(() => {
-    setSkip(false);
+    setSkipMutation(false);
   }, []);
 
   const usersListComponent = memberships.map(membership => {

@@ -8,9 +8,11 @@ import {
   addCardMutation
 } from './operations.gql';
 import UserContext from '../../utils/user_context';
+import BoardSlugContext from '../../utils/board_slug_context';
 import '../table.css';
 const CardColumn = props => {
   const user = useContext(UserContext);
+  const boardSlug = useContext(BoardSlugContext);
   const {kind, initCards} = props;
 
   const [cards, setCards] = useState(initCards);
@@ -33,7 +35,7 @@ const CardColumn = props => {
         }
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useSubscription(cardDestroyedSubscription, {
@@ -45,7 +47,7 @@ const CardColumn = props => {
         setCards(oldCards => oldCards.filter(el => el.id !== cardDestroyed.id));
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useSubscription(cardUpdatedSubscription, {
@@ -70,7 +72,7 @@ const CardColumn = props => {
         });
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useEffect(() => {
@@ -81,7 +83,7 @@ const CardColumn = props => {
     e.preventDefault();
     addCard({
       variables: {
-        boardSlug: window.location.pathname.split('/')[2],
+        boardSlug,
         kind,
         body: newCard
       }

@@ -1,21 +1,50 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import Select from 'react-select';
-import {useMutation} from '@apollo/react-hooks';
-import {inviteMembersMutation} from './operations.gql';
+import {useMutation, useQuery, useLazyQuery} from '@apollo/react-hooks';
+import {
+  getMembershipsQuery,
+  getSuggestionsQuery,
+  inviteMembersMutation
+} from './operations.gql';
 import User from '../User';
+import BoardSlugContext from '../../utils/board_slug_context';
 
-const InviteBlock = props => {
+const InviteBlock = () => {
+  const boardSlug = useContext(BoardSlugContext);
   const [memberships, setMemberships] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [options, setOptions] = useState([]);
+  const [skipQuery, setSkipQuery] = useState(false);
+  const {loading: membershipLoading, data: membershipData} = useQuery(
+    getMembershipsQuery,
+    {
+      variables: {boardSlug},
+      skip: skipQuery
+    }
+  );
+
+  const [getSuggestions] = useLazyQuery(getSuggestionsQuery, {
+    onCompleted: ({suggestions}) => {
+      const suggestionsArray = [
+        ...new Set(suggestions.users.concat(suggestions.teams))
+      ];
+      const optionsArray = suggestionsArray.map(function(a) {
+        return {
+          value: a,
+          label: a
+        };
+      });
+      setOptions(optionsArray);
+    }
+  });
 
   useEffect(() => {
-    fetch(`/api/boards/${props.boardSlug}/memberships`)
-      .then(res => res.json())
-      .then(result => {
-        setMemberships(result);
-      });
-  }, []);
+    if (!membershipLoading && Boolean(membershipData)) {
+      const {memberships} = membershipData;
+      setMemberships(memberships);
+      setSkipQuery(true);
+    }
+  }, [membershipData, membershipLoading]);
 
   const [inviteMembers] = useMutation(inviteMembersMutation);
 
@@ -24,7 +53,7 @@ const InviteBlock = props => {
     inviteMembers({
       variables: {
         email: selectedOption.map(a => a.value).toString(),
-        boardSlug: window.location.pathname.split('/')[2]
+        boardSlug
       }
     }).then(({data}) => {
       if (data.inviteMembers.memberships) {
@@ -42,25 +71,6 @@ const InviteBlock = props => {
 
   const handleChange = selectedOption => {
     setSelectedOption(selectedOption);
-  };
-
-  const onInputChange = e => {
-    if (e) {
-      fetch(`/api/boards/${props.boardSlug}/suggestions?autocomplete=${e}`)
-        .then(res => res.json())
-        .then(result => {
-          const suggestions = [...new Set(result.users.concat(result.teams))];
-          const optionsArray = suggestions.map(function(a) {
-            return {
-              value: a,
-              label: a
-            };
-          });
-          setOptions(optionsArray);
-        });
-    } else {
-      setOptions([]);
-    }
   };
 
   const usersListComponent = memberships.map(membership => {
@@ -88,7 +98,7 @@ const InviteBlock = props => {
           placeholder="Enter e-mail or team name..."
           components={components}
           onChange={handleChange}
-          onInputChange={onInputChange}
+          onInputChange={e => getSuggestions({variables: {autocomplete: e}})}
         />
         <input type="submit" value="Invite" />
       </form>

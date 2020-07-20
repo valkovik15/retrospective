@@ -2,6 +2,7 @@ import React, {useState, useContext, useEffect} from 'react';
 import {useMutation, useSubscription} from '@apollo/react-hooks';
 import ActionItem from '../ActionItem';
 import UserContext from '../../utils/user_context';
+import BoardSlugContext from '../../utils/board_slug_context';
 import {
   actionItemAddedSubscription,
   addActionItemMutation,
@@ -13,6 +14,7 @@ import '../table.css';
 
 const ActionItemColumn = props => {
   const user = useContext(UserContext);
+  const boardSlug = useContext(BoardSlugContext);
   const [items, setItems] = useState(props.initItems);
   const [newActionItemBody, setNewActionItemBody] = useState('');
   const [newActionItemAssignee, setNewActionItemAssignee] = useState('');
@@ -29,7 +31,7 @@ const ActionItemColumn = props => {
         updateItem(actionItemUpdated);
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useSubscription(actionItemAddedSubscription, {
@@ -41,7 +43,7 @@ const ActionItemColumn = props => {
         setItems(oldItems => [...oldItems, actionItemAdded]);
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useSubscription(actionItemMovedSubscription, {
@@ -53,7 +55,7 @@ const ActionItemColumn = props => {
         setItems(oldItems => [...oldItems, actionItemMoved]);
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useSubscription(actionItemDestroyedSubscription, {
@@ -67,7 +69,7 @@ const ActionItemColumn = props => {
         );
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useEffect(() => {
@@ -93,7 +95,7 @@ const ActionItemColumn = props => {
     e.preventDefault();
     addActionItem({
       variables: {
-        boardSlug: window.location.pathname.split('/')[2],
+        boardSlug,
         assigneeId: newActionItemAssignee,
         body: newActionItemBody
       }
