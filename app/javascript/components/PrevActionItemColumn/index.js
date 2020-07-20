@@ -6,6 +6,7 @@ import {
 } from './operations.gql';
 import {useSubscription} from '@apollo/react-hooks';
 import UserContext from '../../utils/user_context';
+import BoardSlugContext from '../../utils/board_slug_context';
 
 const PrevActionItemColumn = props => {
   const {creators, handleEmpty, initItems} = props;
@@ -14,6 +15,7 @@ const PrevActionItemColumn = props => {
   const [skip, setSkip] = useState(true); // Workaround for https://github.com/apollographql/react-apollo/issues/3802
 
   const user = useContext(UserContext);
+  const boardSlug = useContext(BoardSlugContext);
 
   useSubscription(actionItemMovedSubscription, {
     skip,
@@ -31,7 +33,7 @@ const PrevActionItemColumn = props => {
         });
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useSubscription(actionItemUpdatedSubscription, {
@@ -56,7 +58,7 @@ const PrevActionItemColumn = props => {
         });
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useEffect(() => {

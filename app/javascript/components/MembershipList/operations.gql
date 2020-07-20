@@ -16,3 +16,9 @@ subscription membershipDestroyedSubscription($boardSlug: String!) {
    id
   }
 }
+
+query getMembershipsQuery($boardSlug: String!){
+  memberships(boardSlug: $boardSlug) {
+    ...Membership
+  }
+}

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {moveActionItemMutation} from './operations.gql';
 import {useMutation} from '@apollo/react-hooks';
 import TransitionButton from '../TransitionButton';
+import BoardSlugContext from '../../../utils/board_slug_context';
 import './ActionItemFooter.css';
 const ActionItemFooter = props => {
   const {id, movable, transitionable, assignee, avatar, times_moved} = props;
+  const boardSlug = useContext(BoardSlugContext);
   const [moveActionItem] = useMutation(moveActionItemMutation);
   const handleMoveClick = () => {
     moveActionItem({
       variables: {
         id,
-        boardSlug: window.location.pathname.split('/')[2]
+        boardSlug
       }
     }).then(({data}) => {
       if (!data.moveActionItem.actionItem) {

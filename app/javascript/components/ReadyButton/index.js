@@ -1,18 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {useMutation, useQuery, useSubscription} from '@apollo/react-hooks';
 import {
   toggleReadyStatusMutation,
-  getMembership,
+  getMembershipQuery,
   membershipUpdatedSubscription
 } from './operations.gql';
+import BoardSlugContext from '../../utils/board_slug_context';
 
 const ReadyButton = () => {
+  const boardSlug = useContext(BoardSlugContext);
   const [isReady, setIsReady] = useState(false);
   const [id, setId] = useState(0);
   const [skipQuery, setSkipQuery] = useState(false);
   const [skipSubscription, setSkipSubscription] = useState(true);
-  const {loading, data} = useQuery(getMembership, {
-    variables: {boardSlug: window.location.pathname.split('/')[2]},
+  const {loading, data} = useQuery(getMembershipQuery, {
+    variables: {boardSlug},
     skip: skipQuery
   });
   const [toggleReadyStatus] = useMutation(toggleReadyStatusMutation);
@@ -26,7 +28,7 @@ const ReadyButton = () => {
         setIsReady(membershipUpdated.ready);
       }
     },
-    variables: {boardSlug: window.location.pathname.split('/')[2]}
+    variables: {boardSlug}
   });
 
   useEffect(() => {
