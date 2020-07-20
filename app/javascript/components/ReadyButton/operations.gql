@@ -11,7 +11,7 @@ mutation toggleReadyStatusMutation($id: ID!) {
   }
 }
 
-query getMembership($boardSlug: String!){
+query getMembershipQuery($boardSlug: String!){
   membership(boardSlug: $boardSlug) {
     id
     ready

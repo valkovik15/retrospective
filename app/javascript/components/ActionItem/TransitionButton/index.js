@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useMutation} from '@apollo/react-hooks';
+import BoardSlugContext from '../../../utils/board_slug_context';
 import {
   closeActionItemMutation,
   completeActionItemMutation,
@@ -8,6 +9,8 @@ import {
 
 const TransitionButton = props => {
   const {id, action} = props;
+  const boardSlug = useContext(BoardSlugContext);
+
   const [closeActionItem] = useMutation(closeActionItemMutation);
   const [completeActionItem] = useMutation(completeActionItemMutation);
   const [reopenActionItem] = useMutation(reopenActionItemMutation);
@@ -18,7 +21,7 @@ const TransitionButton = props => {
         closeActionItem({
           variables: {
             id,
-            boardSlug: window.location.pathname.split('/')[2]
+            boardSlug
           }
         }).then(({data}) => {
           if (!data.closeActionItem.actionItem) {
@@ -31,7 +34,7 @@ const TransitionButton = props => {
         completeActionItem({
           variables: {
             id,
-            boardSlug: window.location.pathname.split('/')[2]
+            boardSlug
           }
         }).then(({data}) => {
           if (!data.completeActionItem.actionItem) {
@@ -44,7 +47,7 @@ const TransitionButton = props => {
         reopenActionItem({
           variables: {
             id,
-            boardSlug: window.location.pathname.split('/')[2]
+            boardSlug
           }
         }).then(({data}) => {
           if (!data.reopenActionItem.actionItem) {

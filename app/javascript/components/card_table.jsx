@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import PrevActionItemColumn from './PrevActionItemColumn';
 import CardColumn from './CardColumn';
 import ActionItemColumn from './ActionItemColumn';
+import BoardSlugContext from '../utils/board_slug_context';
 import UserContext from '../utils/user_context';
 import Provider from './Provider';
 
 const CardTable = props => {
   const {
     actionItems,
-    board,
     cardsByType,
     creators,
     initPrevItems,
@@ -35,12 +35,7 @@ const CardTable = props => {
       content.push(
         <div key={`${columnName}_column`} className={columnClass}>
           <h2 className="subtitle">{columnName.toUpperCase()}</h2>
-          <CardColumn
-            key={columnName}
-            kind={columnName}
-            initCards={cards}
-            submitPath={`/boards/${board.slug}/cards`}
-          />
+          <CardColumn key={columnName} kind={columnName} initCards={cards} />
         </div>
       );
     }
@@ -50,29 +45,31 @@ const CardTable = props => {
 
   return (
     <Provider>
-      <UserContext.Provider value={user}>
-        <div className="columns">
-          {displayPrevItems ? (
+      <BoardSlugContext.Provider value={window.location.pathname.split('/')[2]}>
+        <UserContext.Provider value={user}>
+          <div className="columns">
+            {displayPrevItems ? (
+              <div className={columnClass}>
+                <PrevActionItemColumn
+                  creators={creators}
+                  handleEmpty={prevActionsEmptyHandler}
+                  initItems={initPrevItems || []}
+                />
+              </div>
+            ) : null}
+
+            {generateColumns(cardsByType)}
+
             <div className={columnClass}>
-              <PrevActionItemColumn
+              <ActionItemColumn
                 creators={creators}
-                handleEmpty={prevActionsEmptyHandler}
-                initItems={initPrevItems || []}
+                initItems={actionItems || []}
+                users={users}
               />
             </div>
-          ) : null}
-
-          {generateColumns(cardsByType)}
-
-          <div className={columnClass}>
-            <ActionItemColumn
-              creators={creators}
-              initItems={actionItems || []}
-              users={users}
-            />
           </div>
-        </div>
-      </UserContext.Provider>
+        </UserContext.Provider>
+      </BoardSlugContext.Provider>
     </Provider>
   );
 };
