@@ -6,17 +6,13 @@ module Mutations
     argument :attributes, Types::CommentAttributes, required: true
 
     field :comment, Types::CommentType, null: true
-    field :errors, Types::ValidationErrorsType, null: true
 
     # rubocop:disable Metrics/MethodLength
     def resolve(id:, attributes:)
       comment = Comment.find(id)
 
-      unless allowed_to?(:update?, comment, context: { user: context[:current_user] },
-                                            with: API::CommentPolicy)
-        return { errors:
-          { full_messages: ['Unauthorized to perform this action'] } }
-      end
+      authorize! comment, to: :update?, context: { user: context[:current_user] },
+                          with: API::CommentPolicy
 
       if comment.update(attributes.to_h)
         card = comment.card
@@ -24,7 +20,7 @@ module Mutations
                                                   { board_slug: card.board.slug }, card)
         { comment: comment }
       else
-        { errors: comment.errors }
+        { errors: { full_messages: comment.errors.full_messages } }
       end
     end
     # rubocop:enable Metrics/MethodLength

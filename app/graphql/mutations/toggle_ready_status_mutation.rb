@@ -5,16 +5,11 @@ module Mutations
     argument :id, ID, required: true
 
     field :membership, Types::MembershipType, null: true
-    field :errors, Types::ValidationErrorsType, null: true
-
     # rubocop:disable Metrics/MethodLength
     def resolve(id:)
       membership = Membership.find(id)
-      unless allowed_to?(:ready_toggle?, membership, context: { membership: membership },
-                                                     with: API::MembershipPolicy)
-        return { errors:
-          { full_messages: ['Unauthorized to perform this action'] } }
-      end
+      authorize! membership, to: :ready_toggle?,
+                             context: { membership: membership }, with: API::MembershipPolicy
 
       if membership.update(ready: !membership.ready)
         RetrospectiveSchema.subscriptions.trigger('membership_updated',

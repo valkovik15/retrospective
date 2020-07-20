@@ -5,17 +5,9 @@ module Mutations
     argument :id, ID, required: true
 
     field :card, Types::CardType, null: true
-    field :errors, Types::ValidationErrorsType, null: true
-
-    # rubocop:disable Metrics/MethodLength
     def resolve(id:)
       card = Card.find(id)
-      unless allowed_to?(:like?,
-                         card,
-                         context: { user: context[:current_user] })
-        return { errors:
-          { full_messages: ['Unauthorized to perform this action'] } }
-      end
+      authorize! card, to: :like?, context: { user: context[:current_user] }
 
       if card.like!
         RetrospectiveSchema.subscriptions.trigger('card_updated',
@@ -23,9 +15,8 @@ module Mutations
                                                   card)
         { card: card }
       else
-        { errors: card.errors }
+        { errors: { full_messages: card.errors.full_messages } }
       end
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

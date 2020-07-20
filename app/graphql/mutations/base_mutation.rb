@@ -7,5 +7,7 @@ module Mutations
     field_class Types::BaseField
     input_object_class Types::BaseInputObject
     object_class Types::BaseObject
+
+    field :errors, Types::ValidationErrorsType, null: true
   end
 end

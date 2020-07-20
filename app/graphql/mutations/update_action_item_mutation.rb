@@ -6,18 +6,14 @@ module Mutations
     argument :attributes, Types::ActionItemAttributes, required: true
 
     field :action_item, Types::ActionItemType, null: true
-    field :errors, Types::ValidationErrorsType, null: true
 
     # rubocop:disable Metrics/MethodLength
     def resolve(id:, attributes:)
       action_item = ActionItem.find(id)
 
-      unless allowed_to?(:update?, action_item, context: { user: context[:current_user],
-                                                           board: action_item.board },
-                                                with: API::ActionItemPolicy)
-        return { errors:
-          { full_messages: ['Unauthorized to perform this action'] } }
-      end
+      authorize! action_item, to: :update?, context: { user: context[:current_user],
+                                                       board: action_item.board },
+                              with: API::ActionItemPolicy
 
       if action_item.update(attributes.to_h)
         RetrospectiveSchema.subscriptions.trigger('action_item_updated',

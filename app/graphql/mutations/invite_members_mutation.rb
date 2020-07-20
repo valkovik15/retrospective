@@ -6,16 +6,12 @@ module Mutations
     argument :board_slug, String, required: true
 
     field :memberships, [Types::MembershipType], null: true
-    field :errors, Types::ValidationErrorsType, null: true
 
     # rubocop:disable Metrics/MethodLength
     def resolve(email:, board_slug:)
       board = Board.find_by!(slug: board_slug)
-      unless allowed_to?(:invite?, board, context: { user: context[:current_user] },
-                                          with: API::BoardPolicy)
-        return { errors:
-          { full_messages: ['Unauthorized to perform this action'] } }
-      end
+      authorize! board, to: :invite?, context: { user: context[:current_user] },
+                        with: API::BoardPolicy
 
       users = Boards::FindUsersToInvite.new(email, board).call
       if users.any?
