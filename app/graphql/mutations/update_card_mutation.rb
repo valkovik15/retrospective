@@ -6,25 +6,17 @@ module Mutations
     argument :attributes, Types::CardAttributes, required: true
 
     field :card, Types::CardType, null: true
-    field :errors, Types::ValidationErrorsType, null: true
-
-    # rubocop:disable Metrics/MethodLength
     def resolve(id:, attributes:)
       card = Card.find(id)
-
-      unless allowed_to?(:update?, card, context: { user: context[:current_user] })
-        return { errors:
-          { full_messages: ['Unauthorized to perform this action'] } }
-      end
+      authorize! card, to: :update?, context: { user: context[:current_user] }
 
       if card.update(attributes.to_h)
         RetrospectiveSchema.subscriptions.trigger('card_updated',
                                                   { board_slug: card.board.slug }, card)
         { card: card }
       else
-        { errors: card.errors }
+        { errors: { full_messages: card.errors.full_messages } }
       end
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

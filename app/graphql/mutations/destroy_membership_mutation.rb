@@ -5,25 +5,21 @@ module Mutations
     argument :id, ID, required: true
 
     field :id, Int, null: true
-    field :errors, Types::ValidationErrorsType, null: true
 
     # rubocop:disable Metrics/MethodLength
     def resolve(id:)
       membership = Membership.find(id)
-      unless allowed_to?(:destroy?, membership,
-                         context: { membership: Membership.find_by(user: context[:current_user],
-                                                                   board: membership.board) },
-                         with: API::MembershipPolicy)
-        return { errors:
-          { full_messages: ['Unauthorized to perform this action'] } }
-      end
+      authorize! membership, to: :destroy?,
+                             context: { membership: Membership.find_by(user: context[:current_user],
+                                                                       board: membership.board) },
+                             with: API::MembershipPolicy
       if membership.destroy
         RetrospectiveSchema.subscriptions.trigger('membership_destroyed',
                                                   { board_slug: membership.board.slug },
                                                   id: id)
         { id: id }
       else
-        { errors: card.errors }
+        { errors: { full_messages: membership.errors.full_messages } }
       end
     end
     # rubocop:enable Metrics/MethodLength
