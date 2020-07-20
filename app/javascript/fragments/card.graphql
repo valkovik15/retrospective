@@ -4,12 +4,15 @@ fragment Card on Card {
   author {
     ...User
   }
+  comments {
+    id
+    content
+    author {
+      ...User
+    }
+  }
   id
   kind
   body
   likes
-  createdAt
-  updatedAt
-  authorId
-  boardId
 }

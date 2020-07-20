@@ -89,7 +89,7 @@ gem 'dry-monads'
 gem 'aasm'
 
 gem 'graphql', '~> 1.9'
-
+gem 'action_policy-graphql', '~> 0.3'
 gem 'graphiql-rails', group: :development
 group :test, :development do
   gem 'action-cable-testing'

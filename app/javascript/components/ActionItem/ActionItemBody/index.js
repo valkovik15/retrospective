@@ -1,144 +1,160 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Textarea from 'react-textarea-autosize';
 import './ActionItemBody.css';
-import {editActionItem, removeActionItem} from '../../../utils/api';
+import {
+  destroyActionItemMutation,
+  updateActionItemMutation
+} from './operations.gql';
+import {useMutation} from '@apollo/react-hooks';
 
-class ActionItemBody extends React.Component {
-  state = {
-    inputValue: this.props.body,
-    editMode: false,
-    showDropdown: false
-  };
+const ActionItemBody = props => {
+  const [inputValue, setInputValue] = useState(props.body);
+  const [editMode, setEditMode] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [destroyActionItem] = useMutation(destroyActionItemMutation);
+  const [updateActionItem] = useMutation(updateActionItemMutation);
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.editMode === false) {
-      return {
-        inputValue: nextProps.body,
-        editMode: prevState.editMode
-      };
+  useEffect(() => {
+    const {body} = props;
+    if (!editMode) {
+      setInputValue(body);
     }
+  }, [props, editMode]);
 
-    return prevState;
-  }
-
-  handleDeleteClick = () => {
-    this.hideDropdown();
-    removeActionItem(this.props.id);
+  const handleDeleteClick = () => {
+    const {id} = props;
+    hideDropdown();
+    destroyActionItem({
+      variables: {
+        id
+      }
+    }).then(({data}) => {
+      if (!data.destroyActionItem.id) {
+        console.log(data.destroyActionItem.errors.fullMessages.join(' '));
+      }
+    });
   };
 
-  handleEditClick = () => {
-    this.editModeToggle();
-    this.hideDropdown();
+  const handleEditClick = () => {
+    editModeToggle();
+    hideDropdown();
   };
 
-  editModeToggle = () => {
-    this.setState(state => ({editMode: !state.editMode}));
+  const editModeToggle = () => {
+    setEditMode(editMode => !editMode);
   };
 
-  handleChange = e => {
-    this.setState({inputValue: e.target.value});
+  const handleChange = e => {
+    setInputValue(e.target.value);
   };
 
-  resetTextChanges = () => {
-    this.setState(state => ({...state, inputValue: this.props.body}));
+  const resetTextChanges = () => {
+    setInputValue(props.body);
   };
 
-  handleKeyPress = e => {
+  const handleKeyPress = e => {
     if (e.key === 'Enter') {
-      this.editModeToggle();
-      editActionItem(
-        this.props.id,
-        this.state.inputValue,
-        this.resetTextChanges
-      );
+      editModeToggle();
+      handleItemEdit(props.id, inputValue);
     }
   };
 
-  toggleDropdown = () => {
-    this.setState(prevState => ({showDropdown: !prevState.showDropdown}));
+  const handleItemEdit = (id, body) => {
+    updateActionItem({
+      variables: {
+        id,
+        body
+      }
+    }).then(({data}) => {
+      if (!data.updateActionItem.actionItem) {
+        resetTextChanges();
+        console.log(data.updateActionItem.errors.fullMessages.join(' '));
+      }
+    });
   };
 
-  hideDropdown = () => {
-    this.setState({showDropdown: false});
+  const toggleDropdown = () => {
+    setShowDropdown(isShown => !isShown);
   };
 
-  handleSaveClick = () => {
-    this.editModeToggle();
-    editActionItem(this.props.id, this.state.inputValue, this.resetTextChanges);
+  const hideDropdown = () => {
+    setShowDropdown(false);
   };
 
-  render() {
-    const {inputValue, editMode} = this.state;
-    const {editable, deletable, body} = this.props;
+  const handleSaveClick = () => {
+    editModeToggle();
+    handleItemEdit(props.id, inputValue);
+  };
 
-    return (
-      <div>
-        {editable && deletable && (
-          <div className="dropdown">
-            <div
-              className="dropdown-btn"
-              tabIndex="1"
-              onClick={this.toggleDropdown}
-              onBlur={this.hideDropdown}
-            >
-              …
-            </div>
-            <div hidden={!this.state.showDropdown} className="dropdown-content">
-              {!editMode && (
-                <div>
-                  <a
-                    onClick={this.handleEditClick}
-                    onMouseDown={event => {
-                      event.preventDefault();
-                    }}
-                  >
-                    Edit
-                  </a>
-                  <hr style={{margin: '5px 0'}} />
-                </div>
-              )}
-              <a
-                onClick={() => {
-                  window.confirm(
-                    'Are you sure you want to delete this ActionItem?'
-                  ) && this.handleDeleteClick();
-                }}
-                onMouseDown={event => {
-                  event.preventDefault();
-                }}
-              >
-                Delete
-              </a>
-            </div>
+  const {editable, deletable, body} = props;
+
+  return (
+    <div>
+      {editable && deletable && (
+        <div className="dropdown">
+          <div
+            className="dropdown-btn"
+            tabIndex="1"
+            onClick={toggleDropdown}
+            onBlur={hideDropdown}
+          >
+            …
           </div>
-        )}
-        <div
-          className="text"
-          hidden={editMode}
-          onDoubleClick={editable ? this.editModeToggle : undefined}
-        >
-          {body}
+          <div hidden={!showDropdown} className="dropdown-content">
+            {!editMode && (
+              <div>
+                <a
+                  onClick={handleEditClick}
+                  onMouseDown={event => {
+                    event.preventDefault();
+                  }}
+                >
+                  Edit
+                </a>
+                <hr style={{margin: '5px 0'}} />
+              </div>
+            )}
+            <a
+              onClick={() => {
+                window.confirm(
+                  'Are you sure you want to delete this ActionItem?'
+                ) && handleDeleteClick();
+              }}
+              onMouseDown={event => {
+                event.preventDefault();
+              }}
+            >
+              Delete
+            </a>
+          </div>
         </div>
-        <div hidden={!editMode}>
-          <Textarea
-            className="input"
-            value={inputValue}
-            onChange={this.handleChange}
-            onKeyPress={this.handleKeyPress}
-          />
-          <div className="btn-add">
-            <button
-              className="tag is-info button"
-              type="button"
-              onClick={this.handleSaveClick}
-            >
-              Save
-            </button>
-          </div>
+      )}
+      <div
+        className="text"
+        hidden={editMode}
+        onDoubleClick={editable ? editModeToggle : undefined}
+      >
+        {body}
+      </div>
+      <div hidden={!editMode}>
+        <Textarea
+          className="input"
+          value={inputValue}
+          onChange={handleChange}
+          onKeyPress={handleKeyPress}
+        />
+        <div className="btn-add">
+          <button
+            className="tag is-info button"
+            type="button"
+            onClick={handleSaveClick}
+          >
+            Save
+          </button>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default ActionItemBody;

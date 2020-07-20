@@ -6,14 +6,13 @@ class GraphqlController < ActionController::Base
   # but you'll have to authenticate your user separately
   protect_from_forgery with: :null_session, if: proc { |c| c.request.format == 'application/json' }
 
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Metrics/LineLength, Metrics/AbcSize, Metrics/MethodLength
   def execute
     variables = ensure_hash(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
+      current_user: current_user
     }
     result = RetrospectiveSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -22,7 +21,7 @@ class GraphqlController < ActionController::Base
 
     handle_error_in_development e
   end
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Metrics/LineLength, Metrics/AbcSize, Metrics/MethodLength
 
   private
 

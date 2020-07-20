@@ -7,15 +7,27 @@ module Mutations
     field :card, Types::CardType, null: true
     field :errors, Types::ValidationErrorsType, null: true
 
+    # rubocop:disable Metrics/MethodLength
     def resolve(attributes:)
-      card = Card.new(attributes.to_h)
+      params = attributes.to_h
+      board = Board.find_by!(slug: params.delete(:board_slug))
+      card = Card.new(card_params(params, board))
+      unless allowed_to?(:create?, card, context: { user: context[:current_user] })
+        return { errors:
+          { full_messages: ['Unauthorized to perform this action'] } }
+      end
 
       if card.save
-        RetrospectiveSchema.subscriptions.trigger('card_added', {}, card)
+        RetrospectiveSchema.subscriptions.trigger('card_added', { board_slug: board.slug }, card)
         { card: card }
       else
-        { errors: card.errors.full_messages }
+        { errors: card.errors.full_messages || 'Unauthorized' }
       end
+    end
+    # rubocop:enable Metrics/MethodLength
+
+    def card_params(params, board)
+      params.merge(board: board, author: context[:current_user])
     end
   end
 end

@@ -1,5 +1,11 @@
 const {environment} = require('@rails/webpacker');
 
+environment.loaders.append('graphql', {
+  test: /\.(?<id>graphql|gql)$/,
+  exclude: /node_modules/,
+  loader: 'graphql-tag/loader'
+});
+
 module.exports = environment;
 
 // Added due to issues with @rails/actioncable being transpiled by babel-loader

@@ -1,0 +1,12 @@
+#import '../../fragments/action_item.graphql'
+subscription actionItemMovedSubscription($boardSlug: String!) {
+  actionItemMoved(boardSlug: $boardSlug) {
+   id
+  }
+}
+
+subscription actionItemUpdatedSubscription($boardSlug: String!) {
+  actionItemUpdated(boardSlug: $boardSlug) {
+   ...ActionItem
+  }
+}

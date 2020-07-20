@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import PrevActionItemColumn from './prev_action_item_column';
-import CardColumn from './card_column';
-import ActionItemColumn from './action_item_column';
+import PrevActionItemColumn from './PrevActionItemColumn';
+import CardColumn from './CardColumn';
+import ActionItemColumn from './ActionItemColumn';
 import UserContext from '../utils/user_context';
+import Provider from './Provider';
 
 const CardTable = props => {
   const {
@@ -48,30 +49,31 @@ const CardTable = props => {
   };
 
   return (
-    <UserContext.Provider value={user}>
-      <div className="columns">
-        {displayPrevItems ? (
+    <Provider>
+      <UserContext.Provider value={user}>
+        <div className="columns">
+          {displayPrevItems ? (
+            <div className={columnClass}>
+              <PrevActionItemColumn
+                creators={creators}
+                handleEmpty={prevActionsEmptyHandler}
+                initItems={initPrevItems || []}
+              />
+            </div>
+          ) : null}
+
+          {generateColumns(cardsByType)}
+
           <div className={columnClass}>
-            <PrevActionItemColumn
+            <ActionItemColumn
               creators={creators}
-              handleEmpty={prevActionsEmptyHandler}
-              initItems={initPrevItems || []}
+              initItems={actionItems || []}
+              users={users}
             />
           </div>
-        ) : null}
-
-        {generateColumns(cardsByType)}
-
-        <div className={columnClass}>
-          <ActionItemColumn
-            creators={creators}
-            initItems={actionItems || []}
-            submitPath={`/boards/${board.slug}/action_items`}
-            users={users}
-          />
         </div>
-      </div>
-    </UserContext.Provider>
+      </UserContext.Provider>
+    </Provider>
   );
 };
 

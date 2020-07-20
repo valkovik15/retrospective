@@ -6,7 +6,6 @@ module Types
 
     argument :kind, String, required: false
     argument :body, String, required: false
-    argument :author_id, ID, required: false
-    argument :board_id, ID, required: false
+    argument :board_slug, String, required: false
   end
 end

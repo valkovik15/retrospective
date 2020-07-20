@@ -1,0 +1,21 @@
+mutation destroyActionItemMutation($id: ID!) {
+  destroyActionItem(input: { id: $id }) {
+    id
+    errors {
+      fullMessages
+    }
+  }
+}
+
+mutation updateActionItemMutation($id: ID!, $body: String!) {
+  updateActionItem(
+    input: { id: $id, attributes: { body: $body } }
+  ) {
+    actionItem {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}

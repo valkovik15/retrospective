@@ -1,0 +1,19 @@
+mutation destroyCommentMutation($id: ID!) {
+  destroyComment(input: { id: $id }) {
+    id
+    errors {
+      fullMessages
+    }
+  }
+}
+
+mutation updateCommentMutation($id: ID!, $content: String!) {
+  updateComment(input: { id: $id, attributes: { content: $content } }) {
+    comment {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}

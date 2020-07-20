@@ -1,0 +1,12 @@
+mutation addCommentMutation($cardId: ID!, $content: String!) {
+  addComment(
+    input: { attributes: { cardId: $cardId, content: $content } }
+  ) {
+    comment {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}

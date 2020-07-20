@@ -24,6 +24,9 @@ GEM
     action-cable-testing (0.6.1)
       actioncable (>= 5.0)
     action_policy (0.3.2)
+    action_policy-graphql (0.4.0)
+      action_policy (>= 0.3.0)
+      graphql (>= 1.9.3)
     actioncable (6.0.0)
       actionpack (= 6.0.0)
       nio4r (~> 2.0)
@@ -416,6 +419,7 @@ DEPENDENCIES
   aasm
   action-cable-testing
   action_policy (~> 0.3.0)
+  action_policy-graphql (~> 0.3)
   active_model_serializers (~> 0.10.0)
   bootsnap (>= 1.1.0)
   capybara (>= 2.15)

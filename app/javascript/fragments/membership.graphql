@@ -1,0 +1,9 @@
+#import "./user.graphql"
+
+fragment Membership on Membership {
+  id
+  ready
+  user {
+    ...User
+  }
+}

@@ -2,7 +2,7 @@
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application' %>
   <% if allowed_to?(:create_cards?, @board) %>
-    <%= javascript_pack_tag 'ready_button_component' %>
+    <%= javascript_pack_tag 'ready_button' %>
   <% end %>
 
 <% end %>
@@ -35,7 +35,7 @@
 
 <% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
   <div class="box">
-    <%= react_component('membership_list')%>
+    <%= react_component('membership_list_container')%>
   </div>
 <% end %>
 

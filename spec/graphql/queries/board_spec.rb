@@ -16,7 +16,7 @@ RSpec.describe Queries::Board, type: :request do
       expect(data).to include(
         'id' => be_present,
         'title' => board.title,
-        'cards' => [{ 'id' => card.id.to_s }]
+        'cards' => [{ 'id' => card.id }]
       )
     end
   end

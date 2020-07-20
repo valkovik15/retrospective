@@ -4,14 +4,25 @@ module Mutations
   class DestroyCardMutation < Mutations::BaseMutation
     argument :id, ID, required: true
 
-    field :card, Types::CardType, null: false
+    field :id, Int, null: false
     field :errors, Types::ValidationErrorsType, null: true
 
+    # rubocop:disable Metrics/MethodLength
     def resolve(id:)
       card = Card.find(id)
-      card.destroy!
-
-      { card: card }
+      unless allowed_to?(:destroy?, card, context: { user: context[:current_user] })
+        return { errors:
+          { full_messages: ['Unauthorized to perform this action'] } }
+      end
+      if card.destroy
+        RetrospectiveSchema.subscriptions.trigger('card_destroyed',
+                                                  { board_slug: card.board.slug },
+                                                  id: id, kind: card.kind)
+        { id: id }
+      else
+        { errors: card.errors }
+      end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

@@ -1,0 +1,26 @@
+mutation toggleReadyStatusMutation($id: ID!) {
+  toggleReadyStatus(
+    input: { id: $id }
+  ) {
+    membership {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}
+
+query getMembership($boardSlug: String!){
+  membership(boardSlug: $boardSlug) {
+    id
+    ready
+  }
+}
+
+subscription membershipUpdatedSubscription($boardSlug: String!) {
+  membershipUpdated(boardSlug: $boardSlug) {
+   id
+   ready
+  }
+}

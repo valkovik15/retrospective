@@ -1,0 +1,23 @@
+mutation updateCardMutation($id: ID!, $body: String!) {
+  updateCard(
+    input: { id: $id, attributes: { body: $body } }
+  ) {
+    card {
+      id
+    }
+    errors {
+      fullMessages
+    }
+  }
+}
+
+mutation destroyCardMutation($id: ID!) {
+  destroyCard(
+    input: { id: $id }
+  ) {
+    id
+    errors {
+      fullMessages
+    }
+  }
+}
