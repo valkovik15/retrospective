@@ -17,4 +17,4 @@ if (!Array.isArray(nodeModulesLoader.exclude)) {
     nodeModulesLoader.exclude === null ? [] : [nodeModulesLoader.exclude];
 }
 
-// NodeModulesLoader.exclude.push(/@rails\/actioncable/);
+nodeModulesLoader.exclude.push(/@rails\/actioncable/);
