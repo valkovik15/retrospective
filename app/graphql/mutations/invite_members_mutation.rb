@@ -10,8 +10,7 @@ module Mutations
     # rubocop:disable Metrics/MethodLength
     def resolve(email:, board_slug:)
       board = Board.find_by!(slug: board_slug)
-      authorize! board, to: :invite?, context: { user: context[:current_user] },
-                        with: API::BoardPolicy
+      authorize! board, to: :invite?, context: { user: context[:current_user] }
 
       users = Boards::FindUsersToInvite.new(email, board).call
       if users.any?

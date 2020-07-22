@@ -7,7 +7,7 @@ RSpec.describe BoardPolicy do
   let_it_be(:board) { create(:board) }
   let_it_be(:membership) { create(:membership, user: member, board: board) }
   let_it_be(:creatorship) { create(:membership, user: creator, board: board, role: 'creator') }
-
+  
   let(:policy) { described_class.new(board, user: test_user) }
 
   describe '#index?' do
@@ -123,6 +123,48 @@ RSpec.describe BoardPolicy do
 
     context 'when user is not the board creator' do
       let(:test_user) { member }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#suggestions?' do
+    subject { policy.apply(:suggestions?) }
+
+    context 'when user is a member' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a member' do
+      let(:test_user) { not_member }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#invite?' do
+    subject { policy.apply(:invite?) }
+
+    context 'when user is a member' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a member' do
+      let(:test_user) { not_member }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#user_is_member?' do
+    subject { policy.apply(:user_is_member?) }
+
+    context 'when user is a member' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a member' do
+      let(:test_user) { not_member }
       it { is_expected.to eq false }
     end
   end

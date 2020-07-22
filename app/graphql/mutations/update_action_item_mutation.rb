@@ -12,8 +12,7 @@ module Mutations
       action_item = ActionItem.find(id)
 
       authorize! action_item, to: :update?, context: { user: context[:current_user],
-                                                       board: action_item.board },
-                              with: API::ActionItemPolicy
+                                                       board: action_item.board }
 
       if action_item.update(attributes.to_h)
         RetrospectiveSchema.subscriptions.trigger('action_item_updated',

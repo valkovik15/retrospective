@@ -10,8 +10,7 @@ module Mutations
     def resolve(attributes:)
       params = attributes.to_h
       comment = Comment.new(params.merge(author: context[:current_user]))
-      authorize! comment, to: :create?, context: { user: context[:current_user] },
-                          with: API::CommentPolicy
+      authorize! comment, to: :create?, context: { user: context[:current_user] }
 
       if comment.save
         card = comment.card

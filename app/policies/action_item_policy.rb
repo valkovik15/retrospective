@@ -7,6 +7,14 @@ class ActionItemPolicy < ApplicationPolicy
     check?(:user_is_creator?)
   end
 
+  def update?
+    check?(:user_is_creator?)
+  end
+
+  def destroy?
+    check?(:user_is_creator?)
+  end
+
   def move?
     check?(:user_is_creator?) && record.pending?
   end

@@ -1,22 +1,19 @@
 # frozen_string_literal: true
 
 module Mutations
-  class UpdateCommentMutation < Mutations::BaseMutation
+  class LikeCommentMutation < Mutations::BaseMutation
     argument :id, ID, required: true
-    argument :attributes, Types::CommentAttributes, required: true
 
     field :comment, Types::CommentType, null: true
 
     # rubocop:disable Metrics/MethodLength
-    def resolve(id:, attributes:)
+    def resolve(id:)
       comment = Comment.find(id)
-
-      authorize! comment, to: :update?, context: { user: context[:current_user] }
-
-      if comment.update(attributes.to_h)
-        card = comment.card
+      authorize! comment, to: :like?, context: { user: context[:current_user] }
+      if comment.like!
         RetrospectiveSchema.subscriptions.trigger('card_updated',
-                                                  { board_slug: card.board.slug }, card)
+                                                  { board_slug: comment.card.board.slug },
+                                                  comment.card)
         { comment: comment }
       else
         { errors: { full_messages: comment.errors.full_messages } }

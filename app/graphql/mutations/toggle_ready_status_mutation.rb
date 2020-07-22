@@ -9,7 +9,7 @@ module Mutations
     def resolve(id:)
       membership = Membership.find(id)
       authorize! membership, to: :ready_toggle?,
-                             context: { membership: membership }, with: API::MembershipPolicy
+                             context: { membership: membership }
 
       if membership.update(ready: !membership.ready)
         RetrospectiveSchema.subscriptions.trigger('membership_updated',

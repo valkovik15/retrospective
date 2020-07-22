@@ -13,6 +13,7 @@ module Types
     field :destroy_comment, mutation: Mutations::DestroyCommentMutation
     field :invite_members, mutation: Mutations::InviteMembersMutation
     field :like_card, mutation: Mutations::LikeCardMutation
+    field :like_comment, mutation: Mutations::LikeCommentMutation
     field :move_action_item, mutation: Mutations::MoveActionItemMutation
     field :reopen_action_item, mutation: Mutations::ReopenActionItemMutation
     field :toggle_ready_status, mutation: Mutations::ToggleReadyStatusMutation

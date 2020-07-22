@@ -11,8 +11,7 @@ module Mutations
       membership = Membership.find(id)
       authorize! membership, to: :destroy?,
                              context: { membership: Membership.find_by(user: context[:current_user],
-                                                                       board: membership.board) },
-                             with: API::MembershipPolicy
+                                                                       board: membership.board) }
       if membership.destroy
         RetrospectiveSchema.subscriptions.trigger('membership_destroyed',
                                                   { board_slug: membership.board.slug },
