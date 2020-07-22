@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import Picker from 'emoji-picker-react';
+import CommentLikes from './CommentLikes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSmile} from '@fortawesome/free-regular-svg-icons';
 import {useMutation} from '@apollo/react-hooks';
@@ -14,6 +15,7 @@ const Comment = props => {
   const [inputValue, setInputValue] = useState(comment.content);
   const [destroyComment] = useMutation(destroyCommentMutation);
   const [updateComment] = useMutation(updateCommentMutation);
+
   useEffect(() => {
     if (inputValue !== comment.content) {
       setInputValue(comment.content);
@@ -122,9 +124,14 @@ const Comment = props => {
                 {comment.content}
               </div>
             </div>
-            <div className="column is-offset-three-fifths is-two-fifths bottom-content">
-              <img src={comment.author.avatar.thumb.url} className="avatar" />
-              <span> by {comment.author.email.split('@')[0]}</span>
+            <div className="columns">
+              <div className="column is-one-fifth">
+                <CommentLikes id={comment.id} likes={comment.likes} />
+              </div>
+              <div className="column is-offset-two-fifths is-two-fifths bottom-content">
+                <img src={comment.author.avatar.thumb.url} className="avatar" />
+                <span> by {comment.author.email.split('@')[0]}</span>
+              </div>
             </div>
           </>
         )}

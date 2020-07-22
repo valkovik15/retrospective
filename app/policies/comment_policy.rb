@@ -24,4 +24,4 @@ class CommentPolicy < ApplicationPolicy
   def user_is_author?
     record.author?(user)
   end
-  end
+end

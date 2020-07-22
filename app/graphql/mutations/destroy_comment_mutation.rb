@@ -5,8 +5,6 @@ module Mutations
     argument :id, ID, required: true
 
     field :id, Int, null: false
-
-    # rubocop:disable Metrics/MethodLength
     def resolve(id:)
       comment = Comment.find(id)
       authorize! comment, to: :destroy?, context: { user: context[:current_user] }
@@ -19,6 +17,5 @@ module Mutations
         { errors: { full_messages: comment.errors.full_messages } }
       end
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

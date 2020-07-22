@@ -7,7 +7,7 @@ RSpec.describe BoardPolicy do
   let_it_be(:board) { create(:board) }
   let_it_be(:membership) { create(:membership, user: member, board: board) }
   let_it_be(:creatorship) { create(:membership, user: creator, board: board, role: 'creator') }
-  
+
   let(:policy) { described_class.new(board, user: test_user) }
 
   describe '#index?' do

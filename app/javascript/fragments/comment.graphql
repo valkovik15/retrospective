@@ -1,0 +1,10 @@
+#import "./user.graphql"
+
+fragment Comment on Comment {
+  id
+    content
+    author {
+      ...User
+    }
+    likes
+}

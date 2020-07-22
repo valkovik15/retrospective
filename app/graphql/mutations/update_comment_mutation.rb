@@ -6,8 +6,6 @@ module Mutations
     argument :attributes, Types::CommentAttributes, required: true
 
     field :comment, Types::CommentType, null: true
-
-    # rubocop:disable Metrics/MethodLength
     def resolve(id:, attributes:)
       comment = Comment.find(id)
 
@@ -22,6 +20,5 @@ module Mutations
         { errors: { full_messages: comment.errors.full_messages } }
       end
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

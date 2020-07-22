@@ -6,7 +6,6 @@ module Mutations
 
     field :comment, Types::CommentType, null: true
 
-    # rubocop:disable Metrics/MethodLength
     def resolve(id:)
       comment = Comment.find(id)
       authorize! comment, to: :like?, context: { user: context[:current_user] }
@@ -19,6 +18,5 @@ module Mutations
         { errors: { full_messages: comment.errors.full_messages } }
       end
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end
