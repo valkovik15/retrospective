@@ -33,7 +33,7 @@
   </div>
 </div>
 
-<% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
+<% if allowed_to?(:invite?, @board) %>
   <div class="box">
     <%= react_component('membership_list_container')%>
   </div>

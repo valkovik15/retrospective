@@ -12,8 +12,7 @@ module Mutations
       action_item = ActionItem.find(id)
       board = Board.find_by!(slug: board_slug)
       authorize! action_item, to: :move?, context: { user: context[:current_user],
-                                                     board: board },
-                              with: API::ActionItemPolicy
+                                                     board: board }
 
       if action_item.move!(board)
         RetrospectiveSchema.subscriptions.trigger('action_item_moved', { board_slug: board.slug },

@@ -10,8 +10,7 @@ module Mutations
     def resolve(id:)
       action_item = ActionItem.find(id)
       authorize! action_item, to: :destroy?, context: { user: context[:current_user],
-                                                        board: action_item.board },
-                              with: API::ActionItemPolicy
+                                                        board: action_item.board }
 
       if action_item.destroy
         RetrospectiveSchema.subscriptions.trigger('action_item_destroyed',

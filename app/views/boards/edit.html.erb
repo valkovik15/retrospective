@@ -8,7 +8,7 @@
 <% end %>
 </div>
 
-<% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
+<% if allowed_to?(:invite?, @board) %>
   <div class='box'>
     <%= react_component 'invite_block_container'%>
   </div>

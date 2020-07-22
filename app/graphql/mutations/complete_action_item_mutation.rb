@@ -12,8 +12,7 @@ module Mutations
       action_item = ActionItem.find(id)
       board = Board.find_by!(slug: board_slug)
       authorize! action_item, to: :complete?,
-                              context: { user: context[:current_user], board: board },
-                              with: API::ActionItemPolicy
+                              context: { user: context[:current_user], board: board }
 
       if action_item.complete!
         RetrospectiveSchema.subscriptions.trigger('action_item_updated', { board_slug: board.slug },

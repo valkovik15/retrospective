@@ -1,15 +1,12 @@
 #import "./user.graphql"
+#import "./comment.graphql"
 
 fragment Card on Card {
   author {
     ...User
   }
   comments {
-    id
-    content
-    author {
-      ...User
-    }
+    ...Comment
   }
   id
   kind

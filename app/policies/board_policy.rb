@@ -37,6 +37,14 @@ class BoardPolicy < ApplicationPolicy
     user_is_member?
   end
 
+  def suggestions?
+    check?(:user_is_member?)
+  end
+
+  def invite?
+    check?(:user_is_member?)
+  end
+
   def user_is_creator?
     record.creator?(user)
   end

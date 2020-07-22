@@ -126,4 +126,46 @@ RSpec.describe BoardPolicy do
       it { is_expected.to eq false }
     end
   end
+
+  describe '#suggestions?' do
+    subject { policy.apply(:suggestions?) }
+
+    context 'when user is a member' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a member' do
+      let(:test_user) { not_member }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#invite?' do
+    subject { policy.apply(:invite?) }
+
+    context 'when user is a member' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a member' do
+      let(:test_user) { not_member }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#user_is_member?' do
+    subject { policy.apply(:user_is_member?) }
+
+    context 'when user is a member' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a member' do
+      let(:test_user) { not_member }
+      it { is_expected.to eq false }
+    end
+  end
 end
