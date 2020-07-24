@@ -11,7 +11,10 @@ class BoardsController < ApplicationController
 
   def index
     authorize!
-    @boards = current_user.boards.includes(:users).order(created_at: :desc)
+    @boards_by_date = current_user.boards
+                                  .includes(:users, :cards, :action_items)
+                                  .order(created_at: :desc)
+                                  .group_by { |record| record.created_at.strftime('%B, %Y') }
   end
 
   # rubocop:disable Metrics/AbcSize

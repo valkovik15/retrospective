@@ -30,7 +30,7 @@ class BoardPolicy < ApplicationPolicy
   end
 
   def continue?
-    user_is_creator?
+    user_is_creator? && can_continue?
   end
 
   def create_cards?
@@ -51,5 +51,9 @@ class BoardPolicy < ApplicationPolicy
 
   def user_is_member?
     record.member?(user)
+  end
+
+  def can_continue?
+    !Board.exists?(previous_board_id: record.id)
   end
 end
